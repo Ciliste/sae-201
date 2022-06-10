@@ -12,7 +12,7 @@ public class ListeAdjacence extends Reseau {
 
     public ListeAdjacence() {
 
-        this.ensTubes = new ArrayList<>();
+        this.ensTubes = new ArrayList<Tube>();
     }
 
     public void ajouterTube(Tube tube) {
@@ -25,7 +25,6 @@ public class ListeAdjacence extends Reseau {
         this.ensTubes.remove(tube);
     }
 
-    @Override
     public Iterable<Cuve> getEnsCuves() {
 
         List<Cuve> ensCuves = new ArrayList<>();
@@ -41,9 +40,8 @@ public class ListeAdjacence extends Reseau {
         return ensCuves;
     }
 
-    @Override
     public Iterable<Tube> getEnsTubes() {
-        // TODO Auto-generated method stub
+        
         return this.ensTubes;
     }
 }
