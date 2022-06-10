@@ -2,7 +2,7 @@ package appli1;
 
 import metier.Cuve;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Collections;
 
 import metier.Tube;
 
@@ -12,12 +12,21 @@ public abstract class Reseau {
 
     public abstract void supprimerTube(Tube tube);
 
-    public abstract Iterable<Cuve> getEnsCuves();
+    public abstract List<Cuve> getEnsCuves();
 
-    public abstract Iterable<Tube> getEnsTubes();
+    public List<Cuve> getTriEnsCubes() {
+
+        List<Cuve> ensCuves = this.getEnsCuves();
+
+        Collections.sort(ensCuves);
+
+        return ensCuves;
+    }
+
+    public abstract List<Tube> getEnsTubes();
 
     public String toString() {
-        
+
         String sRet = "Cuves :";
         for (Cuve cuve : this.getEnsCuves()) {
 
@@ -32,4 +41,6 @@ public abstract class Reseau {
 
         return sRet;
     }
+
+    public abstract String formatToFile();
 }

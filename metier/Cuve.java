@@ -1,9 +1,9 @@
 package metier;
 
-public class Cuve {
+public class Cuve implements Comparable<Cuve> {
 
     // Attributs de classe
-    private static int nbCuve = 0;
+    public static int nbCuve = 0;
 
     // Attributs d'instance
     private char identifiant;
@@ -69,7 +69,7 @@ public class Cuve {
         this.contenu -= transfert;
 
     }
-    
+
     // Getters
     public char getIdentifiant() {
 
@@ -90,5 +90,15 @@ public class Cuve {
     public String toString() {
 
         return "Cuve " + this.identifiant + " : " + this.contenu + "/" + this.capacite + "L";
+    }
+
+    // Comparable
+    public int compareTo(Cuve c) {
+
+        return -(this.identifiant - c.identifiant);
+    }
+
+    public boolean equals(Cuve cuve) {
+        return this.getIdentifiant() == cuve.getIdentifiant();
     }
 }

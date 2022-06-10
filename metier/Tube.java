@@ -14,6 +14,10 @@ public class Tube {
             return null;
         }
 
+        if(cuveA.equals(cuveB)){
+            return null;
+        }
+
         return new Tube(cuveA, cuveB, section);
     }
 
@@ -81,6 +85,10 @@ public class Tube {
 
     public Cuve getCuveB() {
         return this.cuveB;
+    }
+
+    public int getSection() {
+        return this.section;
     }
 
     // toString()
