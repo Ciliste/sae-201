@@ -17,7 +17,7 @@ public abstract class Reseau {
     public abstract Iterable<Tube> getEnsTubes();
 
     public String toString() {
-
+        
         String sRet = "Cuves :";
         for (Cuve cuve : this.getEnsCuves()) {
 

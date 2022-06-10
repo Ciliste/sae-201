@@ -67,8 +67,9 @@ public class Cuve {
         }
 
         this.contenu -= transfert;
-    }
 
+    }
+    
     // Getters
     public char getIdentifiant() {
 
