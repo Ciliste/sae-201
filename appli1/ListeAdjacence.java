@@ -14,7 +14,7 @@ import java.io.FileOutputStream;*/
 
 public class ListeAdjacence extends Reseau {
 
-    private Map<Character, List<Tube>> lstAdjacence;
+    private Map<Cuve, List<Cuve>> lstAdjacence;
     private List<Tube> ensTubes;
 
     public ListeAdjacence(List<Tube> ensTubes) {
@@ -22,56 +22,71 @@ public class ListeAdjacence extends Reseau {
         this.lstAdjacence = new HashMap<>();
         this.ensTubes = ensTubes;
 
-        for (int i = 0; i <= Cuve.nbCuve; i++) {
-
-            this.lstAdjacence.put((char) ('A' + i), this.getTubesFromCuve((char) ('A' + i)));
+        for (Cuve cuve : this.getEnsCuves()) {
+            this.lstAdjacence.put(cuve, this.getCuveRelie(cuve));
         }
 
     }
 
-    private List<Tube> getTubesFromCuve(char idCuve) {
-        List<Tube> lstTempTube = new ArrayList<>();
+    private List<Cuve> getCuveRelie(Cuve cuve) {
+        List<Cuve> lstCuves = new ArrayList<>();
 
-        for (Tube tmpTube : ensTubes) {
-            if (tmpTube.getCuveA().getIdentifiant() == idCuve) {
-                lstTempTube.add(tmpTube);
+        for (Tube tube : this.ensTubes) {
+            if (tube.getCuveA().equals(cuve)) {
+                if (!lstCuves.contains(cuve)) {
+                    lstCuves.add(tube.getCuveB());
+                }
             }
-            if (tmpTube.getCuveB().getIdentifiant() == idCuve) {
-                lstTempTube.add(tmpTube);
+            if (tube.getCuveB().equals(cuve)) {
+                if (!lstCuves.contains(cuve)) {
+                    lstCuves.add(tube.getCuveA());
+                }
             }
         }
 
-        return lstTempTube;
+        return lstCuves;
     }
 
     public void ajouterTube(Tube tube) {
 
-        List<Tube> lstTube = this.lstAdjacence.get(tube.getCuveA().getIdentifiant());
+        // Verification et ajout dans la cle correspondant a la cuveA
+        List<Cuve> lstCuve = this.lstAdjacence.get(tube.getCuveA());
 
-        lstTube.add(tube);
-        this.lstAdjacence.put(tube.getCuveA().getIdentifiant(), lstTube);
+        if (!this.lstAdjacence.get(tube.getCuveB()).contains(tube.getCuveA())) {
 
-        lstTube = this.lstAdjacence.get(tube.getCuveB().getIdentifiant());
+            lstCuve.add(tube.getCuveA());
+            this.ensTubes.add(tube);
 
-        lstTube.add(tube);
-        this.lstAdjacence.put(tube.getCuveB().getIdentifiant(), lstTube);
+            this.lstAdjacence.put(tube.getCuveB(), lstCuve);
+
+            // Ajout dans la cle correspondant a la cuveB
+            lstCuve = this.lstAdjacence.get(tube.getCuveB());
+
+            lstCuve.add(tube.getCuveB());
+            this.lstAdjacence.put(tube.getCuveA(), lstCuve);
+        }
 
     }
 
     public void supprimerTube(Tube tube) {
 
-        List<Tube> lstTube = this.lstAdjacence.get(tube.getCuveA().getIdentifiant());
+        // Suppression de la cuveA du Tube
+        List<Cuve> lstCuve = this.lstAdjacence.get(tube.getCuveA());
 
-        lstTube.remove(tube);
-        this.lstAdjacence.put(tube.getCuveA().getIdentifiant(), lstTube);
+        lstCuve.remove(tube.getCuveA());
+        this.lstAdjacence.put(tube.getCuveB(), lstCuve);
 
-        lstTube = this.lstAdjacence.get(tube.getCuveB().getIdentifiant());
+        // Suppression de la cuveB du Tube
+        lstCuve = this.lstAdjacence.get(tube.getCuveB());
 
-        lstTube.remove(tube);
-        this.lstAdjacence.put(tube.getCuveB().getIdentifiant(), lstTube);
+        lstCuve.remove(tube.getCuveB());
+        this.lstAdjacence.put(tube.getCuveA(), lstCuve);
+
+        this.ensTubes.remove(tube);
     }
 
     public List<Cuve> getEnsCuves() {
+
         List<Cuve> lstCuve = new ArrayList<>();
 
         for (Tube tube : this.ensTubes) {
@@ -92,14 +107,20 @@ public class ListeAdjacence extends Reseau {
     }
 
     public String formatToFile() {
-        StringBuilder stringBuilder = new StringBuilder("{");
+        StringBuilder stringBuilder = new StringBuilder("{\n");
 
         // Construction de la chaine de caractères
-        for (char key : this.lstAdjacence.keySet()) {
-            stringBuilder.append(key).append(" : ").append(this.lstAdjacence.get(key)).append(",\n");
+        for (Cuve key : this.lstAdjacence.keySet()) {
+            stringBuilder.append(key).append(" : [");
+
+            for (Cuve cuve : this.lstAdjacence.get(key)) {
+                stringBuilder.append("Cuve ").append(cuve.getIdentifiant()).append(", ");
+            }
+            stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
+            stringBuilder.append("], \n");
         }
 
-        stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
+        stringBuilder.delete(stringBuilder.length() - 3, stringBuilder.length());
         stringBuilder.append("\n}");
 
         // Ecriture dans le fichier 'listeAdjacence.txt'
@@ -108,7 +129,7 @@ public class ListeAdjacence extends Reseau {
          * PrintWriter printWriter = new PrintWriter(
          * new OutputStreamWriter(new FileOutputStream("listeAdjacence.txt"), "UTF8"));
          * printWriter.println(stringBuilder.toString());
-         * 
+         *
          * printWriter.close();
          * } catch (Exception e) {
          * e.printStackTrace();
@@ -118,7 +139,7 @@ public class ListeAdjacence extends Reseau {
         return stringBuilder.toString();
     }
 
-    public Map<Character, List<Tube>> getLstAdjacence() {
+    public Map<Cuve, List<Cuve>> getLstAdjacence() {
         return this.lstAdjacence;
     }
 
@@ -128,15 +149,14 @@ public class ListeAdjacence extends Reseau {
 
         List<Cuve> lstCuves = new ArrayList<>();
 
-        lstCuves.add(Cuve.creerCuve(100));
-        lstCuves.add(Cuve.creerCuve(100));
-        lstCuves.add(Cuve.creerCuve(100));
+        lstCuves.add(Cuve.creerCuve(500));
+        lstCuves.add(Cuve.creerCuve(500));
+        lstCuves.add(Cuve.creerCuve(500));
 
         lstTubes.add(Tube.creerTube(lstCuves.get(0), lstCuves.get(1), 5));
         lstTubes.add(Tube.creerTube(lstCuves.get(1), lstCuves.get(2), 8));
 
-        new ListeAdjacence(lstTubes); //🍔burgir
-
+        System.out.println(new ListeAdjacence(lstTubes).formatToFile());
     }
 
 }
