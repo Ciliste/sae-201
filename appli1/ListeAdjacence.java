@@ -96,7 +96,7 @@ public class ListeAdjacence extends Reseau {
 
         // Construction de la chaine de caractères
         for (char key : this.lstAdjacence.keySet()) {
-            stringBuilder.append(key + " : " + this.lstAdjacence.get(key) + ",\n");
+            stringBuilder.append(key).append(" : ").append(this.lstAdjacence.get(key)).append(",\n");
         }
 
         stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
