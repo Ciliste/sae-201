@@ -1,4 +1,4 @@
-package appli1.ihm;
+package appli2.ihm;
 
 import appli1.Controleur;
 import appli1.Reseau;

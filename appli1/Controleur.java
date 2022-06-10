@@ -6,7 +6,7 @@ import metier.Tube;
 
 import java.util.List;
 
-import appli1.ihm.Frame;
+import appli2.ihm.Frame;
 
 import java.util.ArrayList;
 
