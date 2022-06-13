@@ -55,7 +55,7 @@ public class Cuve implements Comparable<Cuve>, Serializable {
             return null;
         }
 
-        if (contenu >= 0 || contenu > capacite) {
+        if (contenu < 0 || contenu > capacite) {
             return null;
         }
 
