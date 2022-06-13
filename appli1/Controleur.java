@@ -1,6 +1,7 @@
 package appli1;
 
 import appli1.ihm.FrameCreation;
+import iut.algo.Clavier;
 import appli1.Reseau;
 
 public class Controleur {
@@ -8,15 +9,32 @@ public class Controleur {
     private Reseau reseau;
     private FrameCreation frame;
 
-    public Controleur() {
+    public Controleur(String affichage) {
 
         // this.reseau = new ListeAdjacence();
-        this.frame = new FrameCreation(this);
+        if (affichage == "GRAPHIQUE")
+            this.frame = new FrameCreation(this);
+        else
+            this.frame = new FrameCreation(this);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
+        if (args.length != 1)
+        {
+            System.out.println("Saisir le mode de saisie des informations (console/graphique) : ");
+            args[0] = Clavier.lireString();
+        }
 
-        new Controleur();
+        while (args[0].toUpperCase().indexOf("CONSOLE") == -1 || args[0].toUpperCase().indexOf("GRAPHIQUE") == -1)
+        {
+            System.out.println("Saisir le mode de saisie des informations (console/graphique) : ");
+            args[0] = Clavier.lireString();
+        }
+
+
+
+        new Controleur(args[0].toUpperCase());
     }
 
 
