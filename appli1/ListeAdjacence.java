@@ -90,7 +90,7 @@ public class ListeAdjacence extends Reseau {
 
     @Override
     public void formatToFile() {
-        StringBuilder stringBuilder = new StringBuilder("{\n");
+        StringBuilder stringBuilder = new StringBuilder(getClass().getSimpleName()).append("\n{\n");
 
         // Construction de la chaine de caractères
         for (Cuve key : this.lstAdjacence.keySet()) {
@@ -114,7 +114,7 @@ public class ListeAdjacence extends Reseau {
         // Ecriture dans le fichier 'listeAdjacence.txt'
         try {
             PrintWriter printWriter = new PrintWriter(
-            new OutputStreamWriter(new FileOutputStream("listeAdjacence.txt"), "UTF8"));
+            new OutputStreamWriter(new FileOutputStream("listeAdjacence.data"), "UTF8"));
             printWriter.println(stringBuilder.toString());
         
             printWriter.close();

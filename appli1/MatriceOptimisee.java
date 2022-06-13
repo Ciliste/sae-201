@@ -1,14 +1,14 @@
 package appli1;
 
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import metier.Cuve;
 import metier.Tube;
 
-import java.util.List;
-import java.util.ArrayList;
 
-import java.io.PrintWriter;
-import java.io.OutputStreamWriter;
-import java.io.FileOutputStream;
 
 public class MatriceOptimisee extends Reseau {
 
@@ -24,6 +24,7 @@ public class MatriceOptimisee extends Reseau {
         this.creerMatrice();
     }
 
+    @Override
     public void ajouterTube(Tube tube) {
         if (this.ensTube.contains(tube))
             return;
@@ -31,6 +32,7 @@ public class MatriceOptimisee extends Reseau {
         this.creerMatrice();
     }
 
+    @Override
     public void supprimerTube(Tube tube) {
         ensTube.remove(tube);
         this.creerMatrice();
@@ -55,6 +57,7 @@ public class MatriceOptimisee extends Reseau {
         }
     }
 
+    @Override
     public List<Cuve> getEnsCuves() {
 
         List<Cuve> lstCuve = new ArrayList<Cuve>();
@@ -71,12 +74,20 @@ public class MatriceOptimisee extends Reseau {
         return lstCuve;
     }
 
+    @Override
     public List<Tube> getEnsTubes() {
         return ensTube;
     }
 
+    @Override
     public void formatToFile() {
-        StringBuilder stringBuilder = new StringBuilder("(\n");
+        StringBuilder stringBuilder = new StringBuilder(this.getClass().getSimpleName()).append("\n");
+
+        for( Cuve tmp : this.getEnsCuves()){
+            stringBuilder.append(tmp.toString()).append("\n");
+        }
+
+        stringBuilder.append("(\n");
 
         for (int i = 1; i < this.matriceOpti.length; i++) {
             stringBuilder.append("(");
@@ -92,7 +103,7 @@ public class MatriceOptimisee extends Reseau {
 
         try {
             PrintWriter printWriter = new PrintWriter(
-            new OutputStreamWriter(new FileOutputStream("matriceOptimisee.txt"), "UTF8"));
+            new OutputStreamWriter(new FileOutputStream("matriceOptimisee.data"), "UTF8"));
             printWriter.println(stringBuilder.toString());
         
             printWriter.close();
