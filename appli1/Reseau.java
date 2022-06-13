@@ -14,7 +14,7 @@ public abstract class Reseau {
 
     public abstract List<Cuve> getEnsCuves();
 
-    public List<Cuve> getTriEnsCubes() {
+    public List<Cuve> getTriEnsCuves() {
 
         List<Cuve> ensCuves = this.getEnsCuves();
 
