@@ -5,8 +5,8 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import appli2.Controleur;
-import appli2.Reseau;
+import appli1.Controleur;
+import appli1.Reseau;
 import metier.Cuve;
 
 

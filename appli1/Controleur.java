@@ -20,13 +20,13 @@ public class Controleur {
     }
 
 
-    // public int getWidth() {
-    // return this.frame.getWidth();
-    // }
+    public int getWidthFrame() {
+        return this.frame.getWidth();
+    }
 
-    // public int getHeight() {
-    // return this.frame.getHeight();
-    // }
+    public int getHeightFrame() {
+        return this.frame.getHeight();
+    }
 
     // public static void main(String[] args) {
 
