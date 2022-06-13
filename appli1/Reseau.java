@@ -42,5 +42,5 @@ public abstract class Reseau {
         return sRet;
     }
 
-    public abstract String formatToFile();
+    public abstract void formatToFile();
 }

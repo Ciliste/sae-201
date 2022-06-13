@@ -10,4 +10,6 @@ public abstract class AbstractInputTextField extends JTextField {
     }
 
     public abstract boolean valeurEstValide();
+
+    public abstract String getMessageErreur();
 }

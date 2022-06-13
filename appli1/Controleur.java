@@ -19,6 +19,7 @@ public class Controleur {
         new Controleur();
     }
 
+
     // public int getWidth() {
     // return this.frame.getWidth();
     // }

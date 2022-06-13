@@ -93,7 +93,7 @@ public class Tube {
 
     // toString()
     public String toString() {
-        return "Tube : " + this.cuveA.toString() + " - " + this.cuveB.toString() + " - " + this.section;
+        return "Tube : {" + this.cuveA.toString() + " - " + this.cuveB.toString() + " - " + this.section + "}";
     }
 
     // TEST

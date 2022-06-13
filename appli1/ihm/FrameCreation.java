@@ -21,7 +21,7 @@ public class FrameCreation extends JFrame {
         this.setLayout(new BorderLayout());
 
         this.add(new PanelAction(this.ctrl), BorderLayout.NORTH);
-        this.add(new JScrollPane(new PanelCreation(ctrl, this)), BorderLayout.CENTER);
+        this.add(new JScrollPane(new PanelCreation(ctrl, this, null)), BorderLayout.CENTER);
 
         this.setVisible(true);
     }

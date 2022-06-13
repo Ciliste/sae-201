@@ -24,9 +24,9 @@ public class Panel extends JPanel {
 
         // List<Cuve> ensCuve = new ArrayList<Cuve>();
 
-        for (Cuve c : this.reseau.getEnsCuves()) {
-            g.drawOval((int) (this.ctrl.getWidth() * 0.10), (int) (this.ctrl.getHeight() * 0.10),
-                    c.getCapacite() / 10, c.getCapacite() / 10);
-        }
+        // for (Cuve c : this.reseau.getEnsCuves()) {
+        //     g.drawOval((int) (this.ctrl.getWidth() * 0.10), (int) (this.ctrl.getHeight() * 0.10),
+        //             c.getCapacite() / 10, c.getCapacite() / 10);
+        // }
     }
 }

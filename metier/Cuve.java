@@ -1,6 +1,32 @@
 package metier;
 
-public class Cuve implements Comparable<Cuve> {
+import java.io.Serializable;
+
+public class Cuve implements Comparable<Cuve>, Serializable {
+
+    public enum PositionInfo {
+
+        HAUT(0, "HAUT"),
+        DROITE(1, "DROITE"),
+        BAS(2, "BAS"),
+        GAUCHE(3, "GAUCHE");
+
+        private int valeur;
+        private String lib;
+
+        private PositionInfo(int valeur, String lib) {
+        }
+
+        public int getValeur() {
+
+            return this.valeur;
+        }
+
+        public String getLib() {
+
+            return this.lib;
+        }
+    }
 
     // Attributs de classe
     public static int nbCuve = 0;
@@ -14,6 +40,10 @@ public class Cuve implements Comparable<Cuve> {
 
     // Fabrique
     public static Cuve creerCuve(int capacite) {
+        return Cuve.creerCuve(capacite, 0);
+    }
+
+    public static Cuve creerCuve(int capacite, double contenu) {
 
         // Retourne null si la capacite n'est pas dans la plage demandee
         if (capacite < 200 || capacite > 1000) {
@@ -25,15 +55,23 @@ public class Cuve implements Comparable<Cuve> {
             return null;
         }
 
-        return new Cuve(capacite);
+        if (contenu >= 0 || contenu > capacite) {
+            return null;
+        }
+
+        return new Cuve(capacite, contenu);
     }
 
     // Constructeur
     private Cuve(int capacite) {
+        this(capacite, 0);
+    }
+
+    private Cuve(int capacite, double contenu) {
 
         this.identifiant = (char) ('A' + Cuve.nbCuve++);
         this.capacite = capacite;
-        this.contenu = 0;
+        this.contenu = contenu;
         this.position = null;
         this.posInfo = 0;
     }
