@@ -205,9 +205,9 @@ public class Console
                 }
             }
 
-
             Console.reseauSave.formatToFile(nomFichier);
             System.out.println("Sauvegarde des données réussie");
+
 
             System.out.println(Console.reseauSave.toString());
         }
