@@ -103,7 +103,7 @@ public class ListeAdjacence extends Reseau
     }
 
     @Override
-    public void formatToFile() 
+    public void formatToFile(String nomFichier)
     {
         StringBuilder stringBuilder = new StringBuilder(getClass().getSimpleName()).append("\n{\n");
 
@@ -135,7 +135,7 @@ public class ListeAdjacence extends Reseau
         try 
         {
             PrintWriter printWriter = new PrintWriter(
-            new OutputStreamWriter(new FileOutputStream("listeAdjacence.data"), "UTF8"));
+            new OutputStreamWriter(new FileOutputStream(nomFichier + ".data"), "UTF8"));
 
             printWriter.println(stringBuilder.toString());
         
@@ -222,21 +222,4 @@ public class ListeAdjacence extends Reseau
 
         return null;
     }
-
-    public static void main(String[] args) 
-    {
-        List<Tube> lstTubes = new ArrayList<>();
-
-        List<Cuve> lstCuves = new ArrayList<>();
-
-        lstCuves.add(Cuve.creerCuve(500));
-        lstCuves.add(Cuve.creerCuve(300));
-        lstCuves.add(Cuve.creerCuve(800));
-
-        lstTubes.add(Tube.creerTube(lstCuves.get(1), lstCuves.get(0), 10));
-        lstTubes.add(Tube.creerTube(lstCuves.get(1), lstCuves.get(2), 8));
-
-        new ListeAdjacence(lstTubes).formatToFile();
-    }
-
 }

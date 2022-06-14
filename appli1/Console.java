@@ -12,7 +12,7 @@ public class Console
 {
     private static List<Cuve> ensCuves = new ArrayList<Cuve>();
     private static List<Tube> ensTubes = new ArrayList<Tube>();
-
+    private static Reseau reseauSave;
     private static String typeSave;
 
     // Constructeur
@@ -147,11 +147,11 @@ public class Console
             Console.ensTubes.add(tube);
         }
 
-        System.out.print("Comment voulez sauvegardez les données (liste/matrice/matrice optimise) : ");
+        System.out.print("Comment voulez sauvegardez les données (liste/matrice/matrice optimisee) : ");
         Console.typeSave = Clavier.lireString().toUpperCase();
         while (Console.typeSave.indexOf("LISTE") == -1 && !Console.typeSave.equals("MATRICE") && Console.typeSave.indexOf("MATRICE OPTIMIS") == -1)
         {
-            System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (liste/matrice/matrice optimise)");
+            System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (liste/matrice/matrice optimisee)");
 
             System.out.print("Comment voulez sauvegardez les données : ");
             Console.typeSave = Clavier.lireString().toUpperCase();
@@ -159,25 +159,32 @@ public class Console
 
         if (Console.typeSave.indexOf("LISTE") != -1)
         {
-            Console.typeSave = "LISTE";
+            Console.reseauSave = new ListeAdjacence(Console.ensTubes);
         }
-        else if (Console.typeSave.indexOf("MATRICE") != -1)
+        else 
         {
-            Console.typeSave = "MATRICE";
-        }
-        else if (Console.typeSave.indexOf("MATRICE OPTIMIS") != -1)
-        {
-            Console.typeSave = "MATRICE OPTIMISE";
+            if (Console.typeSave.indexOf("MATRICE OPTIMIS") != -1)
+            {
+                Console.reseauSave = new MatriceOptimisee(Console.ensTubes);
+            }
+            else
+            {
+                if (Console.typeSave.indexOf("MATRICE") != -1)
+                {
+                    Console.reseauSave = new MatriceCout(Console.ensTubes);
+                }
+            }
         }
 
+        System.out.println(Console.reseauSave.toString());
+        System.out.println("Sauvegarde des données réussie");
 
     }
-
 
 
 
     // getters
     public static List<Cuve> getEnsCuves() { return Console.ensCuves; }
     public static List<Tube> getEnsTubes() { return Console.ensTubes; }
-    public static String getTypeSave() { return Console.typeSave; }
+    public static String     getTypeSave() { return Console.typeSave; }
 }

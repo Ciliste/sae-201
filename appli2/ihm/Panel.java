@@ -5,8 +5,8 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import appli1.Controleur;
-import appli1.Reseau;
+import appli2.Controleur;
+import appli2.Reseau;
 import metier.Cuve;
 
 
@@ -14,9 +14,9 @@ public class Panel extends JPanel {
     private Controleur ctrl;
     private Reseau reseau;
 
-    public Panel(Controleur controleur, Reseau reseau) {
+    public Panel(Controleur controleur, appli2.Reseau reseau2) {
         this.ctrl = controleur;
-        this.reseau = reseau;
+        this.reseau = reseau2;
     }
 
     public void paint(Graphics g) {

@@ -110,13 +110,13 @@ public abstract class Reseau {
 
     public String toString() {
 
-        String sRet = "Cuves :";
+        String sRet = "Cuves :\n";
         for (Cuve cuve : this.getEnsCuves()) {
 
             sRet += cuve.toString() + "\n";
         }
 
-        sRet += "\nTubes :";
+        sRet += "\nTubes :\n";
         for (Tube tube : this.getEnsTubes()) {
 
             sRet += tube.toString() + "\n";
@@ -125,5 +125,5 @@ public abstract class Reseau {
         return sRet;
     }
 
-    public abstract void formatToFile();
+    public abstract void formatToFile(String nomFichier);
 }

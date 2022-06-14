@@ -48,7 +48,7 @@ public abstract class Reseau {
         return sRet;
     }
 
-    public abstract void formatToFile();
+    public abstract void formatToFile(String nomFichier);
 
     public static boolean tubeExiste(List<Tube> ensTubes, Tube tube) {
         for (Tube t : ensTubes) {

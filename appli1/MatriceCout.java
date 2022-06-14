@@ -77,7 +77,7 @@ public class MatriceCout extends Reseau {
     }
 
     @Override
-    public void formatToFile() {
+    public void formatToFile(String nomFichier) {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(this.getClass().getSimpleName()).append("\n");
@@ -101,7 +101,7 @@ public class MatriceCout extends Reseau {
 
         try {
             PrintWriter printWriter = new PrintWriter(
-            new OutputStreamWriter(new FileOutputStream("matriceCout.data"), "UTF8"));
+            new OutputStreamWriter(new FileOutputStream(nomFichier + ".data"), "UTF8"));
             printWriter.println(stringBuilder.toString());
         
             printWriter.close();
@@ -112,21 +112,5 @@ public class MatriceCout extends Reseau {
 
     public int[][] getMatriceCout() {
         return this.matriceCout;
-    }
-
-    public static void main(String[] arg) {
-
-        List<Tube> lstTubes = new ArrayList<>();
-
-        List<Cuve> lstCuves = new ArrayList<>();
-
-        lstCuves.add(Cuve.creerCuve(500));
-        lstCuves.add(Cuve.creerCuve(300));
-        lstCuves.add(Cuve.creerCuve(800));
-
-        lstTubes.add(Tube.creerTube(lstCuves.get(1), lstCuves.get(0), 10));
-        lstTubes.add(Tube.creerTube(lstCuves.get(1), lstCuves.get(2), 8));
-
-        new MatriceCout(lstTubes).formatToFile();
     }
 }

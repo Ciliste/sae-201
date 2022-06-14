@@ -2,8 +2,8 @@ package appli2.ihm;
 
 import javax.swing.JFrame;
 
-import appli1.Controleur;
-import appli1.Reseau;
+import appli2.Controleur;
+import appli2.Reseau;
 
 import java.awt.event.*;
 import java.awt.Graphics;
