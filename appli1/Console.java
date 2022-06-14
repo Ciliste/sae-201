@@ -147,36 +147,9 @@ public class Console
             Console.ensTubes.add(tube);
         }
 
-        System.out.print("Comment voulez sauvegardez les données (liste/matrice/matrice optimisee) : ");
-        Console.typeSave = Clavier.lireString().toUpperCase();
-        while (Console.typeSave.indexOf("LISTE") == -1 && !Console.typeSave.equals("MATRICE") && Console.typeSave.indexOf("MATRICE OPTIMIS") == -1)
-        {
-            System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (liste/matrice/matrice optimisee)");
-
-            System.out.print("Comment voulez sauvegardez les données : ");
-            Console.typeSave = Clavier.lireString().toUpperCase();
-        }
-
-        if (Console.typeSave.indexOf("LISTE") != -1)
-        {
-            Console.reseauSave = new ListeAdjacence(Console.ensTubes);
-        }
-        else 
-        {
-            if (Console.typeSave.indexOf("MATRICE OPTIMIS") != -1)
-            {
-                Console.reseauSave = new MatriceOptimisee(Console.ensTubes);
-            }
-            else
-            {
-                if (Console.typeSave.indexOf("MATRICE") != -1)
-                {
-                    Console.reseauSave = new MatriceCout(Console.ensTubes);
-                }
-            }
-        }
 
 
+        // Demande de sauvegarde du réseau
         System.out.println("Voulez vous sauvegarder les données (oui/non) : ");
         String save = Clavier.lireString().toUpperCase();
         while (save.indexOf("OUI") == -1 && save.indexOf("NON") == -1)
@@ -188,10 +161,56 @@ public class Console
         }
 
 
+        if (save.indexOf("OUI") != -1)
+        {
+            System.out.print("Nom du fichier : ");
+            String nomFichier = Clavier.lireString();
+            while (!nomFichier.equals("") || nomFichier.indexOf(" ") != -1)
+            {
+                System.out.println("Erreur : nom de fichier invalide, veuillez saisie un nom de fichier sans espace");
 
-        System.out.println(Console.reseauSave.toString());
-        System.out.println("Sauvegarde des données réussie");
+                System.out.print("Nom du fichier : ");
+                nomFichier = Clavier.lireString();
+            }
 
+        
+
+            // Demande du MODE de sauvegarde du réseau
+            System.out.print("Comment voulez sauvegardez les données (liste/matrice/matrice optimisee) : ");
+            Console.typeSave = Clavier.lireString().toUpperCase();
+            while (Console.typeSave.indexOf("LISTE") == -1 && !Console.typeSave.equals("MATRICE") && Console.typeSave.indexOf("MATRICE OPTIMIS") == -1)
+            {
+                System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (liste/matrice/matrice optimisee)");
+
+                System.out.print("Comment voulez sauvegardez les données : ");
+                Console.typeSave = Clavier.lireString().toUpperCase();
+            }
+
+            if (Console.typeSave.indexOf("LISTE") != -1)
+            {
+                Console.reseauSave = new ListeAdjacence(Console.ensTubes);
+            }
+            else 
+            {
+                if (Console.typeSave.indexOf("MATRICE OPTIMIS") != -1)
+                {
+                    Console.reseauSave = new MatriceOptimisee(Console.ensTubes);
+                }
+                else
+                {
+                    if (Console.typeSave.indexOf("MATRICE") != -1)
+                    {
+                        Console.reseauSave = new MatriceCout(Console.ensTubes);
+                    }
+                }
+            }
+
+
+            Console.reseauSave.formatToFile(nomFichier);
+            System.out.println("Sauvegarde des données réussie");
+
+            System.out.println(Console.reseauSave.toString());
+        }
     }
 
 

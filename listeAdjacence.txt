@@ -1,5 +1,0 @@
-{
-Cuve C : 0.0/800L : [Cuve B-8]
-Cuve A : 0.0/500L : [Cuve B-10]
-Cuve B : 0.0/300L : [Cuve A-10, Cuve C-8]
-}
