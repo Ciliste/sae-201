@@ -13,13 +13,14 @@ import metier.Tube;
 
 
 
-public class MatriceOptimisee extends Reseau {
+public class MatriceOptimisee extends Reseau 
+{
 
     private int[][] matriceOpti;
     private List<Tube> ensTube;
 
-    public MatriceOptimisee(List<Tube> ensTube) {
-
+    public MatriceOptimisee(List<Tube> ensTube) 
+    {
         this.ensTube = ensTube;
 
         this.matriceOpti = new int[Cuve.nbCuve][Cuve.nbCuve];
@@ -28,30 +29,40 @@ public class MatriceOptimisee extends Reseau {
     }
 
     @Override
-    public void ajouterTube(Tube tube) {
-        if (this.ensTube.contains(tube))
-            return;
+    public void ajouterTube(Tube tube) 
+    {
+        if (this.ensTube.contains(tube)) return;
+
         ensTube.add(tube);
         this.creerMatrice();
     }
 
     @Override
-    public void supprimerTube(Tube tube) {
+    public void supprimerTube(Tube tube) 
+    {
         ensTube.remove(tube);
         this.creerMatrice();
     }
 
-    public void creerMatrice() {
+    public void creerMatrice()
+    {
 
-        for (int x = 0; x < Cuve.nbCuve; x++) {
-            for (int y = 0; y < Cuve.nbCuve; y++) {
+        for (int x = 0; x < Cuve.nbCuve; x++) 
+        {
+            for (int y = 0; y < Cuve.nbCuve; y++) 
+            {
 
-                for (Tube tube : this.ensTube) {
-                    if (tube.getCuveA().getIdentifiant() == 'A' + y && tube.getCuveB().getIdentifiant() == 'A' + x) {
+                for (Tube tube : this.ensTube) 
+                {
+                    if (tube.getCuveA().getIdentifiant() == 'A' + y && tube.getCuveB().getIdentifiant() == 'A' + x) 
+                    {
 
-                        if (tube.getCuveA().getIdentifiant() < tube.getCuveB().getIdentifiant()) {
+                        if (tube.getCuveA().getIdentifiant() < tube.getCuveB().getIdentifiant()) 
+                        {
                             matriceOpti[x][y] = tube.getSection();
-                        } else {
+                        } 
+                        else 
+                        {
                             matriceOpti[y][x] = tube.getSection();
                         }
                     }
@@ -61,16 +72,20 @@ public class MatriceOptimisee extends Reseau {
     }
 
     @Override
-    public List<Cuve> getEnsCuves() {
+    public List<Cuve> getEnsCuves() 
+    {
 
         List<Cuve> lstCuve = new ArrayList<Cuve>();
 
-        for (Tube tube : this.ensTube) {
+        for (Tube tube : this.ensTube) 
+        {
 
-            if (!lstCuve.contains(tube.getCuveA())) {
+            if (!lstCuve.contains(tube.getCuveA())) 
+            {
                 lstCuve.add(tube.getCuveA());
             }
-            if (!lstCuve.contains(tube.getCuveB())) {
+            if (!lstCuve.contains(tube.getCuveB())) 
+            {
                 lstCuve.add(tube.getCuveB());
             }
         }
@@ -78,46 +93,60 @@ public class MatriceOptimisee extends Reseau {
     }
 
     @Override
-    public List<Tube> getEnsTubes() {
+    public List<Tube> getEnsTubes() 
+    {
         return ensTube;
     }
 
     @Override
-    public void formatToFile() {
+    public void formatToFile() 
+    {
         StringBuilder stringBuilder = new StringBuilder(this.getClass().getSimpleName()).append("\n");
 
-        for( Cuve tmp : this.getEnsCuves()){
+        for( Cuve tmp : this.getEnsCuves())
+        {
             stringBuilder.append(tmp.toString()).append("\n");
         }
 
         stringBuilder.append("{\n");
 
-        for (int i = 1; i < this.matriceOpti.length; i++) {
+        for (int i = 1; i < this.matriceOpti.length; i++) 
+        {
+
             stringBuilder.append("(");
-            for (int j = 0; j < i; j++) {
+
+            for (int j = 0; j < i; j++) 
+            {
                 stringBuilder.append(String.format("%2d", this.matriceOpti[i][j])).append(", ");
             }
+
             stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
             stringBuilder.append("),\n");
         }
+
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-        
         stringBuilder.append("\n}");
 
-        try {
+        try 
+        {
             PrintWriter printWriter = new PrintWriter(
             new OutputStreamWriter(new FileOutputStream("matriceOptimisee.data"), "UTF8"));
+
             printWriter.println(stringBuilder.toString());
         
             printWriter.close();
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
         }
     }
 
-    public static MatriceOptimisee parse(String file) {
+    public static MatriceOptimisee parse(String file) 
+    {
         
-        try {
+        try 
+        {
             
             FileReader fileReader = new FileReader(file);
             Scanner sc = new Scanner(fileReader);
@@ -132,32 +161,40 @@ public class MatriceOptimisee extends Reseau {
 
             sc.nextLine();
 
-            while (sc.hasNextLine()){
+            while (sc.hasNextLine())
+            {
+
                 line = sc.nextLine();
 
                 if (line.contains("}")) break;
 
-                if (line.contains("{")) {
+                if (line.contains("{")) 
+                {
                     matrice = true;
                     line = sc.nextLine();
                 }
 
-                if (!matrice){
+                if (!matrice)
+                {
                     quantite = Integer.parseInt( line.split("/")[1].replace("L", "") );
                     lstCuves.add( Cuve.creerCuve(quantite) );
                 }
 
-                if (matrice){
+                if (matrice)
+                {
 
                     line = line.replace("(","").replace(")", "").replace(" ", "");
 
-                    for (int i=0; i < cpt; i++){
+                    for (int i=0; i < cpt; i++)
+                    {
                         quantite = Integer.parseInt( line.split(",")[i] );
                         
-                        if(quantite != 0){
+                        if(quantite != 0)
+                        {
                             lstTubes.add(Tube.creerTube( lstCuves.get(cpt), lstCuves.get(i), quantite));
                         }
                     } 
+
                     cpt++;
                 }
             }
@@ -166,18 +203,22 @@ public class MatriceOptimisee extends Reseau {
 
             return new MatriceOptimisee(lstTubes);
     
-        } catch(FileNotFoundException e){
+        }
+        catch(FileNotFoundException e)
+        {
                 e.printStackTrace();
         }
 
         return null;
     }
 
-    public int[][] getMatriceCout() {
+    public int[][] getMatriceCout() 
+    {
         return this.matriceOpti;
     }
 
-    public static void main(String[] arg) {
+    public static void main(String[] args) 
+    {
 
         List<Tube> lstTubes = new ArrayList<>();
 
