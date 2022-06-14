@@ -124,6 +124,10 @@ public class Cuve implements Comparable<Cuve>, Serializable {
         return this.contenu;
     }
 
+    public static char getCompteur() {
+        return (char) (Cuve.nbCuve + 'A');
+    }
+
     // toString()
     public String toString() {
 
