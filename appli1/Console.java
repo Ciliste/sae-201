@@ -10,13 +10,15 @@ import metier.Tube;
 
 public class Console
 {
+    private static List<Cuve> ensCuves = new ArrayList<Cuve>();
+    private static List<Tube> ensTubes = new ArrayList<Tube>();
+
+    // Constructeur
     private Console() {};
 
+    // Fabrique
     public static void affichageConsole()
     {
-        List<Cuve> ensCuves = new ArrayList<Cuve>();
-        List<Tube> ensTubes = new ArrayList<Tube>();
-
         // Demande du nombre de cuves
         System.out.println("Nombre de cuves : ");
         int nbCuve = Clavier.lire_int();
@@ -55,7 +57,7 @@ public class Console
             }
 
 
-            ensCuves.add(Cuve.creerCuve(capacite, contenu));
+            Console.ensCuves.add(Cuve.creerCuve(capacite, contenu));
         }
 
 
@@ -108,7 +110,7 @@ public class Console
 
             // Récupération des cuves en fonction des identifiant rentré par l'utilisateur
             Cuve cuve1 = null, cuve2 = null;
-            for (Cuve cuve : ensCuves)
+            for (Cuve cuve : Console.ensCuves)
             {
                 if (cuve.getIdentifiant() == idCuve1.charAt(0)) { cuve1 = cuve; }
                 if (cuve.getIdentifiant() == idCuve2.charAt(0)) { cuve2 = cuve; }
@@ -117,18 +119,24 @@ public class Console
             Tube tube = Tube.creerTube(cuve1, cuve2, section);
 
 
-            // Verification que le tube n'existe pas déja
-            boolean lienUnique = true;
-            for (Tube tubeInfor : ensTubes)
+            // Verification de l'unicité du tube
+            for (Tube tubeInfor : Console.ensTubes)
             {
-                if (tubeInfor.getCuveA() == tubeInfor.getCuveA() && tubeInfor.getCuveB() == tubeInfor.getCuveB() || tubeInfor.getCuveA() == tubeInfor.getCuveB() && tubeInfor.getCuveB() == tubeInfor.getCuveA())
+                if (tubeInfor.getCuveA() == tube.getCuveA() && tubeInfor.getCuveB() == tube.getCuveB() || tubeInfor.getCuveA() == tube.getCuveB() && tubeInfor.getCuveB() == tube.getCuveA())
                 {
-                    lienUnique = false;
+                    System.out.println("Erreur : tube invalide, ce tube existe déjà");
+                    i --;
+                }
+                else
+                {
+                    Console.ensTubes.add(tube);
                 }
             }
-
-            if (tube != null && lienUnique)
-                ensTubes.add(tube);
         }
     }
+
+
+    // getters
+    public static List<Cuve> getEnsCuves() { return Console.ensCuves; }
+    public static List<Tube> getEnsTubes() { return Console.ensTubes; }
 }
