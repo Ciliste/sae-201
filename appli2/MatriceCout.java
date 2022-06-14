@@ -118,13 +118,12 @@ public class MatriceCout extends Reseau {
 
     public static MatriceCout parse(String file) {
 
-        List<Tube> lstTubes = new ArrayList<>();
-
         try {
             
             FileReader fileReader = new FileReader(file);
             Scanner sc = new Scanner(fileReader);
             String line = "";
+            List<Tube> lstTubes = new ArrayList<>();
             List<Cuve> lstCuves = new ArrayList<>();
 
             int quantite;
@@ -139,7 +138,10 @@ public class MatriceCout extends Reseau {
 
                 if (line.contains("}")) break;
 
-                if (line.contains("{")) matrice = true;
+                if (line.contains("{")) {
+                    matrice = true;
+                    line = sc.nextLine();
+                }
 
                 if (!matrice){
                     quantite = Integer.parseInt( line.split("/")[1].replace("L", "") );
@@ -166,13 +168,15 @@ public class MatriceCout extends Reseau {
             }
     
             sc.close();
+
+            return new MatriceCout(lstTubes);
     
         }
         catch(FileNotFoundException e){
                 e.printStackTrace();
         };
 
-        return new MatriceCout(lstTubes);
+        return null;
     }
 
     public static void main(String[] arg) {
