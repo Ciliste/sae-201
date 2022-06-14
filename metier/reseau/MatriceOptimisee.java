@@ -6,10 +6,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+
 import metier.Cuve;
 import metier.Tube;
-
-
 
 public class MatriceOptimisee extends Reseau {
 
@@ -50,6 +50,11 @@ public class MatriceOptimisee extends Reseau {
         }
 
         return sRet;
+    }
+
+    public static Reseau deserialize(String s) {
+
+        return null;
     }
 
     public static void main(String[] args) {

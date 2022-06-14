@@ -46,6 +46,11 @@ public class MatriceCout extends Reseau {
         return sRet;
     }
 
+    public static Reseau deserialize(String s) {
+
+        return null;
+    }
+
     public static void main(String[] args) {
         
         Reseau reseau = new MatriceCout();

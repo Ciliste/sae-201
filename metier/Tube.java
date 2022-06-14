@@ -1,7 +1,5 @@
 package metier;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.BlockAction;
-
 public class Tube {
 
     public static final int SECTION_MIN = 2;
