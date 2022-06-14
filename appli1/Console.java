@@ -13,6 +13,8 @@ public class Console
     private static List<Cuve> ensCuves = new ArrayList<Cuve>();
     private static List<Tube> ensTubes = new ArrayList<Tube>();
 
+    private static String typeSave;
+
     // Constructeur
     private Console() {};
 
@@ -144,10 +146,38 @@ public class Console
 
             Console.ensTubes.add(tube);
         }
+
+        System.out.print("Comment voulez sauvegardez les données (liste/matrice/matrice optimise) : ");
+        Console.typeSave = Clavier.lireString().toUpperCase();
+        while (Console.typeSave.indexOf("LISTE") == -1 && !Console.typeSave.equals("MATRICE") && Console.typeSave.indexOf("MATRICE OPTIMIS") == -1)
+        {
+            System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (liste/matrice/matrice optimise)");
+
+            System.out.print("Comment voulez sauvegardez les données : ");
+            Console.typeSave = Clavier.lireString().toUpperCase();
+        }
+
+        if (Console.typeSave.indexOf("LISTE") != -1)
+        {
+            Console.typeSave = "LISTE";
+        }
+        else if (Console.typeSave.indexOf("MATRICE") != -1)
+        {
+            Console.typeSave = "MATRICE";
+        }
+        else if (Console.typeSave.indexOf("MATRICE OPTIMIS") != -1)
+        {
+            Console.typeSave = "MATRICE OPTIMISE";
+        }
+
+
     }
+
+
 
 
     // getters
     public static List<Cuve> getEnsCuves() { return Console.ensCuves; }
     public static List<Tube> getEnsTubes() { return Console.ensTubes; }
+    public static String getTypeSave() { return Console.typeSave; }
 }
