@@ -88,7 +88,7 @@ public class MatriceCout extends Reseau {
             stringBuilder.append(cuve.toString()).append("\n");
         }
 
-        stringBuilder.append("(\n");
+        stringBuilder.append("{\n");
 
         for (int i = 0; i < this.matriceCout.length; i++) {
             stringBuilder.append("(");
@@ -99,7 +99,7 @@ public class MatriceCout extends Reseau {
             stringBuilder.append("),\n");
         }
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-        stringBuilder.append("\n)");
+        stringBuilder.append("\n}");
 
         try {
             PrintWriter printWriter = new PrintWriter(
@@ -150,20 +150,20 @@ public class MatriceCout extends Reseau {
 
                 if (matrice){
 
-                    line.replace("(","").replace(")", "").replace(" ", "");
-
-                    for (int i=0; i<lstCuves.size(); i++){
+                    line = line.replace("(", "").replace(")", "").replace(" ", "");
+                    
+                    for (int i=0; i < lstCuves.size(); i++){
                         quantite = Integer.parseInt( line.split(",")[i] );
-                        
+                        System.out.println(cpt);
                         if(quantite != 0){
                             Tube tmpTube = Tube.creerTube( lstCuves.get(cpt), lstCuves.get(i), quantite);
 
-                            if(tmpTube == null){
+                            if(tmpTube != null && !Reseau.tubeExiste(lstTubes, tmpTube)){
                                 lstTubes.add(tmpTube);
                             }
                         }
-                        cpt++;
                     } 
+                    cpt++;
                 }
             }
     
@@ -174,7 +174,7 @@ public class MatriceCout extends Reseau {
         }
         catch(FileNotFoundException e){
                 e.printStackTrace();
-        };
+        }
 
         return null;
     }

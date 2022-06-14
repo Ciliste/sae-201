@@ -50,6 +50,16 @@ public abstract class Reseau {
 
     public abstract void formatToFile();
 
+    public static boolean tubeExiste(List<Tube> ensTubes, Tube tube) {
+        for (Tube t : ensTubes) {
+            if ((t.getCuveA().equals(tube.getCuveA()) && t.getCuveB().equals(tube.getCuveB())) || 
+            (t.getCuveA().equals(tube.getCuveB()) && t.getCuveB().equals(tube.getCuveA()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static Reseau parse(String file) {
         
         try {
@@ -69,9 +79,15 @@ public abstract class Reseau {
                 sc.close();
                 return MatriceCout.parse(file);
             }
+            case "MatriceOptimisee" :  {
+                sc.close();
+                return MatriceOptimisee.parse(file);
+            }
+            default : {
+                sc.close();
+                return null;
+            }
         }
-
-        sc.close();
 
         } catch(FileNotFoundException e){
             e.printStackTrace();
@@ -82,6 +98,8 @@ public abstract class Reseau {
     }
 
     public static void main(String[] args) {
-        Reseau.parse("listeAdjacence.data");
+        ListeAdjacence matriceOptimisee = (ListeAdjacence)Reseau.parse("listeAdjacence.data");
+        System.out.println("Tubes : " + matriceOptimisee.getEnsTubes());
+        System.out.println("Cuves : " + matriceOptimisee.getEnsCuves());
     }
 }

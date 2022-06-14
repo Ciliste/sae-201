@@ -90,7 +90,7 @@ public class MatriceOptimisee extends Reseau {
             stringBuilder.append(tmp.toString()).append("\n");
         }
 
-        stringBuilder.append("(\n");
+        stringBuilder.append("{\n");
 
         for (int i = 1; i < this.matriceOpti.length; i++) {
             stringBuilder.append("(");
@@ -102,7 +102,7 @@ public class MatriceOptimisee extends Reseau {
         }
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
         
-        stringBuilder.append("\n)");
+        stringBuilder.append("\n}");
 
         try {
             PrintWriter printWriter = new PrintWriter(
@@ -149,16 +149,16 @@ public class MatriceOptimisee extends Reseau {
 
                 if (matrice){
 
-                    line.replace("(","").replace(")", "").replace(" ", "");
+                    line = line.replace("(","").replace(")", "").replace(" ", "");
 
-                    for (int i=0; i<lstCuves.size(); i++){
+                    for (int i=0; i < cpt; i++){
                         quantite = Integer.parseInt( line.split(",")[i] );
                         
                         if(quantite != 0){
                             lstTubes.add(Tube.creerTube( lstCuves.get(cpt), lstCuves.get(i), quantite));
                         }
-                        cpt++;
                     } 
+                    cpt++;
                 }
             }
     
@@ -168,9 +168,7 @@ public class MatriceOptimisee extends Reseau {
     
         } catch(FileNotFoundException e){
                 e.printStackTrace();
-        };
-
-        
+        }
 
         return null;
     }

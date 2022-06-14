@@ -162,13 +162,20 @@ public class ListeAdjacence extends Reseau {
             }
 
             for (int i = 0; i < data.size(); i++) {
-               String[] links = data.get(i).split(":")[2].replace("[", "").replace("]", "").replace("Cuve ", "").replaceAll(" ", "").split(",");
-               for (String idCuve : links) {
-                   tubes.add(Tube.creerTube(cuves.get(i), cuves.get(idCuve.charAt(0) - 'A'), Integer.parseInt(idCuve.split("-")[1])));
-               }
+                String[] links = data.get(i).split(":")[2].replace("[", "").replace("]", "").replace("Cuve ", "").replaceAll(" ", "").split(",");
+                
+                for (String idCuve : links) {
+                    Tube tmpTube = Tube.creerTube(cuves.get(i), cuves.get(idCuve.charAt(0) - 'A'), Integer.parseInt(idCuve.split("-")[1]));
+                    
+                    if (tmpTube != null && !Reseau.tubeExiste(tubes, tmpTube)) {
+                        tubes.add(tmpTube);
+                    }
+                }
             }
     
             sc.close();
+
+            return new ListeAdjacence(tubes);
     
         } catch(FileNotFoundException e){
                 e.printStackTrace();
