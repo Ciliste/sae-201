@@ -14,44 +14,59 @@ public class Console
 
     public static void affichageConsole()
     {
-
         List<Cuve> ensCuves = new ArrayList<>();
         List<Tube> ensTubes = new ArrayList<>();
 
-        // Paramétrage des cuves
-        int nbCuve;
-        do
+        // Demande du nombre de cuves
+        System.out.println("Nombre de cuves : ");
+        int nbCuve = Clavier.lire_int();
+
+        while (nbCuve < 1 || nbCuve > 26)
         {
-            System.out.println("Nombre de cuves : ");
+            System.out.println("Erreur : nombre invalide, veuillez choisir un nombre entre 1 et 26");
+            System.out.print("Nombre de cuves : ");
             nbCuve = Clavier.lire_int();
-        }while (nbCuve < 1 || nbCuve > 26);
-
-        char identifiant = 'A';
-
-        for (int i = 0; i < nbCuve; i++)
-        {
-            System.out.format("Capacité de la Cuve %c : ", identifiant + i);
-
-            Cuve temp = Cuve.creerCuve(Clavier.lire_int());
-
-            if (temp == null)
-            {
-                System.out.println("Erreur : la capacité n'est pas dans la plage demandée");
-                i--;
-            }
-            else 
-            {
-                ensCuves.add(temp);
-            }
         }
 
-        // Paramétrage des tubes
-        int nbTube;
-        do
+
+        char identifiant = Cuve.getCompteur();
+        for (int i = 0; i < nbCuve; i++)
         {
-            System.out.println("Nombre de tubes : ");
+            // Demande de la capacité
+            System.out.format("Capacité de la Cuve %c : ", identifiant + i);
+            int capacite = Clavier.lire_int();
+            while (capacite < 200 || capacite > 1000)
+            {
+                System.out.println("Erreur : capacité invalide, veuillez choisir une capacité entre 200 et 1 000");
+
+                System.out.format("Capacité de la Cuve %c : ", identifiant + i);
+                capacite = Clavier.lire_int();
+            }
+
+            // Demande du contenu
+            System.out.format("Contenu de la Cuve %c : ", identifiant + i);
+            int contenu = Clavier.lire_int();
+            while (contenu < 0 || contenu > capacite)
+            {
+                System.out.println("Erreur : contenu invalide, veuillez choisir un contenu entre 0 et " + capacite);
+
+                System.out.format("Capacité de la Cuve %c : ", identifiant + i);
+                contenu = Clavier.lire_int();
+            }
+
+
+            ensCuves.add(Cuve.creerCuve(capacite, contenu));
+        }
+
+
+        // Demande du nombre de tube
+        System.out.print("Nombre de tubes : ");
+        int nbTube = Clavier.lire_int();
+        while (nbTube < 1 || nbTube > nbCuve * (nbCuve - 1) / 2);
+        {
+            System.out.print("Nombre de tubes : ");
             nbTube = Clavier.lire_int();
-        } while (nbTube < 1 || nbTube > nbCuve * (nbCuve - 1) / 2);
+        } 
 
 
         for (int i = 0; i < nbTube; i++)
