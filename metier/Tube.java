@@ -78,6 +78,10 @@ public class Tube {
 
         return transfert;
     }
+    public boolean contient(Cuve c)
+    {
+    	return this.cuveA == c || this.cuveB ==c;
+    }
 
     public Cuve getCuveA() {
         return this.cuveA;

@@ -16,31 +16,37 @@ import metier.Tube;
 
 
 
-public class ListeAdjacence extends Reseau {
+public class ListeAdjacence extends Reseau 
+{
 
     private Map<Cuve, List<Cuve>> lstAdjacence;
     private List<Tube> ensTubes;
 
-    public ListeAdjacence(List<Tube> ensTubes) {
-
+    public ListeAdjacence(List<Tube> ensTubes) 
+    {
         this.lstAdjacence = new TreeMap<>();
         this.ensTubes = ensTubes;
 
         this.construireAdjacence();
-
     }
 
-    private List<Cuve> getCuveRelie(Cuve cuve) {
+    private List<Cuve> getCuveRelie(Cuve cuve) 
+    {
         List<Cuve> lstCuves = new ArrayList<>();
 
-        for (Tube tube : this.ensTubes) {
-            if (tube.getCuveA().equals(cuve)) {
-                if (!lstCuves.contains(cuve)) {
+        for (Tube tube : this.ensTubes) 
+        {
+            if (tube.getCuveA().equals(cuve)) 
+            {
+                if (!lstCuves.contains(cuve)) 
+                {
                     lstCuves.add(tube.getCuveB());
                 }
             }
-            if (tube.getCuveB().equals(cuve)) {
-                if (!lstCuves.contains(cuve)) {
+            if (tube.getCuveB().equals(cuve)) 
+            {
+                if (!lstCuves.contains(cuve)) 
+                {
                     lstCuves.add(tube.getCuveA());
                 }
             }
@@ -50,11 +56,12 @@ public class ListeAdjacence extends Reseau {
     }
 
     @Override
-    public void ajouterTube(Tube tube) {
+    public void ajouterTube(Tube tube) 
+    {
 
         // Verification et ajout du tube dans la liste
-        if (!this.lstAdjacence.get(tube.getCuveB()).contains(tube.getCuveA())) {
-
+        if (!this.lstAdjacence.get(tube.getCuveB()).contains(tube.getCuveA())) 
+        {
             this.ensTubes.add(tube);
             this.construireAdjacence();
         }
@@ -62,23 +69,26 @@ public class ListeAdjacence extends Reseau {
     }
 
     @Override
-    public void supprimerTube(Tube tube) {
-
+    public void supprimerTube(Tube tube) 
+    {
         // Suppression du tube
         this.ensTubes.remove(tube);
         this.construireAdjacence();
     }
 
     @Override
-    public List<Cuve> getEnsCuves() {
-
+    public List<Cuve> getEnsCuves() 
+    {
         List<Cuve> lstCuve = new ArrayList<>();
 
-        for (Tube tube : this.ensTubes) {
-            if (!lstCuve.contains(tube.getCuveA())) {
+        for (Tube tube : this.ensTubes) 
+        {
+            if (!lstCuve.contains(tube.getCuveA()))
+            {
                 lstCuve.add(tube.getCuveA());
             }
-            if (!lstCuve.contains(tube.getCuveB())) {
+            if (!lstCuve.contains(tube.getCuveB())) 
+            {
                 lstCuve.add(tube.getCuveB());
             }
         }
@@ -87,27 +97,33 @@ public class ListeAdjacence extends Reseau {
     }
 
     @Override
-    public List<Tube> getEnsTubes() {
-
+    public List<Tube> getEnsTubes() 
+    {
         return this.ensTubes;
     }
 
     @Override
-    public void formatToFile() {
+    public void formatToFile() 
+    {
         StringBuilder stringBuilder = new StringBuilder(getClass().getSimpleName()).append("\n{\n");
 
         // Construction de la chaine de caractères
-        for (Cuve key : this.lstAdjacence.keySet()) {
+        for (Cuve key : this.lstAdjacence.keySet()) 
+        {
             stringBuilder.append(key + " : [");
 
-            for (Cuve cuve : this.lstAdjacence.get(key)) {
-                for (Tube tube : this.ensTubes) {
+            for (Cuve cuve : this.lstAdjacence.get(key)) 
+            {
+                for (Tube tube : this.ensTubes) 
+                {
                     if (tube.getCuveA().equals(cuve) && tube.getCuveB().equals(key) || 
-                    tube.getCuveA().equals(key) && tube.getCuveB().equals(cuve)) {
+                    tube.getCuveA().equals(key) && tube.getCuveB().equals(cuve)) 
+                    {
                         stringBuilder.append("Cuve " + cuve.getIdentifiant() + "-" + tube.getSection() + ", ");
                     }
                 }
             }
+
             stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
             stringBuilder.append("]\n");
         }
@@ -116,30 +132,39 @@ public class ListeAdjacence extends Reseau {
         stringBuilder.append("\n}");
 
         // Ecriture dans le fichier 'listeAdjacence.txt'
-        try {
+        try 
+        {
             PrintWriter printWriter = new PrintWriter(
             new OutputStreamWriter(new FileOutputStream("listeAdjacence.data"), "UTF8"));
+
             printWriter.println(stringBuilder.toString());
         
             printWriter.close();
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
         }
     }
 
-    public Map<Cuve, List<Cuve>> getLstAdjacence() {
+    public Map<Cuve, List<Cuve>> getLstAdjacence() 
+    {
         return this.lstAdjacence;
     }
 
-    public void construireAdjacence() {
+    public void construireAdjacence()
+    {
 
-        for (Cuve cuve : this.getTriEnsCuves()) {
+        for (Cuve cuve : this.getTriEnsCuves()) 
+        {
             this.lstAdjacence.put(cuve, this.getCuveRelie(cuve));
         }
     }
 
-    public static ListeAdjacence parse(String file) {
-        try {
+    public static ListeAdjacence parse(String file)
+    {
+        try 
+        {
             
             FileReader fileReader = new FileReader(file);
             Scanner sc = new Scanner(fileReader);
@@ -151,23 +176,36 @@ public class ListeAdjacence extends Reseau {
             sc.nextLine();
             sc.nextLine();
 
-            while (sc.hasNextLine()){
+            while (sc.hasNextLine())
+            {
                 line = sc.nextLine();
+
                 if (line.contains("}")) break;
+
                 data.add(line);
             }
 
-            for (String d : data) {
+            for (String d : data) 
+            {
                 cuves.add(Cuve.creerCuve(Integer.parseInt(d.split(":")[1].replace("L ", "").split("/")[1])));
             }
 
-            for (int i = 0; i < data.size(); i++) {
-                String[] links = data.get(i).split(":")[2].replace("[", "").replace("]", "").replace("Cuve ", "").replaceAll(" ", "").split(",");
+            for (int i = 0; i < data.size(); i++) 
+            {
+                String[] links = data.get(i)
+                                     .split(":")[2]
+                                     .replace("[", "")
+                                     .replace("]", "")
+                                     .replace("Cuve ", "")
+                                     .replaceAll(" ", "")
+                                     .split(",");
                 
-                for (String idCuve : links) {
+                for (String idCuve : links) 
+                {
                     Tube tmpTube = Tube.creerTube(cuves.get(i), cuves.get(idCuve.charAt(0) - 'A'), Integer.parseInt(idCuve.split("-")[1]));
                     
-                    if (tmpTube != null && !Reseau.tubeExiste(tubes, tmpTube)) {
+                    if (tmpTube != null && !Reseau.tubeExiste(tubes, tmpTube)) 
+                    {
                         tubes.add(tmpTube);
                     }
                 }
@@ -176,18 +214,17 @@ public class ListeAdjacence extends Reseau {
             sc.close();
 
             return new ListeAdjacence(tubes);
-    
-        } catch(FileNotFoundException e){
+            } 
+            catch(FileNotFoundException e)
+            {
                 e.printStackTrace();
-        };
-
-        
+            };
 
         return null;
     }
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) 
+    {
         List<Tube> lstTubes = new ArrayList<>();
 
         List<Cuve> lstCuves = new ArrayList<>();
