@@ -65,7 +65,6 @@ public class Panel extends JPanel {
             g.fillOval(x, y, width, height);
 
             
-            
 
             cpt ++;
         }
