@@ -176,6 +176,19 @@ public class Console
             }
         }
 
+
+        System.out.println("Voulez vous sauvegarder les données (oui/non) : ");
+        String save = Clavier.lireString().toUpperCase();
+        while (save.indexOf("OUI") == -1 && save.indexOf("NON") == -1)
+        {
+            System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (oui/non)");
+
+            System.out.print("Voulez vous sauvegarder les données (oui/non) : ");
+            save = Clavier.lireString().toUpperCase();
+        }
+
+
+
         System.out.println(Console.reseauSave.toString());
         System.out.println("Sauvegarde des données réussie");
 
