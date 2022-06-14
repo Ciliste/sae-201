@@ -1,10 +1,13 @@
-package appli1;
+package appli2;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import metier.Cuve;
 import metier.Tube;
 
@@ -87,7 +90,7 @@ public class MatriceOptimisee extends Reseau {
             stringBuilder.append(tmp.toString()).append("\n");
         }
 
-        stringBuilder.append("{\n");
+        stringBuilder.append("(\n");
 
         for (int i = 1; i < this.matriceOpti.length; i++) {
             stringBuilder.append("(");
@@ -99,7 +102,7 @@ public class MatriceOptimisee extends Reseau {
         }
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
         
-        stringBuilder.append("\n}");
+        stringBuilder.append("\n)");
 
         try {
             PrintWriter printWriter = new PrintWriter(
@@ -110,6 +113,52 @@ public class MatriceOptimisee extends Reseau {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static MatriceOptimisee parse(String file) {
+        try {
+            
+            FileReader fileReader = new FileReader(file);
+            Scanner sc = new Scanner(fileReader);
+            String line = "";
+            boolean canRead = false;
+            List<String> data = new ArrayList<>();
+            List<Tube> lstTube = new ArrayList<Tube>();
+
+            while (sc.hasNextLine()){
+                line = sc.nextLine();
+
+                if (line.contains("}")) break;
+                if (canRead) {
+                    data.add(line);
+                }
+                if (line.contains("{")) {
+                    canRead = true;
+                }
+            }
+    
+            sc.close();
+
+            int[] ensCap;
+            String[] ensNombre;
+
+            for (String d : data) {
+                d = d.replace("(","");
+                d = d.replace(")","");
+                ensNombre = d.split(",");
+                lstTube.add(Tube.creerTube(Cuve.creerCuve((ensCap[0]), Cuve.creerCuve(ensCap[0]), ensNombre[0])));
+                
+            }
+
+            return(new MatriceOptimisee(lstTube));
+    
+        } catch(FileNotFoundException e){
+                e.printStackTrace();
+        };
+
+        
+
+        return null;
     }
 
     public int[][] getMatriceCout() {

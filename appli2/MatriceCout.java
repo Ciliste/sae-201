@@ -1,13 +1,15 @@
-package appli1;
+package appli2;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import metier.Cuve;
 import metier.Tube;
-
 
 
 public class MatriceCout extends Reseau {
@@ -82,11 +84,11 @@ public class MatriceCout extends Reseau {
 
         stringBuilder.append(this.getClass().getSimpleName()).append("\n");
         
-        for (Cuve cuve : this.getEnsCuves()) {
+        for (Cuve cuve : this.getTriEnsCuves()) {
             stringBuilder.append(cuve.toString()).append("\n");
         }
 
-        stringBuilder.append("{\n");
+        stringBuilder.append("(\n");
 
         for (int i = 0; i < this.matriceCout.length; i++) {
             stringBuilder.append("(");
@@ -97,7 +99,7 @@ public class MatriceCout extends Reseau {
             stringBuilder.append("),\n");
         }
         stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-        stringBuilder.append("\n}");
+        stringBuilder.append("\n)");
 
         try {
             PrintWriter printWriter = new PrintWriter(
@@ -112,6 +114,65 @@ public class MatriceCout extends Reseau {
 
     public int[][] getMatriceCout() {
         return this.matriceCout;
+    }
+
+    public static MatriceCout parse(String file) {
+
+        List<Tube> lstTubes = new ArrayList<>();
+
+        try {
+            
+            FileReader fileReader = new FileReader(file);
+            Scanner sc = new Scanner(fileReader);
+            String line = "";
+            List<Cuve> lstCuves = new ArrayList<>();
+
+            int quantite;
+            boolean matrice = false;
+            int cpt = 0;
+
+
+            sc.nextLine();
+
+            while (sc.hasNextLine()){
+                line = sc.nextLine();
+
+                if (line.contains("}")) break;
+
+                if (line.contains("{")) matrice = true;
+
+                if (!matrice){
+                    quantite = Integer.parseInt( line.split("/")[1].replace("L", "") );
+                    lstCuves.add( Cuve.creerCuve(quantite) );
+                }
+
+                if (matrice){
+
+                    line.replace("(","").replace(")", "").replace(" ", "");
+
+                    for (int i=0; i<lstCuves.size(); i++){
+                        quantite = Integer.parseInt( line.split(",")[i] );
+                        
+                        if(quantite != 0){
+                            Tube tmpTube = Tube.creerTube( lstCuves.get(cpt), lstCuves.get(i), quantite);
+
+                            if(tmpTube == null){
+                                lstTubes.add(tmpTube);
+                            }
+                        }
+                        cpt++;
+                    } 
+                }
+            }
+    
+            sc.close();
+    
+        }
+        catch(FileNotFoundException e){
+                e.printStackTrace();
+        };
+
+        return new MatriceCout(lstTubes);
     }
 
     public static void main(String[] arg) {
