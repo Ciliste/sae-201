@@ -14,8 +14,8 @@ public class Console
 
     public static void affichageConsole()
     {
-        List<Cuve> ensCuves = new ArrayList<>();
-        List<Tube> ensTubes = new ArrayList<>();
+        List<Cuve> ensCuves = new ArrayList<Cuve>();
+        List<Tube> ensTubes = new ArrayList<Tube>();
 
         // Demande du nombre de cuves
         System.out.println("Nombre de cuves : ");
@@ -62,8 +62,10 @@ public class Console
         // Demande du nombre de tube
         System.out.print("Nombre de tubes : ");
         int nbTube = Clavier.lire_int();
-        while (nbTube < 1 || nbTube > nbCuve * (nbCuve - 1) / 2);
+        while (nbTube < 0 || nbTube > nbCuve * (nbCuve - 1) / 2);
         {
+            System.out.println("Erreur : nombre invalide, veuillez choisir un nombre entre 0 et " + nbCuve * (nbCuve - 1) / 2);
+
             System.out.print("Nombre de tubes : ");
             nbTube = Clavier.lire_int();
         } 
@@ -71,50 +73,62 @@ public class Console
 
         for (int i = 0; i < nbTube; i++)
         {
+            // Demande de la section des tubes
             System.out.format("Section du Tube %d : ", i + 1);
             int section = Clavier.lire_int();
-
-            System.out.format("Identifiants cuves à relier %d : ", i + 1);
-            char idCuveA = Clavier.lire_char();
-            char idCuveB = Clavier.lire_char();
-
-            if ((int) (idCuveA - 'A') <= nbCuve && (int) ('A' - idCuveB) <= nbCuve && idCuveA != idCuveB)
+            while (section < 2 || section > 10)
             {
-                System.out.println("Les identifiants ne sont pas dans la plague demandée");
-                i--;
+                System.out.println("Erreur : section invalide, veuillez choisir une section entre 2 et 10");
+
+                System.out.format("Section du Tube %d : ", i + 1);
+                section = Clavier.lire_int();
             }
-            else
+
+            // Demande de l'id de la première cuve qui sera relier au tuyau
+            System.out.format("Identifiants de la première cuves à relier au tube %d : ", i + 1);
+            String idCuve1 = ("" + Clavier.lire_char()).toUpperCase();
+            while (idCuve1.charAt(0) < 'A' || idCuve1.charAt(0) > 'A' + nbCuve)
             {
+                System.out.println("Erreur : identifiant invalide, veuillez choisir un identifiant entre 'A' et " + ('A' + nbCuve));
 
-                // Recupération des cuves via l'identifiant
-                Cuve cuveA = null;
-                Cuve cuveB = null;
-
-                for (Cuve cuveTmp : ensCuves)
-                {
-                    if (cuveTmp.getIdentifiant() == idCuveA)
-                        cuveA = cuveTmp;
-
-                    if (cuveTmp.getIdentifiant() == idCuveB)
-                        cuveB = cuveTmp;
-                }
-
-                Tube tmp = Tube.creerTube(cuveA, cuveB, section);
-
-                // Verification que le tube n'existe pas déja
-                boolean lienUnique = true;
-
-                for (Tube tubeTmp : ensTubes)
-                {
-                    if (tmp.getCuveA() == tubeTmp.getCuveA() && tmp.getCuveB() == tubeTmp.getCuveB() || tmp.getCuveA() == tubeTmp.getCuveB() && tmp.getCuveB() == tubeTmp.getCuveA())
-                    {
-                        lienUnique = false;
-                    }
-                }
-
-                if (tmp != null && lienUnique)
-                ensTubes.add(tmp);
+                System.out.format("Identifiants de la première cuves à relier au tube %d : ", i + 1);
+                idCuve1 = ("" + Clavier.lire_char()).toUpperCase();
             }
+
+            // Demande de l'id de la deucième cuve qui sera relier au tuyau
+            System.out.format("Identifiants de la deuxième cuves à relier au tube %d : ", i + 1);
+            String idCuve2 = ("" + Clavier.lire_char()).toUpperCase();
+            while (idCuve2.charAt(0) < 'A' || idCuve2.charAt(0) > 'A' + nbCuve || idCuve2 == idCuve1)
+            {
+                System.out.println("Erreur : identifiant invalide, veuillez choisir un identifiant entre 'A' et " + ('A' + nbCuve) + " et différent de '" + idCuve1 + "'");
+
+                System.out.format("Identifiants de la deuxième cuves à relier au tube %d : ", i + 1);
+                idCuve2 = ("" + Clavier.lire_char()).toUpperCase();
+            }
+
+            // Récupération des cuves en fonction des identifiant rentré par l'utilisateur
+            Cuve cuve1 = null, cuve2 = null;
+            for (Cuve cuve : ensCuves)
+            {
+                if (cuve.getIdentifiant() == idCuve1.charAt(0)) { cuve1 = cuve; }
+                if (cuve.getIdentifiant() == idCuve2.charAt(0)) { cuve2 = cuve; }
+            }
+
+            Tube tube = Tube.creerTube(cuve1, cuve2, section);
+
+
+            // Verification que le tube n'existe pas déja
+            boolean lienUnique = true;
+            for (Tube tubeInfor : ensTubes)
+            {
+                if (tubeInfor.getCuveA() == tubeInfor.getCuveA() && tubeInfor.getCuveB() == tubeInfor.getCuveB() || tubeInfor.getCuveA() == tubeInfor.getCuveB() && tubeInfor.getCuveB() == tubeInfor.getCuveA())
+                {
+                    lienUnique = false;
+                }
+            }
+
+            if (tube != null && lienUnique)
+                ensTubes.add(tube);
         }
     }
 }
