@@ -1,3 +1,8 @@
-./metier/Position.java
 ./metier/Cuve.java
+./metier/Position.java
 ./metier/Tube.java
+
+./metier/reseau/ListeAdjacence.java
+./metier/reseau/MatriceCout.java
+./metier/reseau/MatriceOptimisee.java
+./metier/reseau/Reseau.java
