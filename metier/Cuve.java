@@ -15,6 +15,9 @@ public class Cuve implements Comparable<Cuve> {
         private String lib;
 
         private PositionInfo(int valeur, String lib) {
+
+            this.valeur = valeur;
+            this.lib = lib;
         }
 
         public int getValeur() {
@@ -25,6 +28,26 @@ public class Cuve implements Comparable<Cuve> {
         public String getLib() {
 
             return this.lib;
+        }
+
+        public static PositionInfo getPositionInfo(String lib) {
+
+            if (lib.equals(HAUT.getLib())) {
+
+                return HAUT;
+            } else if (lib.equals(DROITE.getLib())) {
+
+                return DROITE;
+            } else if (lib.equals(BAS.getLib())) {
+
+                return BAS;
+            } else if (lib.equals(GAUCHE.getLib())) {
+
+                return GAUCHE;
+            } else {
+
+                return null;
+            }
         }
     }
 
@@ -75,6 +98,22 @@ public class Cuve implements Comparable<Cuve> {
         return new Cuve(capacite, contenu, position, posInfo);
     }
 
+    public static Cuve deserialize(String str) {
+
+        str = str.replace("(", "").replace(")", "").replace(" ", "");
+
+        return new Cuve(
+            str.charAt(0),
+            Integer.parseInt(str.split("/")[1]),
+            Double.parseDouble(str.split("/")[2]),
+            new Position(
+                Integer.parseInt(str.split("/")[3]), 
+                Integer.parseInt(str.split("/")[4])
+            ),
+            PositionInfo.getPositionInfo(str.split("/")[5]).getValeur()
+        );
+    }
+
     // Constructeur
     private Cuve(int capacite) {
         this(capacite, 0);
@@ -88,6 +127,22 @@ public class Cuve implements Comparable<Cuve> {
     private Cuve(int capacite, double contenu, Position position, int posInfo) {
 
         this.identifiant = (char) ('A' + Cuve.nbCuve++);
+        this.capacite = capacite;
+        this.contenu = contenu;
+        this.position = Position.copier(position);
+        this.posInfo = posInfo;
+    }
+
+    // Utilisé uniquement pour la Déserialisation
+    private Cuve(char id, int capacite, double contenu, Position position, int posInfo) {
+
+        if (id < 'A' || id > 'Z') {
+            throw new IllegalArgumentException("Identifiant de cuve invalide pendant la déserialisation");
+        }
+        
+        if ((int) (id - 'A') + 1 > Cuve.nbCuve) Cuve.nbCuve = (int) (id - 'A') + 1;
+        
+        this.identifiant = id;
         this.capacite = capacite;
         this.contenu = contenu;
         this.position = Position.copier(position);

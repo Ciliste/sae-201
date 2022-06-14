@@ -1,15 +1,15 @@
-package appli1;
-
-import metier.Cuve;
+package metier.reseau;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.Serializable;
 
+import metier.Cuve;
 import metier.Tube;
+
+import java.io.Serializable;
 
 public abstract class Reseau implements Serializable {
 

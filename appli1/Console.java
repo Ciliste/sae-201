@@ -6,6 +6,10 @@ import java.util.List;
 import iut.algo.Clavier;
 import metier.Cuve;
 import metier.Tube;
+import metier.reseau.ListeAdjacence;
+import metier.reseau.MatriceCout;
+import metier.reseau.MatriceOptimisee;
+import metier.reseau.Reseau;
 
 
 public class Console
