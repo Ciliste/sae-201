@@ -90,9 +90,9 @@ public class Console
             // Demande de l'id de la première cuve qui sera relier au tuyau
             System.out.format("Identifiants de la première cuves à relier au tube %d : ", i + 1);
             String idCuve1 = ("" + Clavier.lire_char()).toUpperCase();
-            while (idCuve1.charAt(0) < 'A' || idCuve1.charAt(0) > 'A' + nbCuve)
+            while (idCuve1.charAt(0) < 'A' || idCuve1.charAt(0) > (char)('A' + nbCuve-1))
             {
-                System.out.println("Erreur : identifiant invalide, veuillez choisir un identifiant entre 'A' et '" + (char)('A' + nbCuve) + "'");
+                System.out.println("Erreur : identifiant invalide, veuillez choisir un identifiant entre 'A' et '" + (char)('A' + nbCuve-1) + "'");
 
                 System.out.format("Identifiants de la première cuves à relier au tube %d : ", i + 1);
                 idCuve1 = ("" + Clavier.lire_char()).toUpperCase();
@@ -101,9 +101,9 @@ public class Console
             // Demande de l'id de la deucième cuve qui sera relier au tuyau
             System.out.format("Identifiants de la deuxième cuves à relier au tube %d : ", i + 1);
             String idCuve2 = ("" + Clavier.lire_char()).toUpperCase();
-            while (idCuve2.charAt(0) < 'A' || idCuve2.charAt(0) > 'A' + nbCuve || idCuve2 == idCuve1)
+            while (idCuve2.charAt(0) < 'A' || idCuve2.charAt(0) > (char)('A' + nbCuve-1) || idCuve2.equals(idCuve1))
             {
-                System.out.println("Erreur : identifiant invalide, veuillez choisir un identifiant entre 'A' et '" + (char)('A' + nbCuve) + "' et différent de '" + idCuve1 + "'");
+                System.out.println("Erreur : identifiant invalide, veuillez choisir un identifiant entre 'A' et '" + (char)('A' + nbCuve-1) + "' et différent de '" + idCuve1 + "'");
 
                 System.out.format("Identifiants de la deuxième cuves à relier au tube %d : ", i + 1);
                 idCuve2 = ("" + Clavier.lire_char()).toUpperCase();
