@@ -5,14 +5,17 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 
+import appli1.ihm.editeur.cuve.EditeurCapacite;
+import appli1.ihm.editeur.cuve.EditeurContenu;
+import appli1.ihm.editeur.cuve.EditeurPosInfo;
 import appli1.ihm.model.*;
 
 public class CuveTable extends JTable {
 
-    public CuveTable(AbstractTableModel model) {
+    public CuveTable(CuveModel model) {
 
         super(model);
-        this.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer());
+        this.getTableHeader().setReorderingAllowed(false);
     }
 
     @Override

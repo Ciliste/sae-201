@@ -8,13 +8,15 @@ import java.awt.Component;
 import java.awt.event.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import appli1.Controleur;
-import appli1.ihm.textfield.AbstractInputTextField;
 import appli1.ihm.model.CuveModel;
+import appli1.ihm.model.TubeModel;
 import appli1.ihm.table.CuveTable;
-import appli1.ihm.textfield.*;
+import appli1.ihm.table.TubeTable;
+import metier.Cuve;
 
 public class PanelCreation extends JPanel implements ActionListener, FocusListener {
     
@@ -26,10 +28,14 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
 
     private CuveModel modelCuve;
     private JTable tblCuves;
+    private TubeModel modelTube;
+    private JTable tblTubes;
 
     private JTextField txtNbCuves;
     private String oldNbCuveValue;
     private JTextField txtNbTubes;
+    private JPanel panelTube;
+    private String oldNbTubeValue;
 
     public PanelCreation(Controleur ctrl, FrameCreation frame, String data) {
 
@@ -42,10 +48,12 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
         if (data == null) {
 
             this.modelCuve = new CuveModel();
+            this.modelTube = new TubeModel();
         } 
         else {}
 
         this.tblCuves = new CuveTable(this.modelCuve);
+        this.tblTubes = new TubeTable(this.modelTube, this);
 
         this.txtNbCuves = new JTextField(5);
         this.txtNbTubes = new JTextField(5);
@@ -63,16 +71,26 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
         panelInputCuve.add(this.txtNbCuves);
         panelCuve.add(panelInputCuve, BorderLayout.NORTH);
         panelCuve.add(new JScrollPane(this.tblCuves), BorderLayout.CENTER);
-        this.add(panelCuve, BorderLayout.NORTH);
+        this.add(panelCuve, BorderLayout.WEST);
 
-        JPanel panelTube = new JPanel();
-        panelTube.setLayout(new BorderLayout());
+        this.panelTube = new JPanel();
+        this.panelTube.setLayout(new BorderLayout());
         JPanel panelInputTube = new JPanel();
         panelInputTube.add(new JLabel("Nombre de tube : "));
         panelInputTube.add(this.txtNbTubes);
-        panelTube.add(panelInputTube, BorderLayout.NORTH);
-        // panelTube.add(new JScrollPane(new TubeTable(this.modelTube)), BorderLayout.CENTER);
-        this.add(panelTube, BorderLayout.SOUTH);
+        this.panelTube.add(panelInputTube, BorderLayout.NORTH);
+        this.panelTube.add(new JScrollPane(this.tblTubes), BorderLayout.CENTER);
+        this.add(this.panelTube, BorderLayout.EAST);
+
+        if (data == null) {
+
+            this.txtNbTubes.setEnabled(false);
+        }
+    }
+
+    public List<Character> getIds() {
+
+        return this.modelCuve.getIds();
     }
 
     public void actionPerformed(ActionEvent event) {
@@ -84,7 +102,7 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
                 Object[][] temp = new Object[Integer.parseInt(this.txtNbCuves.getText())][4];
                 for (int i = 0; i < temp.length; i++) {
 
-                    temp[i] = new Object[] { (char) ('A' + i), "", "", "" };
+                    temp[i] = new Object[] { (char) ('A' + i), Cuve.CAPACITE_MIN, 0, "HAUT" };
                     try {
 
                         if (this.modelCuve.getValueAt(i, 0) != null) {
@@ -94,13 +112,22 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
                             temp[i][3] = this.modelCuve.getValueAt(i, 3);
                         }
                     } 
-                    finally {}
+                    catch (Exception err) {}
                 }
 
                 this.modelCuve = new CuveModel(temp);
                 
                 this.modelCuve.setEditable(true);
                 this.tblCuves.setModel(this.modelCuve);
+
+                if (Integer.parseInt(this.txtNbCuves.getText()) > 1) {
+
+                    this.txtNbTubes.setEnabled(true);
+                } 
+                else {
+
+                    this.txtNbTubes.setEnabled(false);
+                }
 
                 this.oldNbCuveValue = this.txtNbCuves.getText();
             } 
@@ -110,6 +137,60 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
                 if (this.oldNbCuveValue != null) {
 
                     this.txtNbCuves.setText(this.oldNbCuveValue);
+                }
+                else {
+
+                    this.txtNbCuves.setText("");
+                }
+                //TODO: Fenêtre d'erreur
+            }
+        }
+        if (event.getSource() == this.txtNbTubes) {
+
+            try {
+                
+                int nbTube = Integer.parseInt(this.txtNbTubes.getText());
+
+                if (nbTube > (this.tblCuves.getRowCount() * (this.tblCuves.getRowCount() - 1)) / 2) {
+
+                    nbTube = this.tblCuves.getRowCount() * (this.tblCuves.getRowCount() - 1) / 2;
+                    this.txtNbTubes.setText(Integer.toString(nbTube));
+                    this.modelTube.setEditable(true);
+                    // TODO: Fenêtre d'erreur
+                }
+
+                Object[][] temp = new Object[nbTube][4];
+                for (int i = 0; i < temp.length; i++) {
+
+                    temp[i] = new Object[] { "", "", 2 };
+                    try {
+
+                        if (this.modelTube.getValueAt(i, 0) != null) {
+
+                            temp[i][0] = this.modelTube.getValueAt(i, 0);
+                            temp[i][1] = this.modelTube.getValueAt(i, 1);
+                            temp[i][2] = this.modelTube.getValueAt(i, 2);
+                        }
+                    } 
+                    finally {}
+                }
+
+                this.modelTube = new TubeModel(temp);
+                
+                this.modelTube.setEditable(true);
+                this.tblTubes.setModel(this.modelTube);
+
+                this.oldNbTubeValue = this.txtNbTubes.getText();
+            } 
+            catch (Exception err) {
+
+                if (this.oldNbTubeValue != null) {
+
+                    this.txtNbTubes.setText(this.oldNbTubeValue);
+                }
+                else {
+
+                    this.txtNbCuves.setText("");
                 }
                 //TODO: Fenêtre d'erreur
             }
@@ -123,6 +204,10 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
         if (event.getSource() == this.txtNbCuves) {
 
             this.txtNbCuves.setText(this.oldNbCuveValue);
+        }
+        if (event.getSource() == this.txtNbTubes) {
+
+            this.txtNbTubes.setText(this.oldNbTubeValue);
         }
     }
 }

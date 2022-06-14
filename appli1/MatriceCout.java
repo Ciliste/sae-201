@@ -8,109 +8,62 @@ import java.util.List;
 import metier.Cuve;
 import metier.Tube;
 
-
-
 public class MatriceCout extends Reseau {
 
-    private int[][] matriceCout;
-    private List<Tube> ensTube;
+    public MatriceCout() {
 
-    public MatriceCout(List<Tube> ensTube) {
-
-        this.ensTube = ensTube;
-
-        this.matriceCout = new int[Cuve.nbCuve][Cuve.nbCuve];
-
-        this.creerMatrice();
+        super();
     }
 
-    @Override
-    public void ajouterTube(Tube tube) {
-        if (this.ensTube.contains(tube))
-            return;
-        ensTube.add(tube);
-        this.creerMatrice();
-    }
+    public String serialize() {
 
-    @Override
-    public void supprimerTube(Tube tube) {
-        ensTube.remove(tube);
-        this.creerMatrice();
-    }
+        String sRet = "";
 
-    public void creerMatrice() {
+        for (Cuve cuve : this.getEnsCuves()) {
+            
+            sRet += cuve.serialize() + " - ";
 
-        for (int x = 0; x < Cuve.nbCuve; x++) {
-            for (int y = 0; y < Cuve.nbCuve; y++) {
+            for (Cuve cuveBis : this.getEnsCuves()) {
 
-                for (Tube tube : this.ensTube) {
-                    if (tube.getCuveA().getIdentifiant() == 'A' + y && tube.getCuveB().getIdentifiant() == 'A' + x ||
-                            tube.getCuveA().getIdentifiant() == 'A' + x
-                                    && tube.getCuveB().getIdentifiant() == 'A' + y) {
-                        matriceCout[y][x] = tube.getSection();
+                if (cuve == cuveBis) continue;
+                boolean bExiste = false;
+                for (Tube tube : this.getAdjacences().get(cuve)) {
+
+                    if (tube.getCuveA() == cuveBis || tube.getCuveA() == cuveBis) {
+                        
+                        sRet += String.format("%" + ((int)Math.log10(Tube.SECTION_MAX)+1) + "s ", tube.getSection());
+                        bExiste = true;
+                        break;
                     }
                 }
+
+                if (!bExiste) sRet += String.format("%" + ((int)Math.log10(Tube.SECTION_MAX)+1) + "s ", "X");
             }
+
+            sRet += "\n";
         }
+
+        return sRet;
     }
 
-    @Override
-    public List<Cuve> getEnsCuves() {
-
-        List<Cuve> lstCuve = new ArrayList<Cuve>();
-
-        for (Tube tube : this.ensTube) {
-
-            if (!lstCuve.contains(tube.getCuveA())) {
-                lstCuve.add(tube.getCuveA());
-            }
-            if (!lstCuve.contains(tube.getCuveB())) {
-                lstCuve.add(tube.getCuveB());
-            }
-        }
-        return lstCuve;
-    }
-
-    @Override
-    public List<Tube> getEnsTubes() {
-        return ensTube;
-    }
-
-    @Override
-    public void formatToFile(String nomFichier) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append(this.getClass().getSimpleName()).append("\n");
+    public static void main(String[] args) {
         
-        for (Cuve cuve : this.getEnsCuves()) {
-            stringBuilder.append(cuve.toString()).append("\n");
-        }
-
-        stringBuilder.append("{\n");
-
-        for (int i = 0; i < this.matriceCout.length; i++) {
-            stringBuilder.append("(");
-            for (int j = 0; j < this.matriceCout[i].length; j++) {
-                stringBuilder.append(String.format("%2d", this.matriceCout[i][j])).append(", ");
-            }
-            stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-            stringBuilder.append("),\n");
-        }
-        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-        stringBuilder.append("\n}");
-
-        try {
-            PrintWriter printWriter = new PrintWriter(
-            new OutputStreamWriter(new FileOutputStream(nomFichier + ".data"), "UTF8"));
-            printWriter.println(stringBuilder.toString());
+        Reseau reseau = new MatriceCout();
         
-            printWriter.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (int i = 0; i < 4; i++) {
+            
+            reseau.ajouterCuve(Cuve.creerCuve(300));
         }
-    }
+        reseau.ajouterCuve(Cuve.creerCuve(300, 200));
+        reseau.ajouterCuve(Cuve.creerCuve(300, 100));
+        
+        reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(0), reseau.getEnsCuves().get(1), 10));
+        reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(0), reseau.getEnsCuves().get(2), 10));
+        reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(0), reseau.getEnsCuves().get(3), 10));
+        reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(1), reseau.getEnsCuves().get(2), 10));
+        reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(1), reseau.getEnsCuves().get(3), 10));
+        reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(2), reseau.getEnsCuves().get(3), 10));
 
-    public int[][] getMatriceCout() {
-        return this.matriceCout;
+        System.out.println(reseau.serialize());
     }
 }

@@ -1,4 +1,4 @@
-package appli1.ihm.model;
+package appli1.ihm.editeur.cuve;
 
 import java.lang.InterruptedException;
 
@@ -30,13 +30,15 @@ public class EditeurPosInfo extends AbstractCellEditor implements TableCellEdito
         this.row = row;
         this.col = col;
 
+        this.val = PositionInfo.HAUT;
+
         this.ddlstPosInfo = new JComboBox<PositionInfo>(PositionInfo.values());
         this.ddlstPosInfo.addItemListener(this);
     }
 
     public Object getCellEditorValue() {
 
-        return this.val;
+        return this.val.getLib();
     }
 
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {

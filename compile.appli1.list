@@ -1,7 +1,18 @@
-./appli1/Reseau.java
-./appli1/ListeAdjacence.java
+./appli1/ihm/editeur/cuve/EditeurCapacite.java
+./appli1/ihm/editeur/cuve/EditeurContenu.java
+./appli1/ihm/editeur/cuve/EditeurPosInfo.java
 
-./appli1/ihm/Panel.java
-./appli1/ihm/Frame.java
+./appli1/ihm/editeur/tube/EditeurCuve.java
+./appli1/ihm/editeur/tube/EditeurSection.java
+
+./appli1/ihm/model/CuveModel.java
+./appli1/ihm/model/TubeModel.java
+
+./appli1/ihm/table/CuveTable.java
+./appli1/ihm/table/TubeTable.java
+
+./appli1/ihm/FrameCreation.java
+./appli1/ihm/PanelAction.java
+./appli1/ihm/PanelCreation.java
 
 ./appli1/Controleur.java

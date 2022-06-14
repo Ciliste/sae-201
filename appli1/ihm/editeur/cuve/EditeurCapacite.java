@@ -1,4 +1,4 @@
-package appli1.ihm.model;
+package appli1.ihm.editeur.cuve;
 
 import java.lang.InterruptedException;
 

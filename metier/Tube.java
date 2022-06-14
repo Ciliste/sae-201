@@ -1,6 +1,12 @@
 package metier;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.BlockAction;
+
 public class Tube {
+
+    public static final int SECTION_MIN = 2;
+    public static final int SECTION_MAX = 10;
+
     private Cuve cuveA;
     private Cuve cuveB;
     private int section;
@@ -91,6 +97,11 @@ public class Tube {
         return this.cuveB;
     }
 
+    public boolean contains(Cuve cuve) {
+
+        return this.cuveA.getIdentifiant() == cuve.getIdentifiant() || this.cuveB.getIdentifiant() == cuve.getIdentifiant();
+    }
+
     public int getSection() {
         return this.section;
     }
@@ -98,6 +109,15 @@ public class Tube {
     // toString()
     public String toString() {
         return "Tube : {" + this.cuveA.toString() + " - " + this.cuveB.toString() + " - " + this.section + "}";
+    }
+
+    public String serialize(char id) {
+
+        return String.format(
+            "(%c/%d)", 
+            (this.cuveA.getIdentifiant() == id) ? this.cuveB.getIdentifiant() : this.cuveA.getIdentifiant(),
+            this.section
+        );
     }
 
     // TEST

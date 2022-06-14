@@ -188,24 +188,24 @@ public class Console
 
             if (Console.typeSave.indexOf("LISTE") != -1)
             {
-                Console.reseauSave = new ListeAdjacence(Console.ensTubes);
+                Console.reseauSave = new ListeAdjacence();
             }
             else 
             {
                 if (Console.typeSave.indexOf("MATRICE OPTIMIS") != -1)
                 {
-                    Console.reseauSave = new MatriceOptimisee(Console.ensTubes);
+                    Console.reseauSave = new MatriceOptimisee();
                 }
                 else
                 {
                     if (Console.typeSave.indexOf("MATRICE") != -1)
                     {
-                        Console.reseauSave = new MatriceCout(Console.ensTubes);
+                        Console.reseauSave = new MatriceCout();
                     }
                 }
             }
 
-            Console.reseauSave.formatToFile(nomFichier);
+            Console.reseauSave.serialize();
             System.out.println("Sauvegarde des données réussie");
 
 

@@ -1,35 +1,30 @@
 package appli1.ihm.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
 
-import metier.Cuve.PositionInfo;
-
-public class CuveModel extends AbstractTableModel {
-
-    private static final String[] COLUMNS = { "ID", "Capacité", "Contenu", "Pos. Info" };
+public class TubeModel extends AbstractTableModel {
+    
+    private static final String[] COLUMNS = { "Cuve A", "Cuve B", "Section" };
 
     Object donnees[][];
     String titres[];
 
     private boolean estEditable;
 
-    public CuveModel() {
+    public TubeModel() {
 
         this(
             new Object[][] {}, 
-            CuveModel.COLUMNS
+            TubeModel.COLUMNS
         );
     }
 
-    public CuveModel(Object[][] donnees) {
+    public TubeModel(Object[][] donnees) {
 
-        this(donnees, CuveModel.COLUMNS);
+        this(donnees, TubeModel.COLUMNS);
     }
 
-    public CuveModel(Object[][] donnees, String[] titres) {
+    public TubeModel(Object[][] donnees, String[] titres) {
 
         this.donnees = donnees;
 
@@ -80,10 +75,8 @@ public class CuveModel extends AbstractTableModel {
 
         return switch (col) {
 
-            case 0 -> Character.class;
-            case 1, 2, 3, 4 -> Integer.class;
-            // case 2 -> Double.class;
-            case 5 -> PositionInfo.class;
+            case 0, 1 -> Character.class;
+            case 2 -> Integer.class;
 
             default -> null;
         };
@@ -97,30 +90,11 @@ public class CuveModel extends AbstractTableModel {
             return false;
         }
 
-        if (col == 0) {
-
-            return false;
-        }
-
         return true;
     }
 
     public Object[][] getDonnees() {
 
         return this.donnees;
-    }
-
-    public List<Character> getIds() {
-
-        List<Character> temp = new ArrayList<Character>();
-        for (int i = 0; i < this.donnees.length; i++) {
-
-            if (this.donnees[i][0] != null && this.donnees[i][0] instanceof Character) {
-
-                temp.add((Character) this.donnees[i][0]);
-            }
-        }
-
-        return temp;
     }
 }

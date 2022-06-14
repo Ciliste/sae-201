@@ -1,8 +1,8 @@
 package metier;
 
-import java.io.Serializable;
+import java.util.Locale;
 
-public class Cuve implements Comparable<Cuve>, Serializable {
+public class Cuve implements Comparable<Cuve> {
 
     public enum PositionInfo {
 
@@ -29,6 +29,9 @@ public class Cuve implements Comparable<Cuve>, Serializable {
     }
 
     // Attributs de classe
+    public static final int CAPACITE_MIN = 200;
+    public static final int CAPACITE_MAX = 1000;
+
     public static int nbCuve = 0;
 
     // Attributs d'instance
@@ -40,26 +43,36 @@ public class Cuve implements Comparable<Cuve>, Serializable {
 
     // Fabrique
     public static Cuve creerCuve(int capacite) {
+
         return Cuve.creerCuve(capacite, 0);
     }
 
     public static Cuve creerCuve(int capacite, double contenu) {
 
+        return new Cuve(capacite, contenu);
+    }
+
+    public static Cuve creerCuve(int capacite, double contenu, Position position, int posInfo) {
+
         // Retourne null si la capacite n'est pas dans la plage demandee
         if (capacite < 200 || capacite > 1000) {
+
             return null;
         }
 
         // Retourne null s'il y a deja 26 cuves ou plus
         if (Cuve.nbCuve >= 26) {
+
             return null;
         }
 
+        // Retourne null si le contenu est négatif ou superieur à la capacite
         if (contenu < 0 || contenu > capacite) {
+
             return null;
         }
 
-        return new Cuve(capacite, contenu);
+        return new Cuve(capacite, contenu, position, posInfo);
     }
 
     // Constructeur
@@ -69,11 +82,16 @@ public class Cuve implements Comparable<Cuve>, Serializable {
 
     private Cuve(int capacite, double contenu) {
 
+        this(capacite, contenu, new Position(0, 0), 0);
+    }
+
+    private Cuve(int capacite, double contenu, Position position, int posInfo) {
+
         this.identifiant = (char) ('A' + Cuve.nbCuve++);
         this.capacite = capacite;
         this.contenu = contenu;
-        this.position = null;
-        this.posInfo = 0;
+        this.position = Position.copier(position);
+        this.posInfo = posInfo;
     }
 
     // Methodes
@@ -134,13 +152,29 @@ public class Cuve implements Comparable<Cuve>, Serializable {
         return "Cuve " + this.identifiant + " : " + this.contenu + "/" + this.capacite + "L";
     }
 
+    public String serialize() {
+
+        return String.format(
+            Locale.ENGLISH,
+            "(%c/%" + ((int)(Math.log10(Cuve.CAPACITE_MAX))+1) + "d/%" + ((int)(Math.log10(Cuve.CAPACITE_MAX))+3) + ".2f/%d/%d/%s)", 
+            this.identifiant, this.capacite, this.contenu, this.position.x(), this.position.y(), PositionInfo.values()[this.posInfo].name()
+        );
+    }
+
     // Comparable
     public int compareTo(Cuve c) {
 
-        return -(this.identifiant - c.identifiant);
-    }
+        if (this.contenu < c.contenu) {
 
-    public boolean equals(Cuve cuve) {
-        return this.getIdentifiant() == cuve.getIdentifiant();
+            return -1;
+        }
+        else if (this.contenu > c.contenu) {
+
+            return 1;
+        }
+        else {
+
+            return c.identifiant - this.identifiant;
+        }
     }
 }
