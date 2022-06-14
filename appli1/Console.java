@@ -65,9 +65,9 @@ public class Console
         // Demande du nombre de tube
         System.out.print("Nombre de tubes : ");
         int nbTube = Clavier.lire_int();
-        while (nbTube < 0 || nbTube > nbCuve * (nbCuve - 1) / 2);
+        while (nbTube < 0 || nbTube > (nbCuve * (nbCuve - 1) / 2))
         {
-            System.out.println("Erreur : nombre invalide, veuillez choisir un nombre entre 0 et " + nbCuve * (nbCuve - 1) / 2);
+            System.out.println("Erreur : nombre invalide, veuillez choisir un nombre entre 0 et " + (nbCuve * (nbCuve - 1) / 2));
 
             System.out.print("Nombre de tubes : ");
             nbTube = Clavier.lire_int();
@@ -92,7 +92,7 @@ public class Console
             String idCuve1 = ("" + Clavier.lire_char()).toUpperCase();
             while (idCuve1.charAt(0) < 'A' || idCuve1.charAt(0) > 'A' + nbCuve)
             {
-                System.out.println("Erreur : identifiant invalide, veuillez choisir un identifiant entre 'A' et " + ('A' + nbCuve));
+                System.out.println("Erreur : identifiant invalide, veuillez choisir un identifiant entre 'A' et '" + (char)('A' + nbCuve) + "'");
 
                 System.out.format("Identifiants de la première cuves à relier au tube %d : ", i + 1);
                 idCuve1 = ("" + Clavier.lire_char()).toUpperCase();
@@ -103,7 +103,7 @@ public class Console
             String idCuve2 = ("" + Clavier.lire_char()).toUpperCase();
             while (idCuve2.charAt(0) < 'A' || idCuve2.charAt(0) > 'A' + nbCuve || idCuve2 == idCuve1)
             {
-                System.out.println("Erreur : identifiant invalide, veuillez choisir un identifiant entre 'A' et " + ('A' + nbCuve) + " et différent de '" + idCuve1 + "'");
+                System.out.println("Erreur : identifiant invalide, veuillez choisir un identifiant entre 'A' et '" + (char)('A' + nbCuve) + "' et différent de '" + idCuve1 + "'");
 
                 System.out.format("Identifiants de la deuxième cuves à relier au tube %d : ", i + 1);
                 idCuve2 = ("" + Clavier.lire_char()).toUpperCase();

@@ -31,15 +31,15 @@ public class Controleur
     {
         if (args.length != 1)
         {
-            System.out.println("Saisir le mode de saisie des informations (console/graphique)1 : ");
+            System.out.print("Saisir le mode de saisie des informations (console/graphique) : ");
             args = new String[1];
             args[0] = Clavier.lireString();
         }
 
 
-        while (args[0].toUpperCase().contains("CONSOLE") && args[0].toUpperCase().contains("GRAPHIQUE"))
+        while (args[0].toUpperCase().indexOf("CONSOLE") == -1 && args[0].toUpperCase().indexOf("GRAPHIQUE") == -1)
         {
-            System.out.println("Saisir le mode de saisie des informations (console/graphique)2 : ");
+            System.out.print("Erreur : saisir le mode de saisie des informations (console/graphique) : ");
             args[0] = Clavier.lireString();
         }
 
