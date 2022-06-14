@@ -20,12 +20,13 @@ public class Console
     public static void affichageConsole()
     {
         // Demande du nombre de cuves
-        System.out.println("Nombre de cuves : ");
+        System.out.print("Nombre de cuves : ");
         int nbCuve = Clavier.lire_int();
 
         while (nbCuve < 1 || nbCuve > 26)
         {
             System.out.println("Erreur : nombre invalide, veuillez choisir un nombre entre 1 et 26");
+
             System.out.print("Nombre de cuves : ");
             nbCuve = Clavier.lire_int();
         }
