@@ -13,7 +13,8 @@ public class ListeAdjacence extends Reseau {
 
         super();
     }
-    
+
+    // mettre dans un fichier les infos du programme
     public String serialize() {
 
         String sRet = "";
@@ -60,7 +61,7 @@ public class ListeAdjacence extends Reseau {
 
         for (String ligne : str.split("\n")) {
 
-            if (ligne.split("->")[1].equals("X")) continue;
+            if (ligne.split("->")[1].equals("X")) break;
             for (String tube : ligne.split("->")[1].split(",")) {
 
                 tube = tube.replace("(", "").replace(")", "");

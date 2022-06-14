@@ -1,8 +1,9 @@
 package metier;
 
+import java.io.Serializable;
 import java.util.Locale;
 
-public class Cuve implements Comparable<Cuve> {
+public class Cuve implements Comparable<Cuve>, Serializable {
 
     public enum PositionInfo {
 
@@ -211,7 +212,7 @@ public class Cuve implements Comparable<Cuve> {
 
         return String.format(
             Locale.ENGLISH,
-            "(%c/%" + ((int)(Math.log10(Cuve.CAPACITE_MAX))+1) + "d/%" + ((int)(Math.log10(Cuve.CAPACITE_MAX))+3) + ".2f/%d/%d/%s)", 
+            "(%c/%" + ((int)(Math.log10(Cuve.CAPACITE_MAX))+1) + "d/%" + ((int)(Math.log10(Cuve.CAPACITE_MAX))+4) + ".2f/%d/%d/%s)", 
             this.identifiant, this.capacite, this.contenu, this.position.x(), this.position.y(), PositionInfo.values()[this.posInfo].name()
         );
     }

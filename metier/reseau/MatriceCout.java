@@ -26,11 +26,10 @@ public class MatriceCout extends Reseau {
 
             for (Cuve cuveBis : this.getEnsCuves()) {
 
-                if (cuve == cuveBis) continue;
                 boolean bExiste = false;
                 for (Tube tube : this.getAdjacences().get(cuve)) {
 
-                    if (tube.getCuveA() == cuveBis || tube.getCuveA() == cuveBis) {
+                    if (cuve != cuveBis && tube.contains(cuveBis)) {
                         
                         sRet += String.format("%" + ((int)Math.log10(Tube.SECTION_MAX)+1) + "s ", tube.getSection());
                         bExiste = true;
