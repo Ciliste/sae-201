@@ -25,7 +25,6 @@ public class PanelRendu extends JPanel {
         Color couleurInitiale = g.getColor();
 
 
-
         int x = 0;
 
         for (int i = 0; i < this.reseau.getEnsCuves().size(); i++)

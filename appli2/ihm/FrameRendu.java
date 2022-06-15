@@ -16,6 +16,8 @@ public class FrameRendu extends JFrame implements ActionListener
     private JMenuItem  menuiFichierOuvrir;
 	private JMenuItem  menuiFichierQuitter;
 
+    private Reseau reseau;
+
 
     public FrameRendu(Controleur ctrl, Reseau reseau) 
     {
@@ -93,6 +95,8 @@ public class FrameRendu extends JFrame implements ActionListener
 			int returnVal = fc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 				nomFichier = fc.getSelectedFile().getAbsolutePath();
+
+            //nomFichier
             
             System.out.println(nomFichier.length());
 		}

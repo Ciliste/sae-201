@@ -1,5 +1,6 @@
 package appli1;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +15,11 @@ import metier.reseau.Reseau;
 
 public class Console
 {
-    private static List<Cuve> ensCuves = new ArrayList<Cuve>();
-    private static List<Tube> ensTubes = new ArrayList<Tube>();
-    private static Reseau reseauSave;
+    private static Reseau reseau;
+
     private static String typeSave;
+
+    private static String nomFichier;
 
     // Constructeur
     private Console() {};
@@ -25,10 +27,48 @@ public class Console
     // Fabrique
     public static void affichageConsole()
     {
+        /* Varibale */
+        int nbCuve;
+        int capacite;
+        int contenu;
+        int nbTube;
+        int section;
+
+
+        // Demande du type de réseau à créée
+        System.out.print("Comment voulez sauvegardez les données (liste/matrice/matrice optimisee) : ");
+        Console.typeSave = Clavier.lireString().toUpperCase();
+        while (Console.typeSave.indexOf("LIST") == -1 && !Console.typeSave.equals("MATRICE") && Console.typeSave.indexOf("MATRICE OPTIMIS") == -1)
+        {
+            System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (liste/matrice/matrice optimisee)");
+
+            System.out.print("Comment voulez sauvegardez les données : ");
+            Console.typeSave = Clavier.lireString().toUpperCase();
+        }
+
+        if (Console.typeSave.indexOf("LIST") != -1)
+        {
+            Console.reseau = new ListeAdjacence();
+        }
+        else 
+        {
+            if (Console.typeSave.indexOf("MATRICE OPTIMIS") != -1)
+            {
+                Console.reseau = new MatriceOptimisee();
+            }
+            else
+            {
+                if (Console.typeSave.indexOf("MATRICE") != -1)
+                {
+                    Console.reseau = new MatriceCout();
+                }
+            }
+        }
+
+
         // Demande du nombre de cuves
         System.out.print("Nombre de cuves : ");
-        int nbCuve = Clavier.lire_int();
-
+        nbCuve = Clavier.lire_int();
         while (nbCuve < 1 || nbCuve > 26)
         {
             System.out.println("Erreur : nombre invalide, veuillez choisir un nombre entre 1 et 26");
@@ -43,7 +83,7 @@ public class Console
         {
             // Demande de la capacité
             System.out.format("Capacité de la Cuve %c : ", identifiant + i);
-            int capacite = Clavier.lire_int();
+            capacite = Clavier.lire_int();
             while (capacite < 200 || capacite > 1000)
             {
                 System.out.println("Erreur : capacité invalide, veuillez choisir une capacité entre 200 et 1 000");
@@ -54,7 +94,7 @@ public class Console
 
             // Demande du contenu
             System.out.format("Contenu de la Cuve %c : ", identifiant + i);
-            int contenu = Clavier.lire_int();
+            contenu = Clavier.lire_int();
             while (contenu < 0 || contenu > capacite)
             {
                 System.out.println("Erreur : contenu invalide, veuillez choisir un contenu entre 0 et " + capacite);
@@ -64,13 +104,13 @@ public class Console
             }
 
 
-            Console.ensCuves.add(Cuve.creerCuve(capacite, contenu));
+            reseau.ajouterCuve(Cuve.creerCuve(capacite, contenu));
         }
 
 
         // Demande du nombre de tube
         System.out.print("Nombre de tubes : ");
-        int nbTube = Clavier.lire_int();
+        nbTube = Clavier.lire_int();
         while (nbTube < 0 || nbTube > (nbCuve * (nbCuve - 1) / 2))
         {
             System.out.println("Erreur : nombre invalide, veuillez choisir un nombre entre 0 et " + (nbCuve * (nbCuve - 1) / 2));
@@ -84,7 +124,7 @@ public class Console
         {
             // Demande de la section des tubes
             System.out.format("Section du Tube %d : ", i + 1);
-            int section = Clavier.lire_int();
+            section = Clavier.lire_int();
             while (section < 2 || section > 10)
             {
                 System.out.println("Erreur : section invalide, veuillez choisir une section entre 2 et 10");
@@ -123,7 +163,7 @@ public class Console
 
                 // Récupération des cuves en fonction des identifiant rentré par l'utilisateur
                 Cuve cuve1 = null, cuve2 = null;
-                for (Cuve cuve : Console.ensCuves)
+                for (Cuve cuve : Console.reseau.getEnsCuves())
                 {
                     if (cuve.getIdentifiant() == idCuve1.charAt(0)) { cuve1 = cuve; }
                     if (cuve.getIdentifiant() == idCuve2.charAt(0)) { cuve2 = cuve; }
@@ -133,7 +173,7 @@ public class Console
 
 
                 // Verification de l'unicité du tube
-                for (Tube tubeInFor : Console.ensTubes)
+                for (Tube tubeInFor : Console.reseau.getEnsTubes())
                 {
                     if (tubeCreer)
                     {
@@ -148,79 +188,99 @@ public class Console
 
             }while (!tubeCreer);
 
-            Console.ensTubes.add(tube);
+            Console.reseau.ajouterTube(tube);
         }
 
 
-
-        // Demande de sauvegarde du réseau
-        System.out.println("Voulez vous sauvegarder les données (oui/non) : ");
-        String save = Clavier.lireString().toUpperCase();
-        while (save.indexOf("OUI") == -1 && save.indexOf("NON") == -1)
+        boolean saveReseau = false;
+        while (!saveReseau)
         {
-            System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (oui/non)");
-
-            System.out.print("Voulez vous sauvegarder les données (oui/non) : ");
-            save = Clavier.lireString().toUpperCase();
-        }
-
-
-        if (save.indexOf("OUI") != -1)
-        {
-            System.out.print("Nom du fichier : ");
-            String nomFichier = Clavier.lireString();
-            while (!nomFichier.equals("") || nomFichier.indexOf(" ") != -1)
+            // Demande de sauvegarde du réseau
+            System.out.println("Voulez vous sauvegarder les données (oui/non) : ");
+            String save = Clavier.lireString().toUpperCase();
+            while (save.indexOf("OUI") == -1 && save.indexOf("NON") == -1)
             {
-                System.out.println("Erreur : nom de fichier invalide, veuillez saisie un nom de fichier sans espace");
+                System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (oui/non)");
 
+                System.out.print("Voulez vous sauvegarder les données (oui/non) : ");
+                save = Clavier.lireString().toUpperCase();
+            }
+
+            if (save.indexOf("OUI") != -1)
+            {
                 System.out.print("Nom du fichier : ");
-                nomFichier = Clavier.lireString();
-            }
-
-        
-
-            // Demande du MODE de sauvegarde du réseau
-            System.out.print("Comment voulez sauvegardez les données (liste/matrice/matrice optimisee) : ");
-            Console.typeSave = Clavier.lireString().toUpperCase();
-            while (Console.typeSave.indexOf("LISTE") == -1 && !Console.typeSave.equals("MATRICE") && Console.typeSave.indexOf("MATRICE OPTIMIS") == -1)
-            {
-                System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (liste/matrice/matrice optimisee)");
-
-                System.out.print("Comment voulez sauvegardez les données : ");
-                Console.typeSave = Clavier.lireString().toUpperCase();
-            }
-
-            if (Console.typeSave.indexOf("LISTE") != -1)
-            {
-                Console.reseauSave = new ListeAdjacence();
-            }
-            else 
-            {
-                if (Console.typeSave.indexOf("MATRICE OPTIMIS") != -1)
+                Console.nomFichier = Clavier.lireString();
+                while (Console.nomFichier.equals("") && Console.nomFichier.indexOf(" ") == -1 && Console.nomFichier.indexOf(".") == -1)
                 {
-                    Console.reseauSave = new MatriceOptimisee();
+                    System.out.println("Erreur : nom de fichier invalide, veuillez saisie un nom de fichier sans espace et sans extension");
+
+                    System.out.print("Nom du fichier : ");
+                    Console.nomFichier = Clavier.lireString();
                 }
+                
+
+                String test = Console.reseau.serialize();
+
+                if (Console.enregistrer(test))
+                    System.out.println("Sauvegarde des données réussie");
                 else
-                {
-                    if (Console.typeSave.indexOf("MATRICE") != -1)
-                    {
-                        Console.reseauSave = new MatriceCout();
-                    }
-                }
+                    System.out.println("Erreur : sauvegarde des données échouée");
+
+
+                System.out.println(Console.reseau.toString());  // Affiche le réseau sauvegardé
+
+                saveReseau = true;
             }
+            else
+            {
+                System.out.println("Êtes-vous sur de vouloir annuler la sauvegarde des données (oui/non) : ");
+                String annuler = Clavier.lireString().toUpperCase();
+                while (annuler.indexOf("OUI") == -1 && annuler.indexOf("NON") == -1)
+                {
+                    System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (oui/non)");
 
-            Console.reseauSave.serialize();
-            System.out.println("Sauvegarde des données réussie");
+                    System.out.print("Êtes-vous sur de vouloir annuler la sauvegarde des données (oui/non) : ");
+                    annuler = Clavier.lireString().toUpperCase();
+                }
 
-
-            System.out.println(Console.reseauSave.toString());
+                if (annuler.indexOf("OUI") != -1)
+                    { System.out.println("Sauvegarde des données annulée"); saveReseau = true; }
+                else
+                    { System.out.println("Sauvegarde des données non annulée"); }
+            }
         }
+    }
+
+
+    private static boolean enregistrer(String str)
+    {
+        try
+        {
+            PrintWriter writer = new PrintWriter(Console.nomFichier + ".data", "UTF-8");
+
+            writer.println(str);
+
+            writer.close();
+            return true;
+        }
+        catch (Exception e) { System.out.println("Erreur : impossible d'enregistrer le fichier"); e.printStackTrace(); return false; }
     }
 
 
 
     // getters
-    public static List<Cuve> getEnsCuves() { return Console.ensCuves; }
-    public static List<Tube> getEnsTubes() { return Console.ensTubes; }
-    public static String     getTypeSave() { return Console.typeSave; }
+    public static Reseau getReseau  () { return Console.reseau; }
+    public static String getTypeSave() { return Console.typeSave  ; }
+
+    public static Cuve getCuve(String id)
+    {
+        for (Cuve cuve : Console.reseau.getEnsCuves())
+            if (cuve.getIdentifiant() == id.charAt(0))
+                return cuve;
+
+        return null;
+    }
+
+    public static Cuve getCuve(int ind) { return Console.reseau.getEnsCuves().get(ind); }
+    public static Cuve getTube(int ind) { return Console.reseau.getEnsCuves().get(ind); }
 }
