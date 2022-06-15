@@ -1,23 +1,17 @@
 package appli1;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.IllegalFormatException;
-
-import javax.print.AttributeException;
-import javax.swing.text.TabExpander;
 
 import appli1.ihm.FrameCreation;
-import iut.algo.Clavier;
 import metier.Cuve;
+import metier.Cuve.PositionInfo;
 import metier.Position;
 import metier.Tube;
-import metier.Cuve.PositionInfo;
 import metier.reseau.ListeAdjacence;
 import metier.reseau.MatriceCout;
 import metier.reseau.MatriceOptimisee;
