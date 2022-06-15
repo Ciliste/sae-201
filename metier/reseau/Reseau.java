@@ -83,7 +83,7 @@ public abstract class Reseau implements Serializable {
     //     for(Tube tubeSeul : ensTube)
     //     {
     //         //Faut encore vérifié que l'on ne transfere pas a une cuve que on a déja transfere
-    //         if(tubeSeul.contient(cuveSeul))
+    //         if(tubeSeul.contains(cuveSeul))
     //         {
     //             if (tubeSeul.getCuveA() == cuveSeul)
     //                 cuveExterieur = tubeSeul.getCuveB();
