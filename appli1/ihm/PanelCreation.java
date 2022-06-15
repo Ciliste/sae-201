@@ -13,6 +13,7 @@ import appli1.ihm.model.TubeModel;
 import appli1.ihm.table.CuveTable;
 import appli1.ihm.table.TubeTable;
 import metier.Cuve;
+import metier.reseau.Reseau;
 
 public class PanelCreation extends JPanel implements ActionListener, FocusListener {
     
@@ -30,7 +31,7 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
     private JPanel panelTube;
     private String oldNbTubeValue;
 
-    public PanelCreation(Controleur ctrl, FrameCreation frame, String data) {
+    public PanelCreation(Controleur ctrl, FrameCreation frame, Reseau data) {
 
         this.ctrl = ctrl;
         this.frame = frame;
@@ -201,5 +202,15 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
 
             this.txtNbTubes.setText(this.oldNbTubeValue);
         }
+    }
+
+    public Object[][] getCuves() {
+
+        return this.modelCuve.getDonnees();
+    }
+
+    public Object[][] getTubes() {
+
+        return this.modelTube.getDonnees();
     }
 }
