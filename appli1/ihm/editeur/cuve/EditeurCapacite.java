@@ -1,11 +1,6 @@
 package appli1.ihm.editeur.cuve;
 
-import java.lang.InterruptedException;
-
 import java.awt.Component;
-import java.awt.BorderLayout;
-import java.awt.event.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

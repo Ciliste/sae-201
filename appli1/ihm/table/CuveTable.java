@@ -1,8 +1,6 @@
 package appli1.ihm.table;
 
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 
 import appli1.ihm.editeur.cuve.EditeurCapacite;

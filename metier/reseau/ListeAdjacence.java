@@ -1,6 +1,5 @@
 package metier.reseau;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 

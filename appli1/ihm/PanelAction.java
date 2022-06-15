@@ -1,8 +1,5 @@
 package appli1.ihm;
 
-import appli1.Controleur;
-
-import javax.imageio.ImageReadParam;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 

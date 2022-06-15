@@ -3,13 +3,9 @@ package appli1.ihm;
 import javax.swing.*;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Component;
 import java.awt.event.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import appli1.Controleur;
 import appli1.ihm.model.CuveModel;
@@ -22,9 +18,6 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
     
     private Controleur ctrl;
     private FrameCreation frame;
-
-    private static final int INDENT = 25;
-    private int curseurY;
 
     private CuveModel modelCuve;
     private JTable tblCuves;
@@ -41,7 +34,6 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
 
         this.ctrl = ctrl;
         this.frame = frame;
-        this.curseurY = 10;
 
         this.setLayout(new BorderLayout());
 
