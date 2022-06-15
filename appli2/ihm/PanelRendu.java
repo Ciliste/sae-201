@@ -5,12 +5,16 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.*;
+
 import appli2.Controleur;
 import metier.reseau.Reseau;
 import metier.Cuve;
 
 
-public class PanelRendu extends JPanel {
+public class PanelRendu extends JPanel implements MouseMotionListener
+{
     private Controleur ctrl;
     private Reseau reseau;
 
@@ -72,5 +76,17 @@ public class PanelRendu extends JPanel {
 
         
         g.setColor(couleurInitiale);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e)
+    {
+        System.out.println(e.getX() + " " + e.getY());
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e)
+    {
+        System.out.println(e.getX() + " " + e.getY());
     }
 }

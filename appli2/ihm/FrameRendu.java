@@ -1,7 +1,12 @@
 package appli2.ihm;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
+import java.awt.BorderLayout;
 import java.awt.event.*;
+import java.io.File;
+import java.util.Scanner;
 
 import appli2.Controleur;
 import metier.reseau.Reseau;
@@ -11,25 +16,32 @@ import java.awt.Dimension;
  
 public class FrameRendu extends JFrame implements ActionListener
 {
+    private static String stringReseau;
+
     private PanelRendu panelRendu;
 
     private JMenuItem  menuiFichierOuvrir;
+    private JMenuItem  menuiFichierSave;
 	private JMenuItem  menuiFichierQuitter;
 
     private Reseau reseau;
+    private Controleur ctrl;
 
 
-    public FrameRendu(Controleur ctrl, Reseau reseau) 
+    public FrameRendu(Controleur ctrl) 
     {
         this.setTitle("Frame rendu");
         this.setLocation(0, 0);
         this.setMinimumSize(new Dimension(1000, 1000));
 
+        this.setLayout(new BorderLayout());
 
 
         /*-------------------------*/
 		/* Création des composants */
 		/*-------------------------*/
+        this.ctrl = ctrl;
+
 		/* Barre de Menu */
 		JMenuBar menuBar  = new JMenuBar();
 
@@ -37,14 +49,13 @@ public class FrameRendu extends JFrame implements ActionListener
 		menuFichier.setMnemonic('F');
 
 		this.menuiFichierOuvrir  = new JMenuItem("Ouvrir");
+        this.menuiFichierSave    = new JMenuItem("Enregistrer");
 		this.menuiFichierQuitter = new JMenuItem("Quitter");
 
 		this.menuiFichierOuvrir .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        this.menuiFichierSave   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		this.menuiFichierQuitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-        
 
-        /* Panel de rendu */
-        this.panelRendu = new PanelRendu(ctrl, reseau);
 
 
         /*----------------------*/
@@ -52,6 +63,8 @@ public class FrameRendu extends JFrame implements ActionListener
 		/*----------------------*/
         /* Dans le menu Fichier  */
         menuFichier.add(this.menuiFichierOuvrir);
+        menuFichier.add(this.menuiFichierSave);
+        menuFichier.add(new JSeparator());
 		menuFichier.add(this.menuiFichierQuitter);
 
         /* Ajout du menu Fichier à la barre de menu */
@@ -59,10 +72,6 @@ public class FrameRendu extends JFrame implements ActionListener
 
         /* Ajout de la barre de menu à la fenêtre */
         this.setJMenuBar(menuBar);
-
-        /* Panel de rendu */
-        this.add(this.panelRendu);
-
 
 
         /*-------------------------------*/
@@ -96,15 +105,44 @@ public class FrameRendu extends JFrame implements ActionListener
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 				nomFichier = fc.getSelectedFile().getAbsolutePath();
 
-            //nomFichier
+            if ( !nomFichier.equals("") )
+                stringReseau = FrameRendu.lireFichier(nomFichier);
+
             
-            System.out.println(nomFichier.length());
+
+            /* Panel de rendu */
+            this.panelRendu = new PanelRendu(this.ctrl, this.reseau);
+            /* Panel de rendu */
+            this.add(this.panelRendu, BorderLayout.CENTER);
 		}
+
 
 		// Fermeture de l'application
 		if ( e.getSource() == this.menuiFichierQuitter )
 		{
 			this.dispose();
 		}
+    }
+
+    
+
+    public static String lireFichier(String nomFichier)
+    {
+        String sRet = "";
+
+        File file = new File(nomFichier);
+
+        try
+        {
+            Scanner sc = new Scanner(file);
+
+            while (sc.hasNextLine())
+                sRet += sc.nextLine();
+
+            sc.close();
+
+            System.out.println(sRet);
+            return sRet;
+        }catch(Exception e) { System.out.println("Erreur lors de la lecture du fichier"); e.printStackTrace(); return null; }
     }
 }
