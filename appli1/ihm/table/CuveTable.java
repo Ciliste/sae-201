@@ -25,7 +25,7 @@ public class CuveTable extends JTable {
 
                 case 1 -> new EditeurCapacite(this.getModel(), row, column);
                 case 2 -> new EditeurContenu(this.getModel(), row, column, (int) this.getModel().getValueAt(row, column - 1));
-                case 3 -> new EditeurPosInfo(this.getModel(), row, column);
+                case 5 -> new EditeurPosInfo(this.getModel(), row, column);
 
                 default -> super.getCellEditor(row, column);
             };
@@ -34,6 +34,5 @@ public class CuveTable extends JTable {
             
             return null;
         }
-        
     }
 }

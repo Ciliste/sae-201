@@ -237,10 +237,6 @@ public class FrameCreation extends JFrame {
 
     public void sauvegarder(ActionEvent event) {
 
-        if (!(event.getSource() instanceof JMenuItem)) return;
-        System.out.println(((JMenuItem)event.getSource()).getName());
-        if (1 == 1) return;
-
         if (this.statutTravail == FrameCreation.AUCUN) {
 
             return;
@@ -248,37 +244,11 @@ public class FrameCreation extends JFrame {
 
         if (this.statutTravail == FrameCreation.TRAVAIL) {
             
-            for (MethodeSauvegarde methode : MethodeSauvegarde.values()) {
-
-                if (methode.getNom().equals(((JMenuItem)event.getSource()).getText())) {}
-            }
-
-            try {
-
-                Files.setAttribute(Path.of(this.fichierCourant.getAbsolutePath()), "user:format", "test".getBytes());
-                Object format = Files.getAttribute(Path.of(this.fichierCourant.getAbsolutePath()), "user:format");
-            } 
-            catch (Exception e) {
-                
-                e.printStackTrace();
-            }
-            
-            // this.ctrl.sauvegarder(this.fichierCourant, this.panelCrea.getCuves(), this.panelCrea.getTubes());;
-        }
-
-        try {
-
-            Files.setAttribute(Path.of("path"), "user:encryption used", "testtesttest");
-        }
-        catch (Exception err) {
-
-            err.printStackTrace();
+            this.ctrl.sauvegarder(this.fichierCourant, this.panelCrea.getCuves(), this.panelCrea.getTubes());
         }
     }
 
     public void sauvegarderSous(Class<? extends Reseau> classe) {
-
-        System.out.println("Sauvegarder sous");
 
         if (this.statutFichier == FrameCreation.RIEN) {
 
@@ -339,7 +309,7 @@ public class FrameCreation extends JFrame {
         if (res == JFileChooser.APPROVE_OPTION) {
             
             File file = choose.getSelectedFile();
-            // this.ctrl.sauvegarder(file, classe, this.panelCrea.getCuves(), this.panelCrea.getTubes());
+            this.ctrl.sauvegarderSous(file, classe, this.panelCrea.getCuves(), this.panelCrea.getTubes());
         }
     }
 }

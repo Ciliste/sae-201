@@ -10,12 +10,14 @@ import java.nio.file.Path;
 import java.util.IllegalFormatException;
 
 import javax.print.AttributeException;
+import javax.swing.text.TabExpander;
 
 import appli1.ihm.FrameCreation;
 import iut.algo.Clavier;
 import metier.Cuve;
 import metier.Position;
 import metier.Tube;
+import metier.Cuve.PositionInfo;
 import metier.reseau.ListeAdjacence;
 import metier.reseau.MatriceCout;
 import metier.reseau.MatriceOptimisee;
@@ -71,12 +73,24 @@ public class Controleur
         return null;
     }
 
-    public void sauvegarder(File file, Class<? extends Reseau> classe, Object[][] cuves, Object[][] tubes) {
+    public void sauvegarder(File file, Object[][] cuves, Object[][] tubes) {
 
-        if (!(cuves[0][0] instanceof Character && cuves[0][1] instanceof Integer && cuves[0][2] instanceof Double && cuves[0][3] instanceof Integer && cuves[0][4] instanceof Integer && cuves[0][5] instanceof Integer))
+        for (MethodeSauvegarde methode : MethodeSauvegarde.values()) {
+
+            if (methode.getClasseSauvegarde().getName().equals(file.getName())) {
+
+                this.sauvegarderSous(file, methode.getClasseSauvegarde(), cuves, tubes);
+                break;
+            }
+        }
+    }
+
+    public void sauvegarderSous(File file, Class<? extends Reseau> classe, Object[][] cuves, Object[][] tubes) {
+
+        if (cuves.length != 0 && !(cuves[0][0] instanceof Character && cuves[0][1] instanceof Integer && cuves[0][2] instanceof Double && cuves[0][3] instanceof Integer && cuves[0][4] instanceof Integer && cuves[0][5] instanceof String))
             throw new IllegalArgumentException("Les données de la matrice des cuves sont incorrectes");
 
-        if (!(tubes[0][0] instanceof Character && tubes[0][1] instanceof Character && tubes[0][2] instanceof Integer))
+        if (tubes.length != 0 && !(tubes[0][0] instanceof Character && tubes[0][1] instanceof Character && tubes[0][2] instanceof Integer))
             throw new IllegalArgumentException("Les données de la matrice des tubes sont incorrectes");
 
         Reseau reseau = null;
@@ -91,7 +105,7 @@ public class Controleur
 
         for (Object[] ligne : cuves) {
 
-            reseau.ajouterCuve(Cuve.creerCuve((Integer) ligne[1], (Double) ligne[2], new Position((Integer) ligne[3], (Integer) ligne[4]), (Integer) ligne[5]));
+            reseau.ajouterCuve(Cuve.creerCuve((Integer) ligne[1], (Double) ligne[2], new Position((Integer) ligne[3], (Integer) ligne[4]), PositionInfo.getPositionInfo((String) ligne[5]).getValeur()));
         }
 
         for (Object[] ligne : tubes) {
@@ -104,8 +118,20 @@ public class Controleur
             PrintWriter pw = new PrintWriter(file);
             pw.write(reseau.serialize());
             pw.close();
+
+            String format = "?";
+            for (MethodeSauvegarde methode : MethodeSauvegarde.values()) {
+
+                if (methode.getClasseSauvegarde().equals(classe)) {
+
+                    format = methode.getNom();
+                    break;
+                }
+            }
+
+            Files.setAttribute(Path.of(file.getAbsolutePath()), Controleur.FORMAT_KEY_WORD, format.getBytes());
         }
-        catch (FileNotFoundException err) {
+        catch (Exception err) {
 
             // ¯\_(ツ)_/¯
         }

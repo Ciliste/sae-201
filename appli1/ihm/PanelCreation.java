@@ -95,7 +95,7 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
                 Object[][] temp = new Object[Integer.parseInt(this.txtNbCuves.getText())][4];
                 for (int i = 0; i < temp.length; i++) {
 
-                    temp[i] = new Object[] { (char) ('A' + i), Cuve.CAPACITE_MIN, 0, "HAUT" };
+                    temp[i] = new Object[] { (char) ('A' + i), Cuve.CAPACITE_MIN, 0.0, 0, 0, "HAUT" };
                     try {
 
                         if (this.modelCuve.getValueAt(i, 0) != null) {
@@ -103,6 +103,8 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
                             temp[i][1] = this.modelCuve.getValueAt(i, 1);
                             temp[i][2] = this.modelCuve.getValueAt(i, 2);
                             temp[i][3] = this.modelCuve.getValueAt(i, 3);
+                            temp[i][4] = this.modelCuve.getValueAt(i, 4);
+                            temp[i][5] = this.modelCuve.getValueAt(i, 5);
                         }
                     } 
                     catch (Exception err) {}

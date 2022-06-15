@@ -9,7 +9,7 @@ import metier.Cuve.PositionInfo;
 
 public class CuveModel extends AbstractTableModel {
 
-    private static final String[] COLUMNS = { "ID", "Capacité", "Contenu", "Pos. Info" };
+    private static final String[] COLUMNS = { "ID", "Capacité", "Contenu", "X", "Y", "Pos. Info" };
 
     Object donnees[][];
     String titres[];
@@ -81,9 +81,9 @@ public class CuveModel extends AbstractTableModel {
         return switch (col) {
 
             case 0 -> Character.class;
-            case 1, 2, 3, 4 -> Integer.class;
-            // case 2 -> Double.class;
-            case 5 -> PositionInfo.class;
+            case 1, 3, 4 -> Integer.class;
+            case 2 -> Double.class;
+            case 5 -> String.class;
 
             default -> null;
         };

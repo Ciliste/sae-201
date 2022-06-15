@@ -13,7 +13,7 @@ public class EditeurContenu extends AbstractCellEditor implements TableCellEdito
 
     private int row, col;
 
-    private int val;
+    private double val;
     private JSpinner spnCapacite;
 
     public EditeurContenu(TableModel model, int row, int col, int max) {
@@ -24,7 +24,7 @@ public class EditeurContenu extends AbstractCellEditor implements TableCellEdito
 
         try {
 
-            this.val = Integer.parseInt(model.getValueAt(row, col).toString());
+            this.val = Double.parseDouble(model.getValueAt(row, col).toString());
         } catch (NumberFormatException e) {
 
             this.val = 0;
@@ -37,7 +37,7 @@ public class EditeurContenu extends AbstractCellEditor implements TableCellEdito
 
     public Object getCellEditorValue() {
 
-        return this.val;
+        return (double) this.val;
     }
 
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
@@ -61,7 +61,7 @@ public class EditeurContenu extends AbstractCellEditor implements TableCellEdito
 
         if (event.getSource() == this.spnCapacite) {
 
-            this.val = (Integer) this.spnCapacite.getValue();
+            this.val = (Double) this.spnCapacite.getValue();
             this.model.setValueAt(this.val, this.row, this.col);
         }
     }
