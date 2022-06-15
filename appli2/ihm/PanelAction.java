@@ -5,6 +5,7 @@ import javax.swing.*;
 import appli2.Controleur;
 
 import java.awt.event.*;
+import java.awt.BorderLayout;
 
 public class PanelAction extends JPanel implements ActionListener
 {
@@ -20,17 +21,31 @@ public class PanelAction extends JPanel implements ActionListener
     {
         this.ctrl = ctrl;
 
-        // Création des composants
+        this.setLayout(new BorderLayout());
+
+        /*-------------------------*/
+        /* Création des composants */
+        /*-------------------------*/
+        JPanel panelBouton = new JPanel();
+        JPanel panelAutre  = new JPanel();
+
         this.boutonSuivant   = new JButton("Suivant");
         this.boutonPrecedent = new JButton("Précédent");
 
 
-        // Ajout des composants
-        this.add(this.boutonSuivant);
-        this.add(this.boutonPrecedent);
+        /*----------------------*/
+        /* Ajout des composants */
+        /*----------------------*/
+        panelBouton.add(this.boutonSuivant);
+        panelBouton.add(this.boutonPrecedent);
 
-        // Activation des composants
-        this.boutonSuivant.addActionListener(this);
+        this.add(panelBouton, BorderLayout.EAST);
+
+
+        /*---------------------------*/
+        /* Activation des composants */
+        /*---------------------------*/
+        this.boutonSuivant  .addActionListener(this);
         this.boutonPrecedent.addActionListener(this);
     }
 
