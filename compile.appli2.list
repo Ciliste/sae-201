@@ -1,15 +1,5 @@
 ./appli2/Controleur.java
-./appli2/ListeAdjacence.java
-./appli2/Reseau.java
 ./appli2/TestIhm.java
 
 ./appli2/ihm/Panel.java
 ./appli2/ihm/Frame.java
-
-./metier/Cuve.java
-./metier/Position.java
-./metier/Tube.java
-
-
-
-./appli2/Controleur.java
