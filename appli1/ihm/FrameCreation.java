@@ -64,14 +64,14 @@ public class FrameCreation extends JFrame {
 
         mnuFile.addSeparator();
 
-        JMenuItem mnuOpenFile = new JMenuItem("Ouvrir ...");
+        JMenuItem mnuOpenFile = new JMenuItem("Ouvrir");
         mnuOpenFile.setIcon(new ImageIcon("icons/open.png"));
         mnuOpenFile.setMnemonic('O');
         mnuOpenFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
         mnuOpenFile.addActionListener(this::ouvrir);
         mnuFile.add(mnuOpenFile);
 
-        this.mnuSaveFile = new JMenuItem("Sauvegarder ...");
+        this.mnuSaveFile = new JMenuItem("Sauvegarder");
         this.mnuSaveFile.setIcon(new ImageIcon("icons/save.png"));
         this.mnuSaveFile.setMnemonic('S');
         this.mnuSaveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
@@ -142,8 +142,6 @@ public class FrameCreation extends JFrame {
     }
 
     public void ouvrir(ActionEvent event) {
-
-        System.out.println("Ouvrir");
 
         if (this.statutTravail == FrameCreation.AUCUN) {
 
@@ -239,7 +237,9 @@ public class FrameCreation extends JFrame {
 
     public void sauvegarder(ActionEvent event) {
 
-        System.out.println("Sauvegarder");
+        if (!(event.getSource() instanceof JMenuItem)) return;
+        System.out.println(((JMenuItem)event.getSource()).getName());
+        if (1 == 1) return;
 
         if (this.statutTravail == FrameCreation.AUCUN) {
 
@@ -250,6 +250,7 @@ public class FrameCreation extends JFrame {
             
             for (MethodeSauvegarde methode : MethodeSauvegarde.values()) {
 
+                if (methode.getNom().equals(((JMenuItem)event.getSource()).getText())) {}
             }
 
             try {
@@ -269,7 +270,10 @@ public class FrameCreation extends JFrame {
 
             Files.setAttribute(Path.of("path"), "user:encryption used", "testtesttest");
         }
-        catch (Exception err) {}
+        catch (Exception err) {
+
+            err.printStackTrace();
+        }
     }
 
     public void sauvegarderSous(Class<? extends Reseau> classe) {
