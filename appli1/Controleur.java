@@ -27,12 +27,10 @@ import metier.reseau.Reseau;
 public class Controleur
 {
     private static String FORMAT_KEY_WORD = "user:reseauformat";
-    
-    private FrameCreation frame;
 
     public Controleur() {
         
-        this.frame = new FrameCreation(this);
+        new FrameCreation(this);
     }
 
     public Reseau ouvrir(File file) throws IOException, IllegalArgumentException, NoSuchMethodException {
