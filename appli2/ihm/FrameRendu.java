@@ -7,7 +7,6 @@ import appli2.Controleur;
 import metier.reseau.Reseau;
 
 import java.awt.Dimension;
-import java.awt.BorderLayout;
 
  
 public class FrameRendu extends JFrame implements ActionListener
@@ -82,16 +81,20 @@ public class FrameRendu extends JFrame implements ActionListener
 
 	public void actionPerformed ( ActionEvent e )
 	{
+        String nomFichier = "";
+
 		// Création et ouverture d'un JFileChooser pour affecter
 		if ( e.getSource() == this.menuiFichierOuvrir )
 		{
-			JFileChooser fc = new JFileChooser("./images");
+			JFileChooser fc = new JFileChooser("./");
 
 			fc.setMultiSelectionEnabled(false);
 
 			int returnVal = fc.showOpenDialog(this);
-			//if (returnVal == JFileChooser.APPROVE_OPTION)
-			//	this.ctrl.setFichierImage(fc.getSelectedFile().getAbsolutePath());
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+				nomFichier = fc.getSelectedFile().getAbsolutePath();
+            
+            System.out.println(nomFichier.length());
 		}
 
 		// Fermeture de l'application
