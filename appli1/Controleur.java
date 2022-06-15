@@ -129,10 +129,6 @@ public class Controleur
         }
     }
 
-    public static void main(String[] args) {
-
-        new Controleur();
-    }
 
     public enum MethodeSauvegarde {
 
@@ -165,5 +161,12 @@ public class Controleur
             if (this.frame == null) return;
             this.frame.sauvegarderSous(this.classeSauvegarde);
         }
+    }
+
+
+
+    public static void main(String[] args) {
+
+        new Controleur();
     }
 }
