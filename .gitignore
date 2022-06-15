@@ -27,3 +27,6 @@ hs_err_pid*
 # Fichier vsCode
 launch.json
 settings.json
+
+# Fichier data
+*.data
