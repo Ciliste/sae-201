@@ -19,14 +19,14 @@ public class Panel extends JPanel {
         this.reseau = reseau2;
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics g)
+    {
         super.paint(g);
 
         
 
         int x = 0;
 
-        int cpt = 0;
         for (int i = 0; i < this.reseau.getEnsCuves().size(); i++)
         {
             Cuve cuve = this.reseau.getEnsCuves().get(i);
@@ -60,13 +60,10 @@ public class Panel extends JPanel {
                 couleur = new Color(255, (int) ((cuve.getContenu()/2)-255), (int) ((cuve.getContenu()/2)-255));
             }
             
-
+            couleur = Color.WHITE;
             g.setColor(couleur);
             g.fillOval(x, y, width, height);
 
-            
-
-            cpt ++;
         }
 
         

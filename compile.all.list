@@ -1,30 +1,40 @@
 ./appli1/Controleur.java
-./appli1/ListeAdjacence.java
-./appli1/MatriceCout.java
-./appli1/MatriceOptimisee.java
-./appli1/Reseau.java
+./appli1/Console.java
 
 ./appli1/ihm/FrameCreation.java
 ./appli1/ihm/PanelAction.java
 ./appli1/ihm/PanelCreation.java
 
+
+./appli1/ihm/editeur/cuve/EditeurCapacite.java
+./appli1/ihm/editeur/cuve/EditeurContenu.java
+./appli1/ihm/editeur/cuve/EditeurPosInfo.java
+
+./appli1/ihm/editeur/tube/EditeurCuve.java
+./appli1/ihm/editeur/tube/EditeurSection.java
+
+
 ./appli1/ihm/model/CuveModel.java
-./appli1/ihm/model/EditeurCapacite.java
-./appli1/ihm/model/EditeurContenu.java
-./appli1/ihm/model/EditeurPosInfo.java
+./appli1/ihm/model/TubeModel.java
 
 ./appli1/ihm/table/CuveTable.java
-
-./appli1/ihm/textfield/AbstractInputTextField.java
-./appli1/ihm/textfield/NbCuveInput.java
+./appli1/ihm/table/TubeTable.java
 
 
 
-./appli2/ihm/Frame.java
+./appli2/Controleur.java
+./appli2/TestIhm.java
+
 ./appli2/ihm/Panel.java
+./appli2/ihm/Frame.java
 
 
 
 ./metier/Cuve.java
 ./metier/Position.java
 ./metier/Tube.java
+
+./metier/reseau/ListeAdjacence.java
+./metier/reseau/MatriceCout.java
+./metier/reseau/MatriceOptimisee.java
+./metier/reseau/Reseau.java
