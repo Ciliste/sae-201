@@ -1,6 +1,9 @@
 package appli2.ihm;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.io.File;
 import java.util.Scanner;
@@ -30,6 +33,8 @@ public class FrameRendu extends JFrame implements ActionListener
         this.setTitle("Frame rendu");
         this.setLocation(0, 0);
         this.setMinimumSize(new Dimension(1000, 1000));
+
+        this.setLayout(new BorderLayout());
 
 
         /*-------------------------*/
@@ -108,7 +113,7 @@ public class FrameRendu extends JFrame implements ActionListener
             /* Panel de rendu */
             this.panelRendu = new PanelRendu(this.ctrl, this.reseau);
             /* Panel de rendu */
-            this.add(this.panelRendu);
+            this.add(this.panelRendu, BorderLayout.CENTER);
 		}
 
 
