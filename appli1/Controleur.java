@@ -26,9 +26,9 @@ public class Controleur
     public Controleur()
     {
         // if (affichage == "GRAPHIQUE")
-            // this.frame = new FrameCreation(this);
+            this.frame = new FrameCreation(this);
         // else
-            Console.affichageConsole();
+        //    Console.affichageConsole();
     }
 
 
