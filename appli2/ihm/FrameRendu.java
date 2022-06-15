@@ -26,6 +26,7 @@ public class FrameRendu extends JFrame implements ActionListener
 
     private Reseau reseau;
     private Controleur ctrl;
+    private PanelAction panelAction;
 
 
     public FrameRendu(Controleur ctrl) 
@@ -41,6 +42,8 @@ public class FrameRendu extends JFrame implements ActionListener
 		/* Création des composants */
 		/*-------------------------*/
         this.ctrl = ctrl;
+
+        this.panelAction = new PanelAction(this.ctrl);
 
 		/* Barre de Menu */
 		JMenuBar menuBar  = new JMenuBar();
@@ -61,6 +64,9 @@ public class FrameRendu extends JFrame implements ActionListener
         /*----------------------*/
 		/* Ajout des composants */
 		/*----------------------*/
+        /* Ajout du panel action */
+        this.add(this.panelAction, BorderLayout.NORTH);
+
         /* Dans le menu Fichier  */
         menuFichier.add(this.menuiFichierOuvrir);
         menuFichier.add(this.menuiFichierSave);
