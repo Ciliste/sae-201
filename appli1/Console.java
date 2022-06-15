@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import metier.Position;
+
 import iut.algo.Clavier;
 import metier.Cuve;
 import metier.Tube;
@@ -36,13 +38,13 @@ public class Console
 
 
         // Demande du type de réseau à créée
-        System.out.print("Comment voulez sauvegardez les données (liste/matrice/matrice optimisee) : ");
+        System.out.print("Quel type de réseau voulez-vous créée (liste/matrice/matrice optimisee) : ");
         Console.typeSave = Clavier.lireString().toUpperCase();
         while (Console.typeSave.indexOf("LIST") == -1 && !Console.typeSave.equals("MATRICE") && Console.typeSave.indexOf("MATRICE OPTIMIS") == -1)
         {
             System.out.println("Erreur : saisie invalide, veuillez saisie un des choix suivant (liste/matrice/matrice optimisee)");
 
-            System.out.print("Comment voulez sauvegardez les données : ");
+            System.out.print("Quel type de réseau voulez-vous créée (liste/matrice/matrice optimisee) : ");
             Console.typeSave = Clavier.lireString().toUpperCase();
         }
 
@@ -82,29 +84,46 @@ public class Console
         for (int i = 0; i < nbCuve; i++)
         {
             // Demande de la capacité
-            System.out.format("Capacité de la Cuve %c : ", identifiant + i);
+            System.out.print("Capacité de la Cuve '" + (char)(identifiant + i) + "' : ");
             capacite = Clavier.lire_int();
             while (capacite < 200 || capacite > 1000)
             {
                 System.out.println("Erreur : capacité invalide, veuillez choisir une capacité entre 200 et 1 000");
 
-                System.out.format("Capacité de la Cuve %c : ", identifiant + i);
+                System.out.print("Capacité de la Cuve '" + (char)(identifiant + i) + "' : ");
                 capacite = Clavier.lire_int();
             }
 
             // Demande du contenu
-            System.out.format("Contenu de la Cuve %c : ", identifiant + i);
+            System.out.print("Contenu de la Cuve '" + (char)(identifiant + i) + "' : ");
             contenu = Clavier.lire_int();
             while (contenu < 0 || contenu > capacite)
             {
                 System.out.println("Erreur : contenu invalide, veuillez choisir un contenu entre 0 et " + capacite);
 
-                System.out.format("Capacité de la Cuve %c : ", identifiant + i);
+                System.out.print("Capacité de la Cuve '" + (char)(identifiant + i) + "' : ");
                 contenu = Clavier.lire_int();
             }
 
+            System.out.println("Position horizontal de la Cuve '" + (char)(identifiant + i) + "' : ");
+            int x = Clavier.lire_int();
 
-            reseau.ajouterCuve(Cuve.creerCuve(capacite, contenu));
+            System.out.println("Position verticale de la Cuve '" + (char)(identifiant + i) + "' : ");
+            int y = Clavier.lire_int();
+
+
+            System.out.println("Où voulez-vous placer les informations de la Cuve '" + (char)(identifiant + i) + "' (0 = haut, 1 = droite, 2 = bas, 3 = gauche) : ");
+            int posInfo = Clavier.lire_int();
+            while (posInfo < 0 || posInfo > 3)
+            {
+                System.out.println("Erreur : position invalide, veuillez choisir une position entre 0 et 3");
+
+                System.out.println("Où voulez-vous placer les informations de la Cuve '" + (char)(identifiant + i) + "' (0 = haut, 1 = droite, 2 = bas, 3 = gauche) : ");
+                posInfo = Clavier.lire_int();
+            }
+
+
+            reseau.ajouterCuve(Cuve.creerCuve(capacite, contenu, new Position(x, y), posInfo));
         }
 
 
@@ -210,7 +229,7 @@ public class Console
             {
                 System.out.print("Nom du fichier : ");
                 Console.nomFichier = Clavier.lireString();
-                while (Console.nomFichier.equals("") && Console.nomFichier.indexOf(" ") == -1 && Console.nomFichier.indexOf(".") == -1)
+                while (Console.nomFichier.equals("") || Console.nomFichier.indexOf(" ") != -1 || Console.nomFichier.indexOf(".") != -1)
                 {
                     System.out.println("Erreur : nom de fichier invalide, veuillez saisie un nom de fichier sans espace et sans extension");
 
