@@ -25,12 +25,10 @@ public class Controleur
 
     public Controleur()
     {
-
-        // // this.reseau = new ListeAdjacence();
         // if (affichage == "GRAPHIQUE")
-            this.frame = new FrameCreation(this);
+            // this.frame = new FrameCreation(this);
         // else
-        //     Console.affichageConsole();
+            Console.affichageConsole();
     }
 
 
