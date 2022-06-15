@@ -27,8 +27,5 @@ public class TestIhm
         listAdj.ajouterTube(t2);
         listAdj.ajouterTube(t3);
         listAdj.ajouterTube(t4);
-
-
-        new Controleur(listAdj);
     }
 }
