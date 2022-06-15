@@ -14,16 +14,17 @@ public class PanelRendu extends JPanel {
     private Controleur ctrl;
     private Reseau reseau;
 
-    public PanelRendu(Controleur controleur, Reseau reseau) {
-        this.ctrl = controleur;
+    public PanelRendu(Controleur ctrl, Reseau reseau) {
+        this.ctrl = ctrl;
         this.reseau = reseau;
     }
 
     public void paint(Graphics g)
     {
         super.paint(g);
+        Color couleurInitiale = g.getColor();
 
-        
+
 
         int x = 0;
 
@@ -59,13 +60,18 @@ public class PanelRendu extends JPanel {
             {
                 couleur = new Color(255, (int) ((cuve.getContenu()/2)-255), (int) ((cuve.getContenu()/2)-255));
             }
-            
-            couleur = Color.WHITE;
-            g.setColor(couleur);
+  
+
+
+
+            g.setColor(Color.RED);
             g.fillOval(x, y, width, height);
+            g.setColor(Color.BLACK);
+            g.drawOval(x, y, width, height);
 
         }
 
         
+        g.setColor(couleurInitiale);
     }
 }

@@ -1,5 +1,7 @@
 package appli2;
 
+import javax.swing.JMenuBar;
+
 import appli2.ihm.FrameRendu;
 import metier.Cuve;
 import metier.Tube;
@@ -10,16 +12,16 @@ import metier.reseau.Reseau;
 public class Controleur
 {
 
-    private FrameRendu frame;
+    private FrameRendu frameRendu;
 
     public Controleur(Reseau reseau)
     {
-        this.frame = new FrameRendu(this, reseau);
+        this.frameRendu = new FrameRendu(this, reseau);
     }
 
 
-    public int getWidthFrame () { return this.frame.getWidth (); }
-    public int getHeightFrame() { return this.frame.getHeight(); }
+    public int getWidthFrame () { return this.frameRendu.getWidth (); }
+    public int getHeightFrame() { return this.frameRendu.getHeight(); }
 
 
 
@@ -37,6 +39,12 @@ public class Controleur
         Tube t2 = Tube.creerTube(c2,c3,4);
         Tube t3 = Tube.creerTube(c3,c4,6);
         Tube t4 = Tube.creerTube(c4,c5,8);
+
+        listAdj.ajouterCuve(c1);
+        listAdj.ajouterCuve(c2);
+        listAdj.ajouterCuve(c3);
+        listAdj.ajouterCuve(c4);
+        listAdj.ajouterCuve(c5);
 
         listAdj.ajouterTube(t1);
         listAdj.ajouterTube(t2);

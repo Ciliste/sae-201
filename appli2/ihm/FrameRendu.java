@@ -1,27 +1,103 @@
 package appli2.ihm;
 
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.event.*;
 
 import appli2.Controleur;
 import metier.reseau.Reseau;
 
 import java.awt.Dimension;
+import java.awt.BorderLayout;
 
-
-public class FrameRendu extends JFrame
+ 
+public class FrameRendu extends JFrame implements ActionListener
 {
-    private PanelRendu panel;
+    private PanelRendu panelRendu;
 
-    public FrameRendu(Controleur controleur, Reseau reseau) 
+    private JMenuItem  menuiFichierOuvrir;
+	private JMenuItem  menuiFichierQuitter;
+
+
+    public FrameRendu(Controleur ctrl, Reseau reseau) 
     {
-        this.setTitle("ton indentation de merde");
+        this.setTitle("Frame rendu");
+        this.setLocation(0, 0);
+        this.setMinimumSize(new Dimension(1000, 1000));
+
+
+
+        /*-------------------------*/
+		/* Création des composants */
+		/*-------------------------*/
+		/* Barre de Menu */
+		JMenuBar menuBar  = new JMenuBar();
+
+		JMenu menuFichier = new JMenu("Fichier");
+		menuFichier.setMnemonic('F');
+
+		this.menuiFichierOuvrir  = new JMenuItem("Ouvrir");
+		this.menuiFichierQuitter = new JMenuItem("Quitter");
+
+		this.menuiFichierOuvrir .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+		this.menuiFichierQuitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+        
+
+        /* Panel de rendu */
+        this.panelRendu = new PanelRendu(ctrl, reseau);
+
+
+        /*----------------------*/
+		/* Ajout des composants */
+		/*----------------------*/
+        /* Dans le menu Fichier  */
+        menuFichier.add(this.menuiFichierOuvrir);
+		menuFichier.add(this.menuiFichierQuitter);
+
+        /* Ajout du menu Fichier à la barre de menu */
+        menuBar.add(menuFichier);
+
+        /* Ajout de la barre de menu à la fenêtre */
+        this.setJMenuBar(menuBar);
+
+        /* Panel de rendu */
+        this.add(this.panelRendu);
+
+
+
+        /*-------------------------------*/
+		/* Activation des composants     */
+		/*-------------------------------*/
+		this.menuiFichierOuvrir .addActionListener(this);
+		this.menuiFichierQuitter.addActionListener(this);
+
+
+        /*--------------*/
+        /* Finalisation */
+        /*--------------*/
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        this.panel = new PanelRendu(controleur, reseau);
-        this.add(this.panel);
-
-        this.setMinimumSize(new Dimension(602, 602));
-
         this.setVisible(true);
+    }
+
+
+
+	public void actionPerformed ( ActionEvent e )
+	{
+		// Création et ouverture d'un JFileChooser pour affecter
+		if ( e.getSource() == this.menuiFichierOuvrir )
+		{
+			JFileChooser fc = new JFileChooser("./images");
+
+			fc.setMultiSelectionEnabled(false);
+
+			int returnVal = fc.showOpenDialog(this);
+			//if (returnVal == JFileChooser.APPROVE_OPTION)
+			//	this.ctrl.setFichierImage(fc.getSelectedFile().getAbsolutePath());
+		}
+
+		// Fermeture de l'application
+		if ( e.getSource() == this.menuiFichierQuitter )
+		{
+			this.dispose();
+		}
     }
 }
