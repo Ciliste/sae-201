@@ -5,21 +5,19 @@ import javax.swing.JFrame;
 import appli2.Controleur;
 import metier.reseau.Reseau;
 
-import java.awt.event.*;
-import java.awt.Graphics;
 import java.awt.Dimension;
 
 
-public class Frame extends JFrame
+public class FrameRendu extends JFrame
 {
-    private Panel panel;
+    private PanelRendu panel;
 
-    public Frame(Controleur controleur, Reseau reseau) 
+    public FrameRendu(Controleur controleur, Reseau reseau) 
     {
         this.setTitle("ton indentation de merde");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        this.panel = new Panel(controleur, reseau);
+        this.panel = new PanelRendu(controleur, reseau);
         this.add(this.panel);
 
         this.setMinimumSize(new Dimension(602, 602));

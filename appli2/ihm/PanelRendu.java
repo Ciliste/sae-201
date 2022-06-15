@@ -10,11 +10,11 @@ import metier.reseau.Reseau;
 import metier.Cuve;
 
 
-public class Panel extends JPanel {
+public class PanelRendu extends JPanel {
     private Controleur ctrl;
     private Reseau reseau;
 
-    public Panel(Controleur controleur, Reseau reseau) {
+    public PanelRendu(Controleur controleur, Reseau reseau) {
         this.ctrl = controleur;
         this.reseau = reseau;
     }
