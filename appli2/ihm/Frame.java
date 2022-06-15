@@ -3,7 +3,7 @@ package appli2.ihm;
 import javax.swing.JFrame;
 
 import appli2.Controleur;
-import appli2.Reseau;
+import metier.reseau.Reseau;
 
 import java.awt.event.*;
 import java.awt.Graphics;

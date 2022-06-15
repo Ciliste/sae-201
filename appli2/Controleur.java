@@ -7,6 +7,7 @@ import appli2.ihm.Frame;
 import iut.algo.Clavier;
 import metier.Cuve;
 import metier.Tube;
+import metier.reseau.Reseau;
 
 public class Controleur {
     private Frame frame;

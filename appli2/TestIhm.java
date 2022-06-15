@@ -1,17 +1,16 @@
 package appli2;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import metier.Cuve;
 import metier.Tube;
+import metier.reseau.ListeAdjacence;
+import metier.reseau.Reseau;
 
 
 public class TestIhm
 {
     public static void main(String[] args)
     {
-        Reseau     listAdj;
+        Reseau     listAdj = new ListeAdjacence();
         
         Cuve c1 = Cuve.creerCuve(200);
         Cuve c2 = Cuve.creerCuve(300);
@@ -24,13 +23,11 @@ public class TestIhm
         Tube t3 = Tube.creerTube(c3,c4,6);
         Tube t4 = Tube.creerTube(c4,c5,8);
 
-        List<Tube> lstTube = new ArrayList<Tube>();
-        lstTube.add(t1);
-        lstTube.add(t2);
-        lstTube.add(t3);
-        lstTube.add(t4);
-        
-        listAdj = new ListeAdjacence(lstTube);
+        listAdj.ajouterTube(t1);
+        listAdj.ajouterTube(t2);
+        listAdj.ajouterTube(t3);
+        listAdj.ajouterTube(t4);
+
 
         new Controleur(listAdj);
     }
