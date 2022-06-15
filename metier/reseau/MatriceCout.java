@@ -40,9 +40,31 @@ public class MatriceCout extends Reseau {
         return sRet;
     }
 
-    public static Reseau deserialize(String s) {
+    public static Reseau deserialize(String str) {
 
-        return null;
+        MatriceCout reseau = new MatriceCout();
+        
+        for (String ligne : str.split("\n")) {
+
+            reseau.ajouterCuve(Cuve.deserialize(ligne.split(" - ")[0].replace(" ", "")));
+        }
+
+        String[] lignes = str.split("\n");
+        for (int cptCuve = 0; cptCuve < lignes.length; cptCuve++) {
+
+            String ligne = lignes[cptCuve].split(" - ")[1];
+            while (ligne.contains("  ")) ligne = ligne.replace("  ", " ");
+            while (ligne.startsWith(" ")) ligne = ligne.substring(1);
+
+            String[] adjs = ligne.split(" ");
+            for (int cpt = 0; cpt < adjs.length; cpt++) {
+
+                if (adjs[cpt].equals("X") || cptCuve > cpt) continue;
+                reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(cptCuve), reseau.getEnsCuves().get(cpt), Integer.parseInt(adjs[cpt])));
+            }
+        }
+        
+        return reseau;
     }
 
     public static void main(String[] args) {
@@ -60,9 +82,11 @@ public class MatriceCout extends Reseau {
         reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(0), reseau.getEnsCuves().get(2), 10));
         reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(0), reseau.getEnsCuves().get(3), 10));
         reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(1), reseau.getEnsCuves().get(2), 10));
-        reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(1), reseau.getEnsCuves().get(3), 10));
+        reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(1), reseau.getEnsCuves().get(3), 8));
         reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get(2), reseau.getEnsCuves().get(3), 10));
 
         System.out.println(reseau.serialize());
+
+        System.out.println(MatriceCout.deserialize(reseau.serialize()).serialize());
     }
 }

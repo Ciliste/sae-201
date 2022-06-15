@@ -44,9 +44,9 @@ public class MatriceOptimisee extends Reseau {
         return sRet;
     }
 
-    public static Reseau deserialize(String s) {
+    public static Reseau deserialize(String str) {
 
-        return null;
+        return MatriceCout.deserialize(str);
     }
 
     public static void main(String[] args) {
