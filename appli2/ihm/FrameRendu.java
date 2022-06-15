@@ -13,9 +13,12 @@ import java.awt.Dimension;
  
 public class FrameRendu extends JFrame implements ActionListener
 {
+    private static String stringReseau;
+
     private PanelRendu panelRendu;
 
     private JMenuItem  menuiFichierOuvrir;
+    private JMenuItem  menuiFichierSave;
 	private JMenuItem  menuiFichierQuitter;
 
     private Reseau reseau;
@@ -27,7 +30,6 @@ public class FrameRendu extends JFrame implements ActionListener
         this.setTitle("Frame rendu");
         this.setLocation(0, 0);
         this.setMinimumSize(new Dimension(1000, 1000));
-
 
 
         /*-------------------------*/
@@ -42,9 +44,11 @@ public class FrameRendu extends JFrame implements ActionListener
 		menuFichier.setMnemonic('F');
 
 		this.menuiFichierOuvrir  = new JMenuItem("Ouvrir");
+        this.menuiFichierSave    = new JMenuItem("Enregistrer");
 		this.menuiFichierQuitter = new JMenuItem("Quitter");
 
 		this.menuiFichierOuvrir .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        this.menuiFichierSave   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		this.menuiFichierQuitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
 
 
@@ -54,6 +58,8 @@ public class FrameRendu extends JFrame implements ActionListener
 		/*----------------------*/
         /* Dans le menu Fichier  */
         menuFichier.add(this.menuiFichierOuvrir);
+        menuFichier.add(this.menuiFichierSave);
+        menuFichier.add(new JSeparator());
 		menuFichier.add(this.menuiFichierQuitter);
 
         /* Ajout du menu Fichier à la barre de menu */
@@ -61,10 +67,6 @@ public class FrameRendu extends JFrame implements ActionListener
 
         /* Ajout de la barre de menu à la fenêtre */
         this.setJMenuBar(menuBar);
-
-        /* Panel de rendu */
-        this.add(this.panelRendu);
-
 
 
         /*-------------------------------*/
@@ -99,10 +101,14 @@ public class FrameRendu extends JFrame implements ActionListener
 				nomFichier = fc.getSelectedFile().getAbsolutePath();
 
             if ( !nomFichier.equals("") )
-                this.lireFichier(nomFichier);
+                stringReseau = FrameRendu.lireFichier(nomFichier);
+
+            
 
             /* Panel de rendu */
             this.panelRendu = new PanelRendu(this.ctrl, this.reseau);
+            /* Panel de rendu */
+            this.add(this.panelRendu);
 		}
 
 
@@ -115,7 +121,7 @@ public class FrameRendu extends JFrame implements ActionListener
 
     
 
-    public String lireFichier(String nomFichier)
+    public static String lireFichier(String nomFichier)
     {
         String sRet = "";
 
