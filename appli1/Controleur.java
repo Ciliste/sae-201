@@ -1,7 +1,7 @@
 package appli1;
 
 import appli1.ihm.FrameCreation;
-import iut.algo.Clavier;
+//import iut.algo.Clavier;
 
 
 public class Controleur
