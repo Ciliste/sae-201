@@ -1,7 +1,9 @@
 package appli1;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,6 +13,9 @@ import javax.print.AttributeException;
 
 import appli1.ihm.FrameCreation;
 import iut.algo.Clavier;
+import metier.Cuve;
+import metier.Position;
+import metier.Tube;
 import metier.reseau.ListeAdjacence;
 import metier.reseau.MatriceCout;
 import metier.reseau.MatriceOptimisee;
@@ -23,17 +28,10 @@ public class Controleur
     
     private FrameCreation frame;
 
-    public Controleur()
-    {
-        // if (affichage == "GRAPHIQUE")
-            this.frame = new FrameCreation(this);
-        // else
-        //    Console.affichageConsole();
+    public Controleur() {
+        
+        this.frame = new FrameCreation(this);
     }
-
-
-    public int getWidthFrame () { return this.frame.getWidth (); }
-    public int getHeightFrame() { return this.frame.getHeight(); }
 
     public Reseau ouvrir(File file) throws IOException, IllegalArgumentException, NoSuchMethodException {
 
@@ -75,11 +73,46 @@ public class Controleur
 
     public void sauvegarder(File file, Class<? extends Reseau> classe, Object[][] cuves, Object[][] tubes) {
 
-        System.out.println("Sheeesh");
+        if (!(cuves[0][0] instanceof Character && cuves[0][1] instanceof Integer && cuves[0][2] instanceof Double && cuves[0][3] instanceof Integer && cuves[0][4] instanceof Integer && cuves[0][5] instanceof Integer))
+            throw new IllegalArgumentException("Les données de la matrice des cuves sont incorrectes");
+
+        if (!(tubes[0][0] instanceof Character && tubes[0][1] instanceof Character && tubes[0][2] instanceof Integer))
+            throw new IllegalArgumentException("Les données de la matrice des tubes sont incorrectes");
+
+        Reseau reseau = null;
+        try {
+
+            reseau = classe.getDeclaredConstructor().newInstance();
+        }
+        catch (Exception err) {
+
+            throw new IllegalArgumentException("Cette implementation d'un Réseau n'est pas valide");
+        }
+
+        for (Object[] ligne : cuves) {
+
+            reseau.ajouterCuve(Cuve.creerCuve((Integer) ligne[1], (Double) ligne[2], new Position((Integer) ligne[3], (Integer) ligne[4]), (Integer) ligne[5]));
+        }
+
+        for (Object[] ligne : tubes) {
+
+            reseau.ajouterTube(Tube.creerTube(reseau.getEnsCuves().get((Character) ligne[1] - 'A'), reseau.getEnsCuves().get((Character) ligne[2] - 'A'), (Integer) ligne[3]));
+        }
+
+        try {
+
+            PrintWriter pw = new PrintWriter(file);
+            pw.write(reseau.serialize());
+            pw.close();
+        }
+        catch (FileNotFoundException err) {
+
+            // ¯\_(ツ)_/¯
+        }
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
+
         new Controleur();
     }
 
