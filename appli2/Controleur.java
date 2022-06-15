@@ -1,7 +1,5 @@
 package appli2;
 
-import javax.swing.JMenuBar;
-
 import appli2.ihm.FrameRendu;
 import metier.Cuve;
 import metier.Tube;
@@ -16,7 +14,7 @@ public class Controleur
 
     public Controleur(Reseau reseau)
     {
-        this.frameRendu = new FrameRendu(this, reseau);
+        this.frameRendu = new FrameRendu(this);
     }
 
 

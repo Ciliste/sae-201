@@ -2,6 +2,8 @@ package appli2.ihm;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.File;
+import java.util.Scanner;
 
 import appli2.Controleur;
 import metier.reseau.Reseau;
@@ -17,9 +19,10 @@ public class FrameRendu extends JFrame implements ActionListener
 	private JMenuItem  menuiFichierQuitter;
 
     private Reseau reseau;
+    private Controleur ctrl;
 
 
-    public FrameRendu(Controleur ctrl, Reseau reseau) 
+    public FrameRendu(Controleur ctrl) 
     {
         this.setTitle("Frame rendu");
         this.setLocation(0, 0);
@@ -30,6 +33,8 @@ public class FrameRendu extends JFrame implements ActionListener
         /*-------------------------*/
 		/* Création des composants */
 		/*-------------------------*/
+        this.ctrl = ctrl;
+
 		/* Barre de Menu */
 		JMenuBar menuBar  = new JMenuBar();
 
@@ -41,10 +46,7 @@ public class FrameRendu extends JFrame implements ActionListener
 
 		this.menuiFichierOuvrir .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		this.menuiFichierQuitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-        
 
-        /* Panel de rendu */
-        this.panelRendu = new PanelRendu(ctrl, reseau);
 
 
         /*----------------------*/
@@ -96,15 +98,40 @@ public class FrameRendu extends JFrame implements ActionListener
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 				nomFichier = fc.getSelectedFile().getAbsolutePath();
 
-            //nomFichier
-            
-            System.out.println(nomFichier.length());
+            if ( !nomFichier.equals("") )
+                this.lireFichier(nomFichier);
+
+            /* Panel de rendu */
+            this.panelRendu = new PanelRendu(this.ctrl, this.reseau);
 		}
+
 
 		// Fermeture de l'application
 		if ( e.getSource() == this.menuiFichierQuitter )
 		{
 			this.dispose();
 		}
+    }
+
+    
+
+    public String lireFichier(String nomFichier)
+    {
+        String sRet = "";
+
+        File file = new File(nomFichier);
+
+        try
+        {
+            Scanner sc = new Scanner(file);
+
+            while (sc.hasNextLine())
+                sRet += sc.nextLine();
+
+            sc.close();
+
+            System.out.println(sRet);
+            return sRet;
+        }catch(Exception e) { System.out.println("Erreur lors de la lecture du fichier"); e.printStackTrace(); return null; }
     }
 }
