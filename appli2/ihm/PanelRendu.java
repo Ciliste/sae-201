@@ -1,6 +1,7 @@
 package appli2.ihm;
 
 import static java.lang.Math.round;
+import static java.lang.Math.abs;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -36,11 +37,44 @@ public class PanelRendu extends JPanel implements MouseMotionListener
         int x, y, width, height;
 
 
+        for (Tube tube : this.reseau.getEnsTubes())
+        {
+            // Détermination de la position du tube
+            int xOrig = tube.getCuveA().getPosition().x() + (tube.getCuveA().getPosition().x() / 2);
+            int yOrig = tube.getCuveA().getPosition().y() + (tube.getCuveA().getPosition().x() / 2);
+
+            int xDest = tube.getCuveB().getPosition().x() + (tube.getCuveB().getPosition().x() / 2);
+            int yDest = tube.getCuveB().getPosition().y() + (tube.getCuveB().getPosition().x() / 2);
+
+            int xSection = (xOrig + xDest) / 2;
+            int ySection = (yOrig + yDest) / 2;
+
+            if (abs(xOrig - xDest) < abs(yOrig - yDest))
+            {
+                g.drawString(""+tube.getSection(), xSection+tube.getSection(), ySection);
+            }
+            else
+            {
+                g.drawString(""+tube.getSection(), xSection, ySection+tube.getSection());
+            }
+            
+
+            
+            // Dessin du tube
+            g.setColor(Color.BLACK);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setStroke(new java.awt.BasicStroke(tube.getSection()));
+            g2.drawLine(xOrig, yOrig, xDest, yDest);
+
+            g2.setStroke(new java.awt.BasicStroke(1));
+        }
+
+
         for (Cuve cuve : this.reseau.getEnsCuves())
         {
             // Détermination de la position de la cuve
-            x = cuve.getPosition().x() - (cuve.getPosition().x() / 2);
-            y = cuve.getPosition().y() - (cuve.getPosition().x() / 2);
+            x = cuve.getPosition().x();
+            y = cuve.getPosition().y();
 
             // Détermination de la taille des cuves sur l'ihm
             width  = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
@@ -72,22 +106,7 @@ public class PanelRendu extends JPanel implements MouseMotionListener
 
 
             // Dessins des tubes
-            for (Tube tube : this.reseau.getEnsTubes())
-            {
-                // Détermination de la position du tube
-                int xOrig = tube.getCuveA().getPosition().x() + (tube.getCuveA().getPosition().x() / 2);
-                int yOrig = tube.getCuveA().getPosition().y() + (tube.getCuveA().getPosition().x() / 2);
-
-                int xDest = tube.getCuveB().getPosition().x() + (tube.getCuveB().getPosition().x() / 2);
-                int yDest = tube.getCuveB().getPosition().y() + (tube.getCuveB().getPosition().x() / 2);
-
-                
-                // Dessin du tube
-                g.setColor(Color.BLACK);
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setStroke(new java.awt.BasicStroke(tube.getSection()));
-                g2.drawLine(xOrig, yOrig, xDest, yDest);
-            }
+            
                 
 
         }

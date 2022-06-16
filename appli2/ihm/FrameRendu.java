@@ -172,15 +172,6 @@ public class FrameRendu extends JFrame implements ActionListener
         }
     }
 
-
-/*
-    // vérification que le fichier sois bien un fichier de type .data
-    if (nomFichier.indexOf(".data") == -1)
-    {
-        JOptionPane.showMessageDialog(this, "Le fichier n'est pas un fichier de type .data", "Erreur", JOptionPane.ERROR_MESSAGE);
-    }
-*/
-
     
 
     public static String lireFichier(String nomFichier)
