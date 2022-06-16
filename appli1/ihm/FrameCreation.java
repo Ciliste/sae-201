@@ -99,7 +99,7 @@ public class FrameCreation extends JFrame {
         mnuFile.add(mnuSaveAs);
         
         menuBar.add(mnuFile);
-        
+
         this.setJMenuBar(menuBar);
 
         this.setVisible(true);

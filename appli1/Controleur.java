@@ -23,7 +23,7 @@ public class Controleur
     private static String FORMAT_KEY_WORD = "user:reseauformat";
 
     public Controleur() {
-        
+
         new FrameCreation(this);
     }
 
