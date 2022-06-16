@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.Scanner;
 
 import appli2.Controleur;
+import metier.reseau.ListeAdjacence;
 import metier.reseau.Reseau;
 
 import java.awt.Dimension;
@@ -111,15 +112,28 @@ public class FrameRendu extends JFrame implements ActionListener
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 				nomFichier = fc.getSelectedFile().getAbsolutePath();
 
-            if ( !nomFichier.equals("") )
-                stringReseau = FrameRendu.lireFichier(nomFichier);
+            // vérification que le fichier sois bien un fichier de type .data
+            if (nomFichier.indexOf(".data") == -1)
+            {
+                JOptionPane.showMessageDialog(this, "Le fichier n'est pas un fichier de type .data", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                if ( !nomFichier.equals("") )
+                {
+                    stringReseau = FrameRendu.lireFichier(nomFichier);
 
-            
+                    // récupération du mode d'enregistrement du réseau
 
-            /* Panel de rendu */
-            this.panelRendu = new PanelRendu(this.ctrl, this.reseau);
-            /* Panel de rendu */
-            this.add(this.panelRendu, BorderLayout.CENTER);
+                    // transformation de la chaine de caractères en objet Reseau
+                    this.reseau = ListeAdjacence.deserialize(nomFichier);
+
+                    /* Panel de rendu */
+                    this.panelRendu = new PanelRendu(this.ctrl, this.reseau);
+                    /* Panel de rendu */
+                    this.add(this.panelRendu, BorderLayout.CENTER);
+                }
+            }
 		}
 
 

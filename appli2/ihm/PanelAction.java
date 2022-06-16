@@ -26,9 +26,11 @@ public class PanelAction extends JPanel implements ActionListener
         /*-------------------------*/
         /* Création des composants */
         /*-------------------------*/
+        /* Création des panels */
         JPanel panelBouton = new JPanel();
         JPanel panelAutre  = new JPanel();
 
+        /* Création des boutons */
         this.boutonSuivant   = new JButton("Suivant");
         this.boutonPrecedent = new JButton("Précédent");
 
@@ -36,10 +38,12 @@ public class PanelAction extends JPanel implements ActionListener
         /*----------------------*/
         /* Ajout des composants */
         /*----------------------*/
+        /* Ajout des boutons au panel bouton*/
         panelBouton.add(this.boutonSuivant);
         panelBouton.add(this.boutonPrecedent);
 
-        this.add(panelBouton, BorderLayout.EAST);
+        /* Ajout des panels au panel principal */
+        this.add(panelBouton, BorderLayout.WEST);
 
 
         /*---------------------------*/
@@ -48,6 +52,7 @@ public class PanelAction extends JPanel implements ActionListener
         this.boutonSuivant  .addActionListener(this);
         this.boutonPrecedent.addActionListener(this);
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e)
