@@ -28,46 +28,32 @@ public class PanelRendu extends JPanel implements MouseMotionListener
         super.paint(g);
         Color couleurInitiale = g.getColor();
 
+        /* Variable */
+        int x, y, width, height;
 
-        int x = 0;
 
-        for (int i = 0; i < this.reseau.getEnsCuves().size(); i++)
+        for (Cuve cuve : this.reseau.getEnsCuves())
         {
-            Cuve cuve = this.reseau.getEnsCuves().get(i);
+            // Détermination de la position de la cuve
+            x = cuve.getPosition().x() - (cuve.getPosition().x() / 2);
+            y = cuve.getPosition().y() - (cuve.getPosition().x() / 2);
 
-            int width  = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
-            int height = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
+            // Détermination de la taille des cuves sur l'ihm
+            width  = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
+            height = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
 
-            int y = cuve.getCapacite() / 20;
-            //System.out.println(((this.ctrl.getWidthFrame() / 100) + 1));
-            if (i+1 >= this.reseau.getEnsCuves().size())
-            {
-                x = 0;
-                y += (cuve.getCapacite() / 10) + 10 + width/2;
-            }
-            else
-            {
-                x += (cuve.getCapacite() / 10) + 10 + width/2;
-            }
-
-
-            //System.out.println(cuve.getCapacite() + " : " + x);
-
-
+            // Détermination de la couleur de la cuve
             Color couleur = new Color(0, 0, 0);
             if ((int) cuve.getContenu() / 2 <= 255)
-            {
-                couleur = new Color((int) cuve.getContenu() / 2, 0, 0);
-            }
+                // du noir vers le rouge
+                couleur = new Color((int) cuve.getContenu() / 4, 0, 0);
             else
-            {
+                // du rouge vers le blanc
                 couleur = new Color(255, (int) ((cuve.getContenu()/2)-255), (int) ((cuve.getContenu()/2)-255));
-            }
   
 
 
-
-            g.setColor(Color.RED);
+            g.setColor(couleur);
             g.fillOval(x, y, width, height);
             g.setColor(Color.BLACK);
             g.drawOval(x, y, width, height);
@@ -89,4 +75,6 @@ public class PanelRendu extends JPanel implements MouseMotionListener
     {
         System.out.println(e.getX() + " " + e.getY());
     }
+
+    
 }

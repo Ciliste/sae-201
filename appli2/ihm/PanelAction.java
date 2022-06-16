@@ -11,8 +11,8 @@ public class PanelAction extends JPanel implements ActionListener
 {
     private Controleur ctrl;
 
-    private JButton boutonSuivant;
     private JButton boutonPrecedent;
+    private JButton boutonSuivant;
 
     private JButton boutonAjouter;
 
@@ -28,22 +28,23 @@ public class PanelAction extends JPanel implements ActionListener
         /*-------------------------*/
         /* Création des panels */
         JPanel panelBouton = new JPanel();
-        JPanel panelAutre  = new JPanel();
+        JPanel panelSaisie  = new PanelSaisie(ctrl);
 
         /* Création des boutons */
-        this.boutonSuivant   = new JButton("Suivant");
-        this.boutonPrecedent = new JButton("Précédent");
+        this.boutonPrecedent = new JButton("◀");
+        this.boutonSuivant   = new JButton("▶");
 
 
         /*----------------------*/
         /* Ajout des composants */
         /*----------------------*/
         /* Ajout des boutons au panel bouton*/
-        panelBouton.add(this.boutonSuivant);
         panelBouton.add(this.boutonPrecedent);
+        panelBouton.add(this.boutonSuivant);
 
         /* Ajout des panels au panel principal */
         this.add(panelBouton, BorderLayout.WEST);
+        this.add(panelSaisie, BorderLayout.CENTER);
 
 
         /*---------------------------*/

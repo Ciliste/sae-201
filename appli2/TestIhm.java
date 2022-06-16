@@ -23,9 +23,19 @@ public class TestIhm
         Tube t3 = Tube.creerTube(c3,c4,6);
         Tube t4 = Tube.creerTube(c4,c5,8);
 
+        // Ajout des cuves
+        listAdj.ajouterCuve(c1);
+        listAdj.ajouterCuve(c2);
+        listAdj.ajouterCuve(c3);
+        listAdj.ajouterCuve(c4);
+        listAdj.ajouterCuve(c5);
+
+        // Ajout des tubes
         listAdj.ajouterTube(t1);
         listAdj.ajouterTube(t2);
         listAdj.ajouterTube(t3);
         listAdj.ajouterTube(t4);
+
+        new Controleur(listAdj);
     }
 }

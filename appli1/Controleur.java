@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import appli1.ihm.FrameCreation;
+import appli2.ihm.FrameRendu;
 import metier.Cuve;
 import metier.Cuve.PositionInfo;
 import metier.Position;
@@ -22,10 +23,13 @@ public class Controleur
 {
     private static String FORMAT_KEY_WORD = "user:reseauformat";
 
+    private FrameRendu frameRendu;
+
     public Controleur() {
 
         new FrameCreation(this);
     }
+
 
     public Reseau ouvrir(File file) throws IOException, IllegalArgumentException, NoSuchMethodException {
 

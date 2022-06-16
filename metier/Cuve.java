@@ -202,6 +202,11 @@ public class Cuve implements Comparable<Cuve>, Serializable {
         return (char) (Cuve.nbCuve + 'A');
     }
 
+    public Position getPosition() {
+
+        return Position.copier(this.position);
+    }
+
     // toString()
     public String toString() {
 
