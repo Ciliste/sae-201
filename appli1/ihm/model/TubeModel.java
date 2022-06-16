@@ -22,6 +22,15 @@ public class TubeModel extends AbstractTableModel {
     public TubeModel(Object[][] donnees) {
 
         this(donnees, TubeModel.COLUMNS);
+
+        for (Object[] lig : donnees) {
+            
+            for (Object obj : lig) {
+
+                System.out.print(obj + " ");
+            }
+        }
+        System.out.println();
     }
 
     public TubeModel(Object[][] donnees, String[] titres) {

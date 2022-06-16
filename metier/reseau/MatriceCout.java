@@ -52,6 +52,7 @@ public class MatriceCout extends Reseau {
         String[] lignes = str.split("\n");
         for (int cptCuve = 0; cptCuve < lignes.length; cptCuve++) {
 
+            if (lignes[cptCuve].split(" - ").length <= 1) continue;
             String ligne = lignes[cptCuve].split(" - ")[1];
             while (ligne.contains("  ")) ligne = ligne.replace("  ", " ");
             while (ligne.startsWith(" ")) ligne = ligne.substring(1);

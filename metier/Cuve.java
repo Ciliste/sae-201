@@ -56,7 +56,7 @@ public class Cuve implements Comparable<Cuve>, Serializable {
     public static final int CAPACITE_MIN = 200;
     public static final int CAPACITE_MAX = 1000;
 
-    public static int nbCuve = 0;
+    private static int nbCuve = 0;
 
     // Attributs d'instance
     private char identifiant;
@@ -96,7 +96,9 @@ public class Cuve implements Comparable<Cuve>, Serializable {
             return null;
         }
 
-        return new Cuve(capacite, contenu, position, posInfo);
+        Cuve temp = new Cuve(capacite, contenu, position, posInfo);
+        System.out.println(temp);
+        return temp;
     }
 
     public static Cuve deserialize(String str) {
@@ -113,6 +115,11 @@ public class Cuve implements Comparable<Cuve>, Serializable {
             ),
             PositionInfo.getPositionInfo(str.split("/")[5]).getValeur()
         );
+    }
+
+    public static void resetCompteur() {
+
+        Cuve.nbCuve = 0;
     }
 
     // Constructeur
@@ -196,6 +203,24 @@ public class Cuve implements Comparable<Cuve>, Serializable {
     public double getContenu() {
 
         return this.contenu;
+    }
+
+    public Position getPosition() {
+
+        return this.position;
+    }
+
+    public PositionInfo getPosInfo() {
+
+        for (PositionInfo p : PositionInfo.values()) {
+
+            if (p.getValeur() == this.posInfo) {
+
+                return p;
+            }
+        }
+        
+        return null;
     }
 
     public static char getCompteur() {
