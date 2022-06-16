@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import appli1.ihm.FrameCreation;
-import appli2.ihm.FrameRendu;
 import metier.Cuve;
 import metier.Cuve.PositionInfo;
 import metier.Position;
@@ -21,7 +20,7 @@ import metier.reseau.Reseau;
 
 public class Controleur
 {
-    private static final String FORMAT_KEY_WORD = "user:reseauformat";
+    public static final String FORMAT_KEY_WORD = "user:reseauformat";
 
     public Controleur() {
 

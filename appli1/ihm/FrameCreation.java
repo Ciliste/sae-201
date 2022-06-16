@@ -22,6 +22,54 @@ public class FrameCreation extends JFrame {
 
     private static final int AUCUN   = 0;
     private static final int TRAVAIL = 1;
+
+    private static final FileFilter FILTRE_FICHIER_RESEAU = new FileFilter() {
+               
+        public String getDescription() {
+
+            return "Réseaux (*.data)";
+        }
+
+        public boolean accept(File f) {
+
+            if (f.isDirectory()) {
+
+                return true;
+            } 
+            else {
+
+                try {
+
+                    return Files.getAttribute(f.toPath(), Controleur.FORMAT_KEY_WORD) != null;
+                }
+                catch (Exception err) {return false;}
+            }
+        }
+    };
+
+    private static final FileFilter FILTRE_FICHIER_DATA = new FileFilter() {
+               
+        public String getDescription() {
+
+            return "Data files (*.data)";
+        }
+
+        public boolean accept(File f) {
+
+            if (f.isDirectory()) {
+
+                return true;
+            } 
+            else {
+
+                try {
+
+                    return f.getName().endsWith(".data");
+                }
+                catch (Exception err) {return false;}
+            }
+        }
+    };
     
     private Controleur ctrl;
     private PanelCreation panelCrea;
@@ -158,48 +206,9 @@ public class FrameCreation extends JFrame {
                 .getHomeDirectory()
             );
 
-            choose.setFileFilter(new FileFilter() {
-               
-                public String getDescription() {
+            choose.setFileFilter(FrameCreation.FILTRE_FICHIER_RESEAU);
 
-                    return "Réseaux (*.data)";
-                }
-
-                public boolean accept(File f) {
-
-                    if (f.isDirectory()) {
-
-                        return true;
-                    } 
-                    else {
-
-                        try {
-
-                            return Files.getAttribute(Path.of(""), "").equals("");
-                        }
-                        catch (Exception err) {return false;}
-                    }
-                }
-            });
-
-            choose.addChoosableFileFilter(new FileFilter() {
-                
-                public String getDescription() {
-
-                    return "Data Files (*.data)";
-                }
-
-                public boolean accept(File f) {
-
-                    if (f.isDirectory()) {
-                        return true;
-                    } 
-                    else {
-                        String filename = f.getName().toLowerCase();
-                        return filename.endsWith(".data");
-                    }
-                }
-            });
+            choose.addChoosableFileFilter(FrameCreation.FILTRE_FICHIER_DATA);
 
             int res = choose.showOpenDialog(null);
 
