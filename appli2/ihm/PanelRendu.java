@@ -4,6 +4,7 @@ import static java.lang.Math.round;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
@@ -13,6 +14,7 @@ import java.awt.event.*;
 import appli2.Controleur;
 import metier.reseau.Reseau;
 import metier.Cuve;
+import metier.Tube;
 
 
 public class PanelRendu extends JPanel implements MouseMotionListener
@@ -59,11 +61,34 @@ public class PanelRendu extends JPanel implements MouseMotionListener
             }
   
 
-
+            // Dessin des cuves
             g.setColor(couleur);
             g.fillOval(x, y, width, height);
             g.setColor(Color.BLACK);
             g.drawOval(x, y, width, height);
+
+
+            // Dessin des noms des cuves
+
+
+            // Dessins des tubes
+            for (Tube tube : this.reseau.getEnsTubes())
+            {
+                // Détermination de la position du tube
+                int xOrig = tube.getCuveA().getPosition().x() + (tube.getCuveA().getPosition().x() / 2);
+                int yOrig = tube.getCuveA().getPosition().y() + (tube.getCuveA().getPosition().x() / 2);
+
+                int xDest = tube.getCuveB().getPosition().x() + (tube.getCuveB().getPosition().x() / 2);
+                int yDest = tube.getCuveB().getPosition().y() + (tube.getCuveB().getPosition().x() / 2);
+
+                
+                // Dessin du tube
+                g.setColor(Color.BLACK);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new java.awt.BasicStroke(tube.getSection()));
+                g2.drawLine(xOrig, yOrig, xDest, yDest);
+            }
+                
 
         }
 
