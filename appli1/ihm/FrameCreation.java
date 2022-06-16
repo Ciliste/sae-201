@@ -4,8 +4,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 
-import appli1.Controleur;
-import appli1.Controleur.MethodeSauvegarde;
+import common.SharedContants;
+import launchers.Controleur;
+import launchers.Controleur.MethodeSauvegarde;
 import metier.reseau.Reseau;
 
 import java.awt.event.*;
@@ -15,61 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FrameCreation extends JFrame {
-    
-    private static final int RIEN    = 0;
-    private static final int NOUVEAU = 1;
-    private static final int OUVERT  = 2;
-
-    private static final int AUCUN   = 0;
-    private static final int TRAVAIL = 1;
-
-    private static final FileFilter FILTRE_FICHIER_RESEAU = new FileFilter() {
-               
-        public String getDescription() {
-
-            return "Réseaux (*.data)";
-        }
-
-        public boolean accept(File f) {
-
-            if (f.isDirectory()) {
-
-                return true;
-            } 
-            else {
-
-                try {
-
-                    return Files.getAttribute(f.toPath(), Controleur.FORMAT_KEY_WORD) != null;
-                }
-                catch (Exception err) {return false;}
-            }
-        }
-    };
-
-    private static final FileFilter FILTRE_FICHIER_DATA = new FileFilter() {
-               
-        public String getDescription() {
-
-            return "Data files (*.data)";
-        }
-
-        public boolean accept(File f) {
-
-            if (f.isDirectory()) {
-
-                return true;
-            } 
-            else {
-
-                try {
-
-                    return f.getName().endsWith(".data");
-                }
-                catch (Exception err) {return false;}
-            }
-        }
-    };
     
     private Controleur ctrl;
     private PanelCreation panelCrea;
@@ -85,8 +31,8 @@ public class FrameCreation extends JFrame {
 
         this.ctrl = ctrl;
 
-        this.statutFichier = FrameCreation.RIEN;
-        this.statutTravail = FrameCreation.AUCUN;
+        this.statutFichier = SharedContants.StatutFichier.RIEN.VAL;
+        this.statutTravail = SharedContants.StatutTravail.AUCUN.VAL;
 
         this.setTitle("Création d'un réseau");
         this.setSize(500, 500);
@@ -161,10 +107,10 @@ public class FrameCreation extends JFrame {
 
         System.out.println("Nouveau");
         
-        if (this.statutTravail == FrameCreation.AUCUN) {
+        if (this.statutTravail == SharedContants.StatutTravail.AUCUN.VAL) {
 
-            this.statutFichier = FrameCreation.NOUVEAU;
-            this.statutTravail = FrameCreation.TRAVAIL;
+            this.statutFichier = SharedContants.StatutFichier.NOUVEAU.VAL;
+            this.statutTravail = SharedContants.StatutTravail.TRAVAIL.VAL;
 
             this.mnuSaveFile.setEnabled(false);
 
@@ -185,7 +131,7 @@ public class FrameCreation extends JFrame {
                 case 0 : this.sauvegarder(event);
                 case 1 : {
 
-                    this.statutTravail = FrameCreation.AUCUN;
+                    this.statutTravail = SharedContants.StatutTravail.AUCUN.VAL;
 
                     this.nouveau(event);
                 }
@@ -198,7 +144,7 @@ public class FrameCreation extends JFrame {
 
     public void ouvrir(ActionEvent event) {
 
-        if (this.statutTravail == FrameCreation.AUCUN) {
+        if (this.statutTravail == SharedContants.StatutTravail.AUCUN.VAL) {
 
             JFileChooser choose = new JFileChooser(
                 FileSystemView
@@ -206,9 +152,9 @@ public class FrameCreation extends JFrame {
                 .getHomeDirectory()
             );
 
-            choose.setFileFilter(FrameCreation.FILTRE_FICHIER_RESEAU);
+            choose.setFileFilter(SharedContants.FiltresFichier.FILTRE_FICHIER_RESEAU.filtre());
 
-            choose.addChoosableFileFilter(FrameCreation.FILTRE_FICHIER_DATA);
+            choose.addChoosableFileFilter(SharedContants.FiltresFichier.FILTRE_FICHIER_DATA.filtre());
 
             int res = choose.showOpenDialog(null);
 
@@ -217,8 +163,8 @@ public class FrameCreation extends JFrame {
                 this.fichierCourant = choose.getSelectedFile();
                 try {
 
-                    this.statutFichier = FrameCreation.OUVERT;
-                    this.statutTravail = FrameCreation.TRAVAIL;
+                    this.statutFichier = SharedContants.StatutFichier.OUVERT.VAL;
+                    this.statutTravail = SharedContants.StatutTravail.AUCUN.VAL;
 
                     this.mnuSaveFile.setEnabled(true);
 
@@ -242,7 +188,7 @@ public class FrameCreation extends JFrame {
                 case 0 : this.sauvegarder(event);;
                 case 1 : {
 
-                    this.statutTravail = FrameCreation.AUCUN;
+                    this.statutTravail = SharedContants.StatutTravail.AUCUN.VAL;
 
                     this.ouvrir(event);
                 }
@@ -255,21 +201,21 @@ public class FrameCreation extends JFrame {
 
     public void sauvegarder(ActionEvent event) {
 
-        if (this.statutTravail == FrameCreation.AUCUN) {
+        if (this.statutTravail == SharedContants.StatutTravail.AUCUN.VAL) {
 
             return;
         }
 
-        if (this.statutTravail == FrameCreation.TRAVAIL) {
+        if (this.statutTravail == SharedContants.StatutTravail.TRAVAIL.VAL) {
             
-            this.statutTravail = FrameCreation.AUCUN;
+            this.statutTravail = SharedContants.StatutTravail.AUCUN.VAL;
             this.ctrl.sauvegarder(this.fichierCourant, this.panelCrea.getCuves(), this.panelCrea.getTubes());
         }
     }
 
     public void sauvegarderSous(Class<? extends Reseau> classe) {
 
-        if (this.statutFichier == FrameCreation.RIEN) {
+        if (this.statutFichier == SharedContants.StatutFichier.RIEN.VAL) {
 
             return;
         }
@@ -327,10 +273,10 @@ public class FrameCreation extends JFrame {
 
         if (res == JFileChooser.APPROVE_OPTION) {
             
-            if (this.statutFichier == FrameCreation.NOUVEAU) {
+            if (this.statutFichier == SharedContants.StatutFichier.NOUVEAU.VAL) {
 
                 this.fichierCourant = choose.getSelectedFile(); 
-                this.statutFichier = FrameCreation.OUVERT;
+                this.statutFichier = SharedContants.StatutFichier.OUVERT.VAL;
             }
                 
             this.ctrl.sauvegarderSous(choose.getSelectedFile(), classe, this.panelCrea.getCuves(), this.panelCrea.getTubes());

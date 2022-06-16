@@ -60,6 +60,119 @@ public abstract class Reseau implements Serializable {
 
         return lstCuve;
     }
+    public void update()
+    {
+        double[] itteration = new double[this.ensCuves.size()];
+        List<Tube> lstTubeVisite = new ArrayList<Tube>();
+        List<Cuve> lstCuveVisite = this.getEnsCuvesTri();
+        double modification;
+        double contenuCuveA;
+        double contenuCuveB;
+        int indexCuveA;
+        int indexCuveB;
+        boolean  breakBoucle;
+        for (Cuve cuve : lstCuveVisite)
+        {
+            for(Tube tube : this.ensTubes)
+            {
+                breakBoucle = false;
+                if (!tube.contains(cuve))
+                    continue;
+
+                for (Tube testTube : lstTubeVisite )
+                {
+                    System.out.println(testTube);
+                    if (tube.equals(testTube))
+                        breakBoucle = true;
+                }
+                if (breakBoucle)
+                    continue;
+                lstTubeVisite.add(tube);
+                modification = 0;
+                contenuCuveA = tube.getCuveA().getContenu();
+                contenuCuveB = tube.getCuveB().getContenu();
+
+                indexCuveA = this.ensCuves.indexOf(tube.getCuveA());
+                indexCuveB = this.ensCuves.indexOf(tube.getCuveB());
+                if(contenuCuveA > contenuCuveB)
+                {
+                    modification = contenuCuveA - contenuCuveB;
+                    System.out.println("modification : " + modification);
+                    if(modification > tube.getSection())
+                    {
+                        modification = tube.getSection();
+                    }
+                    System.out.println("modification : " + modification);
+                    if (modification > contenuCuveA + itteration[indexCuveA])
+                    {
+                        modification = contenuCuveA + itteration[indexCuveA];
+                    }
+                    System.out.println("modification : " + modification);
+                    if( modification > tube.getCuveB().getCapacite() - contenuCuveB + itteration[indexCuveB])
+                    {
+                        modification = tube.getCuveB().getCapacite() - contenuCuveB + itteration[indexCuveB];
+                    }
+
+                    //System.out.println("modification : " + modification);
+                    // if( contenuCuveB + itteration[indexCuveA] < modification)
+                    // {
+                    //     modification = contenuCuveA + itteration[indexCuveB];
+                    // }
+                    System.out.println("modification : " + modification);
+
+                    itteration[indexCuveA] -= modification;
+                    itteration[indexCuveB] += modification;
+                }
+                if(contenuCuveA < contenuCuveB)
+                {
+                    modification = contenuCuveB - contenuCuveA;
+                    System.out.println("modification : " + modification);
+        
+                    if(modification > tube.getSection())
+                    {
+                        modification = tube.getSection();
+                    }
+                    System.out.println("modification : " + modification);
+
+                    if (modification > contenuCuveB + itteration[indexCuveB])
+                    {
+                        modification = contenuCuveB + itteration[indexCuveB];
+                    }
+                    System.out.println("modification : " + modification);
+                    if( modification > tube.getCuveA().getCapacite() - contenuCuveA + itteration[indexCuveA])
+                    {
+                        modification = tube.getCuveA().getCapacite() - contenuCuveA + itteration[indexCuveA];
+                    }
+                    //Minecraft
+                    System.out.println("modification : " + modification);
+                    
+
+                    itteration[indexCuveA] += modification;
+                    itteration[indexCuveB] -= modification;
+                }
+
+                System.out.println("Modification : " + modification);
+                System.out.println("Cuve (A) "+tube.getCuveA() + " : " + contenuCuveA + " -> " + (contenuCuveA + itteration[indexCuveA]));
+                System.out.println("Cuve (B) "+tube.getCuveB() + " : " + contenuCuveB + " -> " + (contenuCuveB + itteration[indexCuveB]));
+                System.out.println("-----------------------------------------------------");
+
+            }
+
+        }
+
+        for(int i = 0; i < this.ensCuves.size(); i++)
+        {
+            System.out.println(this.ensCuves.get(i).getIdentifiant());
+            System.out.println(this.ensCuves.get(i).getCapacite());
+            System.out.println(this.ensCuves.get(i).getContenu());
+            System.out.println(itteration[i]);
+            System.out.println("\n");
+            if(itteration[i] > 0)
+                this.ensCuves.get(i).ajouter(itteration[i]);
+            else
+                this.ensCuves.get(i).retirer(-itteration[i]);
+        }   
+    }
 
     // public void transfere()
     // {
