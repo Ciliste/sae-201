@@ -136,6 +136,11 @@ public class Controleur
         }
     }
 
+    public void maj()
+    {
+        this.frameRendu.repaint();
+    }
+
 
     public enum MethodeSauvegarde {
 
@@ -158,10 +163,6 @@ public class Controleur
             return this.nom;
         }
 
-        public void maj()
-        {
-            this.frame.repaint();
-        }
 
         public Class<? extends Reseau> getClasseSauvegarde() {
 
