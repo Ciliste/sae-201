@@ -1,23 +1,18 @@
 package appli1;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.IllegalFormatException;
-
-import javax.print.AttributeException;
-import javax.swing.text.TabExpander;
 
 import appli1.ihm.FrameCreation;
-import iut.algo.Clavier;
+import appli2.ihm.FrameRendu;
 import metier.Cuve;
+import metier.Cuve.PositionInfo;
 import metier.Position;
 import metier.Tube;
-import metier.Cuve.PositionInfo;
 import metier.reseau.ListeAdjacence;
 import metier.reseau.MatriceCout;
 import metier.reseau.MatriceOptimisee;
@@ -29,9 +24,10 @@ public class Controleur
     private static final String FORMAT_KEY_WORD = "user:reseauformat";
 
     public Controleur() {
-        
+
         new FrameCreation(this);
     }
+
 
     public Reseau ouvrir(File file) throws IOException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, Exception {
 
@@ -169,10 +165,6 @@ public class Controleur
         }
     }
 
-    public static void main(String[] args) {
-
-        new Controleur();
-    }
 
     public enum MethodeSauvegarde {
 
@@ -205,5 +197,12 @@ public class Controleur
             if (this.frame == null) return;
             this.frame.sauvegarderSous(this.classeSauvegarde);
         }
+    }
+
+
+
+    public static void main(String[] args) {
+
+        new Controleur();
     }
 }

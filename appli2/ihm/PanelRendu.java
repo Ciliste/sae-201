@@ -1,7 +1,10 @@
 package appli2.ihm;
 
+import static java.lang.Math.round;
+
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
@@ -11,6 +14,7 @@ import java.awt.event.*;
 import appli2.Controleur;
 import metier.reseau.Reseau;
 import metier.Cuve;
+import metier.Tube;
 
 
 public class PanelRendu extends JPanel implements MouseMotionListener
@@ -28,49 +32,63 @@ public class PanelRendu extends JPanel implements MouseMotionListener
         super.paint(g);
         Color couleurInitiale = g.getColor();
 
+        /* Variable */
+        int x, y, width, height;
 
-        int x = 0;
 
-        for (int i = 0; i < this.reseau.getEnsCuves().size(); i++)
+        for (Cuve cuve : this.reseau.getEnsCuves())
         {
-            Cuve cuve = this.reseau.getEnsCuves().get(i);
+            // Détermination de la position de la cuve
+            x = cuve.getPosition().x() - (cuve.getPosition().x() / 2);
+            y = cuve.getPosition().y() - (cuve.getPosition().x() / 2);
 
-            int width  = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
-            int height = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
+            // Détermination de la taille des cuves sur l'ihm
+            width  = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
+            height = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
 
-            int y = cuve.getCapacite() / 20;
-            //System.out.println(((this.ctrl.getWidthFrame() / 100) + 1));
-            if (i+1 >= this.reseau.getEnsCuves().size())
+            // Détermination de la couleur de la cuve
+            Color couleur = new Color(255, 255, 255);
+            int temp = (int)(round(cuve.getContenu() / 2));
+            if (temp <= 255)
             {
-                x = 0;
-                y += (cuve.getCapacite() / 10) + 10 + width/2;
+                // du blanc vers le rouge
+                couleur = new Color(255, 255-temp, 255-temp);
             }
             else
             {
-                x += (cuve.getCapacite() / 10) + 10 + width/2;
-            }
-
-
-            //System.out.println(cuve.getCapacite() + " : " + x);
-
-
-            Color couleur = new Color(0, 0, 0);
-            if ((int) cuve.getContenu() / 2 <= 255)
-            {
-                couleur = new Color((int) cuve.getContenu() / 2, 0, 0);
-            }
-            else
-            {
-                couleur = new Color(255, (int) ((cuve.getContenu()/2)-255), (int) ((cuve.getContenu()/2)-255));
+                // du noir vers le rouge
+                couleur = new Color(500-temp, 0, 0);
             }
   
 
-
-
-            g.setColor(Color.RED);
+            // Dessin des cuves
+            g.setColor(couleur);
             g.fillOval(x, y, width, height);
             g.setColor(Color.BLACK);
             g.drawOval(x, y, width, height);
+
+
+            // Dessin des noms des cuves
+
+
+            // Dessins des tubes
+            for (Tube tube : this.reseau.getEnsTubes())
+            {
+                // Détermination de la position du tube
+                int xOrig = tube.getCuveA().getPosition().x() + (tube.getCuveA().getPosition().x() / 2);
+                int yOrig = tube.getCuveA().getPosition().y() + (tube.getCuveA().getPosition().x() / 2);
+
+                int xDest = tube.getCuveB().getPosition().x() + (tube.getCuveB().getPosition().x() / 2);
+                int yDest = tube.getCuveB().getPosition().y() + (tube.getCuveB().getPosition().x() / 2);
+
+                
+                // Dessin du tube
+                g.setColor(Color.BLACK);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new java.awt.BasicStroke(tube.getSection()));
+                g2.drawLine(xOrig, yOrig, xDest, yDest);
+            }
+                
 
         }
 
@@ -89,4 +107,6 @@ public class PanelRendu extends JPanel implements MouseMotionListener
     {
         System.out.println(e.getX() + " " + e.getY());
     }
+
+    
 }

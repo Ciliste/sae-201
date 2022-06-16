@@ -302,4 +302,9 @@ public class Console
 
     public static Cuve getCuve(int ind) { return Console.reseau.getEnsCuves().get(ind); }
     public static Cuve getTube(int ind) { return Console.reseau.getEnsCuves().get(ind); }
+
+
+    public static void main(String[] args) {
+        Console.affichageConsole();
+    }
 }
