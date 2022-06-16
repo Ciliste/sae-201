@@ -23,6 +23,8 @@ public class PanelAction extends JPanel implements ActionListener
     {
         this.ctrl = ctrl;
 
+        this.reseau = reseau;
+
         this.setLayout(new BorderLayout());
 
         /*-------------------------*/
@@ -60,7 +62,7 @@ public class PanelAction extends JPanel implements ActionListener
     {
         if (e.getSource() == this.boutonSuivant)
         {
-            //this.reseau.update();
+            this.reseau.update();
             this.ctrl.maj();
         }
         

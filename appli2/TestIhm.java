@@ -24,7 +24,7 @@ public class TestIhm
         Tube t4 = Tube.creerTube(c4,c2,8);
         // Ajout des cuves
         
-        System.out.println("Cuve ajoutée");
+        //System.out.println("Cuve ajoutée");
         
         
         listAdj.ajouterCuve(c1);
