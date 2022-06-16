@@ -205,11 +205,6 @@ public class Cuve implements Comparable<Cuve>, Serializable {
         return this.contenu;
     }
 
-    public Position getPosition() {
-
-        return this.position;
-    }
-
     public PositionInfo getPosInfo() {
 
         for (PositionInfo p : PositionInfo.values()) {
