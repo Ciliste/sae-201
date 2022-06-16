@@ -20,7 +20,7 @@ import metier.reseau.Reseau;
 
 public class Controleur
 {
-    private static final String FORMAT_KEY_WORD = "user:reseauformat";
+    public static final String FORMAT_KEY_WORD = "user:reseauformat";
 
     public Controleur() {
 
