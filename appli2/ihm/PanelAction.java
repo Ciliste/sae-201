@@ -3,6 +3,7 @@ package appli2.ihm;
 import javax.swing.*;
 
 import appli2.Controleur;
+import metier.reseau.Reseau;
 
 import java.awt.event.*;
 import java.awt.BorderLayout;
@@ -10,6 +11,7 @@ import java.awt.BorderLayout;
 public class PanelAction extends JPanel implements ActionListener
 {
     private Controleur ctrl;
+    private Reseau reseau;
 
     private JButton boutonPrecedent;
     private JButton boutonSuivant;
@@ -17,7 +19,7 @@ public class PanelAction extends JPanel implements ActionListener
     private JButton boutonAjouter;
 
 
-    public PanelAction(Controleur ctrl)
+    public PanelAction(Controleur ctrl, Reseau reseau)
     {
         this.ctrl = ctrl;
 
@@ -28,7 +30,6 @@ public class PanelAction extends JPanel implements ActionListener
         /*-------------------------*/
         /* Création des panels */
         JPanel panelBouton = new JPanel();
-        JPanel panelSaisie  = new PanelSaisie(ctrl);
 
         /* Création des boutons */
         this.boutonPrecedent = new JButton("◀");
@@ -44,7 +45,6 @@ public class PanelAction extends JPanel implements ActionListener
 
         /* Ajout des panels au panel principal */
         this.add(panelBouton, BorderLayout.WEST);
-        this.add(panelSaisie, BorderLayout.CENTER);
 
 
         /*---------------------------*/
@@ -60,7 +60,8 @@ public class PanelAction extends JPanel implements ActionListener
     {
         if (e.getSource() == this.boutonSuivant)
         {
-            
+            //this.reseau.update();
+            this.ctrl.maj();
         }
         
         if (e.getSource() == this.boutonPrecedent)
