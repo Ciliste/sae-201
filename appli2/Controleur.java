@@ -30,8 +30,10 @@ public class Controleur
         this.frameRendu = new FrameRendu(this, reseau);
     }
 
-    public int getWidthFrame () { return this.frameRendu.getWidth (); }
-    public int getHeightFrame() { return this.frameRendu.getHeight(); }
+    public int getWidthFrame       () { return this.frameRendu.getWidth            (); }
+    public int getHeightFrame      () { return this.frameRendu.getHeight           (); }
+    public int getWidthPanelAction () { return this.frameRendu.getWidthPanelAction (); }
+    public int getHeightPanelAction() { return this.frameRendu.getHeightPanelAction(); }
 
 
     public Reseau ouvrir(File file) throws IOException, IllegalArgumentException, NoSuchMethodException {

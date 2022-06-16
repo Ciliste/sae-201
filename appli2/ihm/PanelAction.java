@@ -30,7 +30,6 @@ public class PanelAction extends JPanel implements ActionListener
         /*-------------------------*/
         /* Création des panels */
         JPanel panelBouton = new JPanel();
-        JPanel panelSaisie  = new PanelSaisie(ctrl);
 
         /* Création des boutons */
         this.boutonPrecedent = new JButton("◀");
@@ -46,7 +45,6 @@ public class PanelAction extends JPanel implements ActionListener
 
         /* Ajout des panels au panel principal */
         this.add(panelBouton, BorderLayout.WEST);
-        this.add(panelSaisie, BorderLayout.CENTER);
 
 
         /*---------------------------*/
@@ -62,8 +60,8 @@ public class PanelAction extends JPanel implements ActionListener
     {
         if (e.getSource() == this.boutonSuivant)
         {
-            //this.reseau.transfert();
-            //this.ctrl.maj();
+            //this.reseau.update();
+            this.ctrl.maj();
         }
         
         if (e.getSource() == this.boutonPrecedent)

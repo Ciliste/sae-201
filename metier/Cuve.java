@@ -230,7 +230,7 @@ public class Cuve implements Comparable<Cuve>, Serializable {
     // toString()
     public String toString() {
 
-        return "Cuve " + this.identifiant + " : " + this.contenu + "/" + this.capacite + "L";
+        return "Cuve " + this.identifiant + " : " + this.getPosition().x() + "/" + this.getPosition().y();
     }
 
     public String serialize() {

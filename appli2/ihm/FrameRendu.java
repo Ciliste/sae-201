@@ -193,4 +193,9 @@ public class FrameRendu extends JFrame implements ActionListener
             return sRet;
         }catch(Exception e) { System.out.println("Erreur lors de la lecture du fichier"); e.printStackTrace(); return null; }
     }
+
+
+
+    public int getWidthPanelAction () { return this.panelAction.getWidth(); }
+    public int getHeightPanelAction() { return this.panelAction.getHeight(); }
 }
