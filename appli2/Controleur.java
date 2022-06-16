@@ -158,6 +158,11 @@ public class Controleur
             return this.nom;
         }
 
+        public void maj()
+        {
+            this.frame.repaint();
+        }
+
         public Class<? extends Reseau> getClasseSauvegarde() {
 
             return this.classeSauvegarde;

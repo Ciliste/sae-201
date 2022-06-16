@@ -3,6 +3,7 @@ package appli2.ihm;
 import javax.swing.*;
 
 import appli2.Controleur;
+import metier.reseau.Reseau;
 
 import java.awt.event.*;
 import java.awt.BorderLayout;
@@ -10,6 +11,7 @@ import java.awt.BorderLayout;
 public class PanelAction extends JPanel implements ActionListener
 {
     private Controleur ctrl;
+    private Reseau reseau;
 
     private JButton boutonPrecedent;
     private JButton boutonSuivant;
@@ -17,7 +19,7 @@ public class PanelAction extends JPanel implements ActionListener
     private JButton boutonAjouter;
 
 
-    public PanelAction(Controleur ctrl)
+    public PanelAction(Controleur ctrl, Reseau reseau)
     {
         this.ctrl = ctrl;
 
@@ -60,7 +62,8 @@ public class PanelAction extends JPanel implements ActionListener
     {
         if (e.getSource() == this.boutonSuivant)
         {
-            
+            //this.reseau.transfert();
+            //this.ctrl.maj();
         }
         
         if (e.getSource() == this.boutonPrecedent)

@@ -50,7 +50,7 @@ public class FrameRendu extends JFrame implements ActionListener
         // Test
         this.reseau = reseau;
 
-        this.panelAction = new PanelAction(this.ctrl);
+        this.panelAction = new PanelAction(this.ctrl, reseau);
 
 		/* Barre de Menu */
 		JMenuBar menuBar  = new JMenuBar();
