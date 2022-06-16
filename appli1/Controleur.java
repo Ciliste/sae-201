@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import appli1.ihm.FrameCreation;
-import appli2.ihm.FrameRendu;
 import metier.Cuve;
 import metier.Cuve.PositionInfo;
 import metier.Position;
