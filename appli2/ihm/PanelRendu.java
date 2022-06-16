@@ -20,14 +20,19 @@ import metier.Cuve;
 import metier.Tube;
 
 
-public class PanelRendu extends JPanel implements MouseMotionListener
+public class PanelRendu extends JPanel implements MouseListener, MouseMotionListener
 {
     private Controleur ctrl;
     private Reseau reseau;
 
+    private int xOrigSourie;
+    private int yOrigSourie;
+
     public PanelRendu(Controleur ctrl, Reseau reseau) {
         this.ctrl = ctrl;
         this.reseau = reseau;
+
+        this.addMouseListener(this);
     }
 
     public void paint(Graphics g)
@@ -73,8 +78,8 @@ public class PanelRendu extends JPanel implements MouseMotionListener
             height = cuve.getCapacite()/10;
 
             // Determination de la position
-            yCuve = round(cuve.getPosition().y() - width  / 2);
-            xCuve = round(cuve.getPosition().x() - height / 2);
+            yCuve = cuve.getPosition().y() - width  / 2;
+            xCuve = cuve.getPosition().x() - height / 2;
 
 
             // Determination de la couleur
@@ -144,14 +149,35 @@ public class PanelRendu extends JPanel implements MouseMotionListener
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        System.out.println(e.getX() + " " + e.getY());
+        e.getX();
+        e.getY();
     }
 
+    // utilise pour capturer le clique de l'utilisateur
     @Override
-    public void mouseMoved(MouseEvent e)
+    public void mousePressed(MouseEvent e)
     {
-        System.out.println(e.getX() + " " + e.getY());
+        System.out.println("appui sur le clic");
+
+        xOrigSourie = e.getX();
+        yOrigSourie = e.getY();
     }
+
+
+
+    // normalement inutile mais pas sur
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+        System.out.println("relachement de la sourie");
+    }
+
+
+    // Inutile pour le moment
+    public void mouseMoved  (MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited (MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {}
 
     
 }
