@@ -7,16 +7,18 @@ import metier.reseau.Reseau;
 
 import java.awt.event.*;
 import java.awt.BorderLayout;
+import java.awt.Font;
 
 public class PanelAction extends JPanel implements ActionListener
 {
     private Controleur ctrl;
     private Reseau reseau;
 
-    private JButton boutonPrecedent;
-    private JButton boutonSuivant;
+    private JButton[] ensBtn;
 
-    private JButton boutonAjouter;
+    private JButton btnAjouter;
+
+    private boolean autoOn = false;
 
 
     public PanelAction(Controleur ctrl, Reseau reseau)
@@ -33,17 +35,23 @@ public class PanelAction extends JPanel implements ActionListener
         /* Création des panels */
         JPanel panelBouton = new JPanel();
 
-        /* Création des boutons */
-        this.boutonPrecedent = new JButton("◀");
-        this.boutonSuivant   = new JButton("▶");
+        /* Création des btns */
+        this.ensBtn = new JButton[7];
+        this.ensBtn[0] = new JButton("⏮");
+        this.ensBtn[1] = new JButton("⏪ 10");
+        this.ensBtn[2] = new JButton("◀");
+        this.ensBtn[3] = new JButton("⏯");
+        this.ensBtn[4] = new JButton("▶");
+        this.ensBtn[5] = new JButton("10 ⏩");
+        this.ensBtn[6] = new JButton("⏭");
 
 
         /*----------------------*/
         /* Ajout des composants */
         /*----------------------*/
-        /* Ajout des boutons au panel bouton*/
-        panelBouton.add(this.boutonPrecedent);
-        panelBouton.add(this.boutonSuivant);
+        /* Ajout des btns au panel btn*/
+        for (int i = 0; i < this.ensBtn.length; i++)
+            panelBouton.add(this.ensBtn[i]);
 
         /* Ajout des panels au panel principal */
         this.add(panelBouton, BorderLayout.WEST);
@@ -52,25 +60,80 @@ public class PanelAction extends JPanel implements ActionListener
         /*---------------------------*/
         /* Activation des composants */
         /*---------------------------*/
-        this.boutonSuivant  .addActionListener(this);
-        this.boutonPrecedent.addActionListener(this);
+        for (int i = 0; i < this.ensBtn.length; i++)
+            this.ensBtn[i].addActionListener(this);
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getSource() == this.boutonSuivant)
+        // reveir au début
+        if (e.getSource() == this.ensBtn[0])
+        {
+            //this.reseau.goToDebut();
+            this.ctrl.maj();
+        }
+
+        // reculer de 10 étapes
+        if (e.getSource() == this.ensBtn[1])
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                //this.reseau.precedent();
+                this.ctrl.maj();
+            }
+        }
+
+        // reculer d'une étape
+        if (e.getSource() == this.ensBtn[2])
+        {
+            //this.reseau.precedent();
+            this.ctrl.maj();
+        }
+
+        // mode automatique
+        if (e.getSource() == this.ensBtn[3])
+        {
+            // à modifier pour optenir le nombre d'étapes que doit faire le réseau pour obtenir un équilibre
+            int cpt = 0;
+            while (cpt < 100 && this.autoOn)
+            {
+                this.reseau.update();
+                this.ctrl.maj();
+
+                try { Thread.sleep(500); } catch (Exception ex) { System.out.println("La pause n'a pas fonctionné"); ex.printStackTrace(); }
+                cpt ++;
+            }
+        }
+
+        // avancer de 1 étape
+        if (e.getSource() == this.ensBtn[4])
         {
             this.reseau.update();
             this.ctrl.maj();
         }
-        
-        if (e.getSource() == this.boutonPrecedent)
+
+        // avancer de 10 étapes
+        if (e.getSource() == this.ensBtn[5])
         {
-            
-        }        
+            for (int i = 0; i < 10; i++)
+            {
+                this.reseau.update();
+                this.ctrl.maj();
+            }
+        }
+
+        // aller à la fin
+        if (e.getSource() == this.ensBtn[6])
+        {
+            // à modifier pour optenir le nombre d'étapes que doit faire le réseau pour obtenir un équilibre
+            for (int i = 0; i < 200; i++)
+            {
+                this.reseau.update();
+            }
+
+            this.ctrl.maj();
+        }
     }
-
-
 }

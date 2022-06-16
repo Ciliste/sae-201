@@ -28,6 +28,9 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
     private int xOrigSourie;
     private int yOrigSourie;
 
+    private int width ;
+    private int height;
+
     public PanelRendu(Controleur ctrl, Reseau reseau) {
         this.ctrl = ctrl;
         this.reseau = reseau;
@@ -42,9 +45,7 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
 
         /* Variable */ /* je l'ai instancie explicitement pour éviter le problème du "not initialised" */
         int xCuve  = 0,
-            yCuve  = 0,
-            width  = 0,
-            height = 0;
+            yCuve  = 0;
 
         int xOrig = 0,
             yOrig = 0,
@@ -159,8 +160,17 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
     {
         System.out.println("appui sur le clic");
 
-        xOrigSourie = e.getX();
-        yOrigSourie = e.getY();
+        this.xOrigSourie = e.getX();
+        this.yOrigSourie = e.getY();
+        
+        for (Cuve cuve : this.reseau.getEnsCuves())
+        {
+            if (this.xOrigSourie > cuve.getPosition().x() && this.xOrigSourie < cuve.getPosition().x() + this.width &&
+                this.yOrigSourie > cuve.getPosition().y() && this.yOrigSourie < cuve.getPosition().y() + this.height)
+            {
+                this.paint(this.getGraphics());
+            }
+        }
     }
 
 
