@@ -1,4 +1,4 @@
-package appli1;
+package launchers;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import appli1.ihm.FrameCreation;
+import common.SharedContants;
 import metier.Cuve;
 import metier.Cuve.PositionInfo;
 import metier.Position;
@@ -18,20 +19,12 @@ import metier.reseau.MatriceOptimisee;
 import metier.reseau.Reseau;
 
 
-public class Controleur
-{
-    public static final String FORMAT_KEY_WORD = "user:reseauformat";
-
-    public Controleur() {
-
-        new FrameCreation(this);
-    }
-
+public class Controleur {
 
     public Reseau ouvrir(File file) throws IOException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, Exception {
 
         System.out.println("Début ouverture de " + file.getAbsolutePath());
-        Object attr = Files.getAttribute(file.toPath(), Controleur.FORMAT_KEY_WORD);
+        Object attr = Files.getAttribute(file.toPath(), SharedContants.FORMAT_KEY_WORD);
         if (attr == null)
             throw new IOException("Le fichier n'est pas un fichier reconnu");
 
@@ -81,8 +74,8 @@ public class Controleur
             try {
 
                 System.out.println("Tentative de sauvegarde avec " + methode.getNom());
-                System.out.println(methode.getClasseSauvegarde().getName() + " " + new String((byte[])Files.getAttribute(Path.of(file.getAbsolutePath()), Controleur.FORMAT_KEY_WORD)));
-                if (methode.getNom().equals(new String((byte[])Files.getAttribute(Path.of(file.getAbsolutePath()), Controleur.FORMAT_KEY_WORD)))) {
+                System.out.println(methode.getClasseSauvegarde().getName() + " " + new String((byte[])Files.getAttribute(Path.of(file.getAbsolutePath()), SharedContants.FORMAT_KEY_WORD)));
+                if (methode.getNom().equals(new String((byte[])Files.getAttribute(Path.of(file.getAbsolutePath()), SharedContants.FORMAT_KEY_WORD)))) {
 
                     System.out.println("Sauvegarde avec " + methode.getNom());
                     this.sauvegarderSous(file, methode.getClasseSauvegarde(), cuves, tubes);
@@ -141,7 +134,6 @@ public class Controleur
 
         try {
 
-            file.renameTo(new File(file.getAbsolutePath() + ".data"));
             PrintWriter pw = new PrintWriter(file);
             pw.write(reseau.serialize());
             pw.close();
@@ -156,7 +148,8 @@ public class Controleur
                 }
             }
 
-            Files.setAttribute(Path.of(file.getAbsolutePath()), Controleur.FORMAT_KEY_WORD, format.getBytes());
+            Files.setAttribute(Path.of(file.getAbsolutePath()), SharedContants.FORMAT_KEY_WORD, format.getBytes());
+            Files.move(file.toPath(), new File(file.getAbsolutePath() + ".data").toPath());
         }
         catch (Exception err) {
 

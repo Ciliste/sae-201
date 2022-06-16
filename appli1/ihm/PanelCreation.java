@@ -7,11 +7,11 @@ import java.awt.event.*;
 
 import java.util.List;
 
-import appli1.Controleur;
 import appli1.ihm.model.CuveModel;
 import appli1.ihm.model.TubeModel;
 import appli1.ihm.table.CuveTable;
 import appli1.ihm.table.TubeTable;
+import launchers.Controleur;
 import metier.Cuve;
 import metier.Tube;
 import metier.reseau.Reseau;
