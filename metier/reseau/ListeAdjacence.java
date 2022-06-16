@@ -1,6 +1,7 @@
 package metier.reseau;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import metier.Cuve;
@@ -56,7 +57,15 @@ public class ListeAdjacence extends Reseau {
         for (String ligne : str.split("\n")) {
 
             reseau.ajouterCuve(Cuve.deserialize(ligne.split("->")[0]));
-        }        
+        } 
+        
+        Collections.sort(reseau.getEnsCuves(), new Comparator<Cuve>() {
+            
+            public int compare(Cuve c1, Cuve c2) {
+
+                return c1.getIdentifiant() - c2.getIdentifiant();
+            }
+        });
 
         for (String ligne : str.split("\n")) {
 

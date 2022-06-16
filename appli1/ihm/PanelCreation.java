@@ -13,6 +13,7 @@ import appli1.ihm.model.TubeModel;
 import appli1.ihm.table.CuveTable;
 import appli1.ihm.table.TubeTable;
 import metier.Cuve;
+import metier.Tube;
 import metier.reseau.Reseau;
 
 public class PanelCreation extends JPanel implements ActionListener, FocusListener {
@@ -38,18 +39,54 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
 
         this.setLayout(new BorderLayout());
 
+        this.txtNbCuves = new JTextField(5);
+        this.txtNbTubes = new JTextField(5);
+
         if (data == null) {
 
             this.modelCuve = new CuveModel();
             this.modelTube = new TubeModel();
         } 
-        else {}
+        else {
+
+            Object[][] cuves = new Object[data.getEnsCuves().size()][6];
+            for (Cuve cuve : data.getEnsCuves()) {
+
+                cuves[data.getEnsCuves().indexOf(cuve)][0] = cuve.getIdentifiant();
+                cuves[data.getEnsCuves().indexOf(cuve)][1] = cuve.getCapacite();
+                cuves[data.getEnsCuves().indexOf(cuve)][2] = cuve.getContenu();
+                cuves[data.getEnsCuves().indexOf(cuve)][3] = cuve.getPosition().x();
+                cuves[data.getEnsCuves().indexOf(cuve)][4] = cuve.getPosition().y();
+                cuves[data.getEnsCuves().indexOf(cuve)][5] = cuve.getPosInfo().getLib();
+            }
+            this.txtNbCuves.setText(String.valueOf(data.getEnsCuves().size()));
+
+            Object[][] tubes = new Object[data.getEnsTubes().size()][3];
+            for (Tube tube : data.getEnsTubes()) {
+
+                tubes[data.getEnsTubes().indexOf(tube)][0] = tube.getCuveA().getIdentifiant();
+                tubes[data.getEnsTubes().indexOf(tube)][1] = tube.getCuveB().getIdentifiant();
+                tubes[data.getEnsTubes().indexOf(tube)][2] = tube.getSection();
+
+                for (Object obj : tubes[0]) {
+
+                    System.out.println(obj);
+                }
+            }
+            this.txtNbTubes.setText(String.valueOf(data.getEnsTubes().size()));
+
+            this.modelCuve = new CuveModel(cuves);
+            this.modelTube = new TubeModel(tubes);
+
+            this.modelCuve.setEditable(true);
+            this.modelTube.setEditable(true);
+        }
 
         this.tblCuves = new CuveTable(this.modelCuve);
         this.tblTubes = new TubeTable(this.modelTube, this);
 
-        this.txtNbCuves = new JTextField(5);
-        this.txtNbTubes = new JTextField(5);
+        this.tblCuves.repaint();
+        this.tblTubes.repaint();
 
         this.txtNbCuves.addActionListener(this);
         this.txtNbTubes.addActionListener(this);

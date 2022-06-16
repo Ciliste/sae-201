@@ -6,9 +6,6 @@ import javax.swing.filechooser.FileSystemView;
 
 import appli1.Controleur;
 import appli1.Controleur.MethodeSauvegarde;
-import metier.reseau.ListeAdjacence;
-import metier.reseau.MatriceCout;
-import metier.reseau.MatriceOptimisee;
 import metier.reseau.Reseau;
 
 import java.awt.event.*;
@@ -30,6 +27,7 @@ public class FrameCreation extends JFrame {
     private PanelCreation panelCrea;
 
     private JMenuItem mnuSaveFile;
+    private JScrollPane scrollPaneCrea;
     private File fichierCourant;
 
     private int statutFichier;
@@ -102,8 +100,12 @@ public class FrameCreation extends JFrame {
 
         this.setJMenuBar(menuBar);
 
+        this.scrollPaneCrea = new JScrollPane(new JPanel());
+        this.add(this.scrollPaneCrea, BorderLayout.CENTER);
+
         this.setVisible(true);
 
+        this.repaint();
         this.pack();
     }
 
@@ -117,8 +119,12 @@ public class FrameCreation extends JFrame {
             this.statutTravail = FrameCreation.TRAVAIL;
 
             this.mnuSaveFile.setEnabled(false);
+
             this.panelCrea = new PanelCreation(this.ctrl, this, null);
-            this.add(new JScrollPane(this.panelCrea), BorderLayout.CENTER);
+            this.scrollPaneCrea.setViewportView(this.panelCrea);
+
+            this.repaint();
+            this.setTitle("Nouveau fichier");
         }
         else {
 
@@ -128,8 +134,8 @@ public class FrameCreation extends JFrame {
             
             switch (retour) {
 
-                // case 0 -> return;
-                case 1 -> {
+                case 0 : this.sauvegarder(event);
+                case 1 : {
 
                     this.statutTravail = FrameCreation.AUCUN;
 
@@ -138,6 +144,7 @@ public class FrameCreation extends JFrame {
             }
         }
         
+        this.repaint();
         this.pack();
     }
 
@@ -201,29 +208,30 @@ public class FrameCreation extends JFrame {
                 this.fichierCourant = choose.getSelectedFile();
                 try {
 
-                    System.out.println(Files.readString(Path.of(this.fichierCourant.getAbsolutePath())));
-
                     this.statutFichier = FrameCreation.OUVERT;
                     this.statutTravail = FrameCreation.TRAVAIL;
 
                     this.mnuSaveFile.setEnabled(true);
 
                     this.panelCrea = new PanelCreation(this.ctrl, this, this.ctrl.ouvrir(this.fichierCourant));
-                    this.add(new JScrollPane(this.panelCrea), BorderLayout.CENTER);
+                    System.out.println("Lecture du fichier " + this.fichierCourant.getAbsolutePath());
+                    this.scrollPaneCrea.setViewportView(this.panelCrea);
+
+                    this.setTitle(this.fichierCourant.getName());
                 }
-                catch (Exception err) {}
+                catch (Exception err) {err.printStackTrace();}
             }
         }
         else {
 
-            String lesTextes[]={ "Sauvegarder", "Ne pas sauvegarder", "Annuler" }; // indice du bouton qui a été // cliqué ou CLOSED_OPTION 
+            String btns[] = { "Sauvegarder", "Ne pas sauvegarder", "Annuler" };
 
-            int retour = JOptionPane.showOptionDialog(this, "Voulez-vous quitter sans sauvegarder ?\nVos changements vont être perdus...", "", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon(), lesTextes, lesTextes[0]); 
+            int retour = JOptionPane.showOptionDialog(this, "Voulez-vous quitter sans sauvegarder ?\nVos changements vont être perdus...", "", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, new ImageIcon(), btns, btns[0]); 
             
             switch (retour) {
 
-                // case 0 -> return;
-                case 1 -> {
+                case 0 : this.sauvegarder(event);;
+                case 1 : {
 
                     this.statutTravail = FrameCreation.AUCUN;
 
@@ -232,6 +240,7 @@ public class FrameCreation extends JFrame {
             }
         }
         
+        this.repaint();
         this.pack();
     }
 
@@ -244,6 +253,7 @@ public class FrameCreation extends JFrame {
 
         if (this.statutTravail == FrameCreation.TRAVAIL) {
             
+            this.statutTravail = FrameCreation.AUCUN;
             this.ctrl.sauvegarder(this.fichierCourant, this.panelCrea.getCuves(), this.panelCrea.getTubes());
         }
     }
@@ -308,8 +318,13 @@ public class FrameCreation extends JFrame {
 
         if (res == JFileChooser.APPROVE_OPTION) {
             
-            File file = choose.getSelectedFile();
-            this.ctrl.sauvegarderSous(file, classe, this.panelCrea.getCuves(), this.panelCrea.getTubes());
+            if (this.statutFichier == FrameCreation.NOUVEAU) {
+
+                this.fichierCourant = choose.getSelectedFile(); 
+                this.statutFichier = FrameCreation.OUVERT;
+            }
+                
+            this.ctrl.sauvegarderSous(choose.getSelectedFile(), classe, this.panelCrea.getCuves(), this.panelCrea.getTubes());
         }
     }
 }

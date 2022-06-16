@@ -27,9 +27,18 @@ public class CuveModel extends AbstractTableModel {
     public CuveModel(Object[][] donnees) {
 
         this(donnees, CuveModel.COLUMNS);
+        
+        for (Object[] lig : donnees) {
+            
+            for (Object obj : lig) {
+
+                System.out.print(obj + " ");
+            }
+            System.out.println();
+        }
     }
 
-    public CuveModel(Object[][] donnees, String[] titres) {
+    private CuveModel(Object[][] donnees, String[] titres) {
 
         this.donnees = donnees;
 
