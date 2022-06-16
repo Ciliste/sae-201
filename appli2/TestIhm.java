@@ -12,11 +12,11 @@ public class TestIhm
     {
         Reseau     listAdj = new ListeAdjacence();
         
-        Cuve c1 = Cuve.creerCuve(200);
-        Cuve c2 = Cuve.creerCuve(300);
-        Cuve c3 = Cuve.creerCuve(500);
-        Cuve c4 = Cuve.creerCuve(700);
-        Cuve c5 = Cuve.creerCuve(1000);
+        Cuve c1 = Cuve.creerCuve(200 , 50);
+        Cuve c2 = Cuve.creerCuve(300 , 200);
+        Cuve c3 = Cuve.creerCuve(500 , 0);
+        Cuve c4 = Cuve.creerCuve(700 , 500);
+        Cuve c5 = Cuve.creerCuve(1000, 1000);
         
         Tube t1 = Tube.creerTube(c1,c2,2);
         Tube t2 = Tube.creerTube(c2,c3,4);

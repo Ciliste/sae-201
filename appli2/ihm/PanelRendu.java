@@ -1,5 +1,7 @@
 package appli2.ihm;
 
+import static java.lang.Math.round;
+
 import java.awt.Color;
 import java.awt.Graphics;
 
@@ -43,13 +45,18 @@ public class PanelRendu extends JPanel implements MouseMotionListener
             height = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
 
             // Détermination de la couleur de la cuve
-            Color couleur = new Color(0, 0, 0);
-            if ((int) cuve.getContenu() / 2 <= 255)
-                // du noir vers le rouge
-                couleur = new Color((int) cuve.getContenu() / 4, 0, 0);
+            Color couleur = new Color(255, 255, 255);
+            int temp = (int)(round(cuve.getContenu() / 2));
+            if (temp <= 255)
+            {
+                // du blanc vers le rouge
+                couleur = new Color(255, 255-temp, 255-temp);
+            }
             else
-                // du rouge vers le blanc
-                couleur = new Color(255, (int) ((cuve.getContenu()/2)-255), (int) ((cuve.getContenu()/2)-255));
+            {
+                // du noir vers le rouge
+                couleur = new Color(500-temp, 0, 0);
+            }
   
 
 
