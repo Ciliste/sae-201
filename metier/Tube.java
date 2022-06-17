@@ -1,9 +1,11 @@
 package metier;
 
+import common.SharedContants;
+
 public class Tube {
 
-    public static final int SECTION_MIN = 2;
-    public static final int SECTION_MAX = 10;
+    public static final int SECTION_MIN = SharedContants.DonneesCuveTube.TUBE_SECTION_MIN.VAL;
+    public static final int SECTION_MAX = SharedContants.DonneesCuveTube.TUBE_SECTION_MAX.VAL;
 
     private Cuve cuveA;
     private Cuve cuveB;

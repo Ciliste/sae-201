@@ -24,26 +24,25 @@ public class CuvePanel extends JPanel {
         CercleCuve cercle = new CercleCuve(cuve.getCapacite(), cuve.getContenu());
         this.add(cercle, BorderLayout.CENTER);
 
-        InfoCuve info = new InfoCuve(cuve);
-        this.add(info, 
-            switch (cuve.getPosInfo().getValeur()) {
-                case 0 -> BorderLayout.NORTH;
-                case 1 -> BorderLayout.EAST;
-                case 2 -> BorderLayout.SOUTH;
-                case 3 -> BorderLayout.WEST;
-                default -> BorderLayout.NORTH;
-            }
-        );
+        // InfoCuve info = new InfoCuve(cuve);
+        // this.add(info, 
+        //     switch (cuve.getPosInfo().getValeur()) {
+        //         case 0 -> BorderLayout.NORTH;
+        //         case 1 -> BorderLayout.EAST;
+        //         case 2 -> BorderLayout.SOUTH;
+        //         case 3 -> BorderLayout.WEST;
+        //         default -> BorderLayout.NORTH;
+        //     }
+        // );
 
         this.setOpaque(false);
 
-        int width, height;
-        
-
         // this.setBounds(cuve.get, 10, 100, 100);
+
+        this.paint(this.getGraphics());
     }
 
-    private class CercleCuve extends JComponent {
+    private class CercleCuve extends JPanel {
 
         private int capacite;
         private double contenu;
@@ -56,11 +55,11 @@ public class CuvePanel extends JPanel {
         }
 
         @Override
-        public void paintComponent(Graphics g) {
+        public void paint(Graphics g) {
 
-            super.paintComponent(g);
+            super.paint(g);
 
-            this.getWidth();
+            g.drawOval(0, 0, this.getWidth(), this.getHeight());
         }
     }
 
@@ -72,6 +71,8 @@ public class CuvePanel extends JPanel {
 
             this.add(new JLabel(String.valueOf(cuve.getIdentifiant())));
             this.add(new JLabel((Math.round(cuve.getContenu() * 100.0)/100.0) + "/" + cuve.getCapacite()));
+
+            this.paint(this.getGraphics());
         }
     }
 }

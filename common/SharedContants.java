@@ -3,6 +3,9 @@ package common;
 import java.io.File;
 import java.nio.file.Files;
 
+import java.awt.Component;
+
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 public class SharedContants {
@@ -13,7 +16,7 @@ public class SharedContants {
 
             public String getDescription() {
     
-                return "Réseaux (*.data)";
+                return "Réseaux (*.data, ceux générés par l'application)";
             }
     
             public boolean accept(File f) {
@@ -101,7 +104,11 @@ public class SharedContants {
         TAILLE_CUVE_MAX(0.20),
         TAILLE_CUVE_MIN(0.05),
         TAILLE_SECTION_MAX(0.03),
-        TAILLE_SECTION_MIN(0.01);
+        TAILLE_SECTION_MIN(0.01),
+
+        LONGUEUR_APPLI2(0.8),
+        HAUTEUR_APPLI2(0.6),
+        MARGE_APPLI2(0.1);
 
         public final double VAL;
 
@@ -111,5 +118,26 @@ public class SharedContants {
         }
     }
 
+    public static enum DonneesCuveTube {
+
+        CUVE_CAPACITE_MIN(200),
+        CUVE_CAPACITE_MAX(1000),
+
+        TUBE_SECTION_MIN(2),
+        TUBE_SECTION_MAX(10);
+
+        public final int VAL;
+
+        private DonneesCuveTube(int val) {
+
+            this.VAL = val;
+        }
+    }
+
     public static final String FORMAT_KEY_WORD = "user:reseauformat";
+
+    public static final void showError(Component parent, Exception error) {
+
+        JOptionPane.showMessageDialog(parent, error.getMessage(), error.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+    }
 }

@@ -3,6 +3,9 @@ package appli2.ihmBis;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.awt.event.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -28,6 +31,7 @@ public class FrameVisu extends JFrame {
 
     private int statutTravail;
     private File fichierCourant;
+    private Reseau reseau;
 
     public FrameVisu(Controleur ctrl) {
 
@@ -36,7 +40,9 @@ public class FrameVisu extends JFrame {
         this.statutTravail = SharedContants.StatutTravail.AUCUN.VAL;
 
         this.setTitle("Visualisation d'un réseau");
-        this.setSize(500, 500);
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setSize((int)(size.width * SharedContants.RatioAffichage.LONGUEUR_APPLI2.VAL), (int)(size.height * SharedContants.RatioAffichage.HAUTEUR_APPLI2.VAL));
+        this.setResizable(true);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -73,12 +79,11 @@ public class FrameVisu extends JFrame {
 
         this.setVisible(true);
 
-        this.repaint();
+        this.setSize(this.getWidth(), this.getHeight());
     }
 
     public void ouvrir(ActionEvent event) {
 
-        System.out.println("Shesh");
         if (this.statutTravail == SharedContants.StatutTravail.AUCUN.VAL) {
 
             JFileChooser choose = new JFileChooser(
@@ -102,7 +107,9 @@ public class FrameVisu extends JFrame {
 
                     this.mnuSaveFile.setEnabled(true);
 
-                    this.drawReseau(this.ctrl.ouvrir(this.fichierCourant));
+                    this.reseau = this.ctrl.ouvrir(this.fichierCourant);
+
+                    this.drawReseau();
 
                     this.setTitle(this.fichierCourant.getName());
                 }
@@ -120,11 +127,17 @@ public class FrameVisu extends JFrame {
 
     }
 
-    private void drawReseau(Reseau reseau) {
+    private void drawReseau() {
 
-        System.out.println(reseau.serialize());
-
+        if (this.reseau == null) return;
+        
         this.getContentPane().removeAll();
+
+        int minDrawX = (int) SharedContants.RatioAffichage.MARGE_APPLI2.VAL * this.getHeight();
+        int maxDrawX = this.getWidth() - ((int) SharedContants.RatioAffichage.MARGE_APPLI2.VAL * this.getHeight());
+
+        int minDrawY = (int) SharedContants.RatioAffichage.MARGE_APPLI2.VAL * this.getHeight();
+        int maxDrawY = this.getHeight() - ((int) SharedContants.RatioAffichage.MARGE_APPLI2.VAL * this.getHeight());
 
         Integer minX = null;
         Integer maxX = null;
@@ -146,11 +159,20 @@ public class FrameVisu extends JFrame {
             }
         }
 
+        System.out.println(minX + " " + maxX + " " + minY + " " + maxY);
+
         for (Cuve cuve : reseau.getEnsCuves()) {
 
-            this.add(new CuvePanel(this, cuve));
+            CuvePanel panel = new CuvePanel(this, cuve);
+            this.add(panel);
+            panel.setBounds(minDrawX + (((cuve.getPosition().x()-minX)/maxX)*maxDrawX), minDrawY + (((cuve.getPosition().y()-minY)/maxY)*maxDrawY), panel.getPreferredSize().width, panel.getPreferredSize().height);
         }
+    }
 
-        this.repaint();
+    @Override
+    public void paint(Graphics g) {
+
+        super.paint(g);
+        this.drawReseau();
     }
 }

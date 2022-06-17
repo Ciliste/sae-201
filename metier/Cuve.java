@@ -3,6 +3,8 @@ package metier;
 import java.io.Serializable;
 import java.util.Locale;
 
+import common.SharedContants;
+
 public class Cuve implements Comparable<Cuve>, Serializable {
 
     public enum PositionInfo {
@@ -53,8 +55,8 @@ public class Cuve implements Comparable<Cuve>, Serializable {
     }
 
     // Attributs de classe
-    public static final int CAPACITE_MIN = 200;
-    public static final int CAPACITE_MAX = 1000;
+    public static final int CAPACITE_MIN = SharedContants.DonneesCuveTube.CUVE_CAPACITE_MIN.VAL;
+    public static final int CAPACITE_MAX = SharedContants.DonneesCuveTube.CUVE_CAPACITE_MAX.VAL;
 
     private static int nbCuve = 0;
 
