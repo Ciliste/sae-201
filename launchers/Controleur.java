@@ -24,43 +24,30 @@ public class Controleur {
     public Reseau ouvrir(File file) throws IOException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, Exception {
 
         System.out.println("Début ouverture de " + file.getAbsolutePath());
-        Object attr = Files.getAttribute(file.toPath(), SharedContants.FORMAT_KEY_WORD);
-        if (attr == null)
-            throw new IOException("Le fichier n'est pas un fichier reconnu");
 
-        if (attr instanceof byte[]) {
+        for (MethodeSauvegarde methode : MethodeSauvegarde.values()) {
 
-            String format = new String((byte[]) attr);
-            System.out.println(format);
+            if (file.getName().contains("." + methode.getNom().toLowerCase() + ".")) {
 
-            for (MethodeSauvegarde methode : MethodeSauvegarde.values()) {
+                try {
 
-                if (methode.getNom().equals(format)) {
+                    System.out.println("Retour ouverture");
+                    Cuve.resetCompteur();
+                    return (Reseau) methode.getClasseSauvegarde().getMethod("deserialize", String.class).invoke(null, Files.readString(Path.of(file.getAbsolutePath())));
+                }
+                catch (NoSuchMethodException | ClassCastException err) {
 
-                    try {
+                    throw new NoSuchMethodException("Ce formatage est reconnu, mais il n'est pas lisible");
+                }
+                catch (IllegalAccessException err) {
 
-                        System.out.println("Retour ouverture");
-                        Cuve.resetCompteur();
-                        return (Reseau) methode.getClasseSauvegarde().getMethod("deserialize", String.class).invoke(null, Files.readString(Path.of(file.getAbsolutePath())));
-                    }
-                    catch (NoSuchMethodException | ClassCastException err) {
+                    throw new IllegalAccessException("Fichier innaccessible");
+                }
+                catch (InvocationTargetException err) {
 
-                        throw new NoSuchMethodException("Ce formatage est reconnu, mais il n'est pas lisible");
-                    }
-                    catch (IllegalAccessException err) {
-
-                        throw new IllegalAccessException("Fichier innaccessible");
-                    }
-                    catch (InvocationTargetException err) {
-
-                        throw new Exception("Erreur lors de la lecture du fichier");
-                    }
+                    throw new Exception("Erreur lors de la lecture du fichier");
                 }
             }
-        }
-        else {
-
-            throw new IOException("Le format du fichier est corrompu");
         }
         
         return null;
@@ -71,20 +58,10 @@ public class Controleur {
         System.out.println("Sauvegarde");
         for (MethodeSauvegarde methode : MethodeSauvegarde.values()) {
 
-            try {
+            if (file.getName().contains("." + methode.getNom().toLowerCase() + ".")) {
 
-                System.out.println("Tentative de sauvegarde avec " + methode.getNom());
-                System.out.println(methode.getClasseSauvegarde().getName() + " " + new String((byte[])Files.getAttribute(Path.of(file.getAbsolutePath()), SharedContants.FORMAT_KEY_WORD)));
-                if (methode.getNom().equals(new String((byte[])Files.getAttribute(Path.of(file.getAbsolutePath()), SharedContants.FORMAT_KEY_WORD)))) {
-
-                    System.out.println("Sauvegarde avec " + methode.getNom());
-                    this.sauvegarderSous(file, methode.getClasseSauvegarde(), cuves, tubes);
-                    break;
-                }
-            }
-            catch (IOException err) {
-
-                err.printStackTrace();
+                this.sauvegarderSous(file, methode.getClasseSauvegarde(), cuves, tubes);
+                break;
             }
         }
     }
@@ -143,15 +120,24 @@ public class Controleur {
 
                 if (methode.getClasseSauvegarde().equals(classe)) {
 
-                    format = methode.getNom();
+                    format = methode.getNom().toLowerCase();
                     break;
                 }
             }
 
-            Files.setAttribute(Path.of(file.getAbsolutePath()), SharedContants.FORMAT_KEY_WORD, format.getBytes());
-            if (!file.getAbsolutePath().endsWith(".data")) {
+            if (!file.getAbsolutePath().contains("." + format + ".")) {
 
-                file.renameTo(new File(file.getAbsolutePath() + ".data"));
+                if (!file.getAbsolutePath().endsWith(".data")) {
+
+                    file.renameTo(new File(file.getAbsolutePath() + format + ".data"));
+                }
+            }
+            else {
+
+                if (!file.getAbsolutePath().endsWith(".data")) {
+
+                    file.renameTo(new File(file.getAbsolutePath() + format + ".data"));
+                }
             }
         }
         catch (Exception err) {
