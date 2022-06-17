@@ -1,13 +1,13 @@
-package metier.reseau;
+package metier;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import metier.reseau.Reseau;
 
 import metier.Cuve;
-import metier.Tube;
 
 import java.io.Serializable;
 
