@@ -95,6 +95,7 @@ public class PanelAction extends JPanel implements ActionListener
         // mode automatique
         if (e.getSource() == this.ensBtn[3])
         {
+            this.autoOn = !this.autoOn;
             // à modifier pour optenir le nombre d'étapes que doit faire le réseau pour obtenir un équilibre
             int cpt = 0;
             while (cpt < 100 && this.autoOn)

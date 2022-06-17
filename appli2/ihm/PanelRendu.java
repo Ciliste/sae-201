@@ -17,6 +17,7 @@ import java.awt.event.*;
 import appli2.Controleur;
 import metier.reseau.Reseau;
 import metier.Cuve;
+import metier.Position;
 import metier.Tube;
 
 
@@ -116,13 +117,6 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             }
 
 
-            // Dessin des cuves
-            g.setColor(couleur);
-            g.fillOval(xCuve, yCuve, width, height);
-            g.setColor(Color.BLACK);
-            g.drawOval(xCuve, yCuve, width, height);
-
-
             // Dessin des tubes
             if (tube != null)
             {
@@ -135,7 +129,14 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             }
 
 
-            System.out.println(cpt ++);
+            // Dessin des cuves
+            g.setColor(couleur);
+            g.fillOval(xCuve, yCuve, width, height);
+            g.setColor(Color.BLACK);
+            g.drawOval(xCuve, yCuve, width, height);
+
+
+            cpt++;
         }
 
 
@@ -150,8 +151,8 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        e.getX();
-        e.getY();
+        System.out.println(e.getX());
+        System.out.println(e.getY());
     }
 
     // utilise pour capturer le clique de l'utilisateur
@@ -162,12 +163,16 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
 
         this.xOrigSourie = e.getX();
         this.yOrigSourie = e.getY();
+
+        int newXCuve = 0,
+            newYCuve = 0;
         
         for (Cuve cuve : this.reseau.getEnsCuves())
         {
             if (this.xOrigSourie > cuve.getPosition().x() && this.xOrigSourie < cuve.getPosition().x() + this.width &&
                 this.yOrigSourie > cuve.getPosition().y() && this.yOrigSourie < cuve.getPosition().y() + this.height)
             {
+                cuve.setPosition(new Position(newXCuve, newYCuve));
                 this.paint(this.getGraphics());
             }
         }

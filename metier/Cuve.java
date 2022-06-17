@@ -227,6 +227,12 @@ public class Cuve implements Comparable<Cuve>, Serializable {
         return Position.copier(this.position);
     }
 
+    // Setters
+    public void setPosition(Position position) {
+
+        this.position = position;
+    }
+
     // toString()
     public String toString() {
 
