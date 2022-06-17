@@ -71,8 +71,13 @@ public class PanelAction extends JPanel implements ActionListener
         // reveir au début
         if (e.getSource() == this.ensBtn[0])
         {
-            //this.reseau.goToDebut();
-            this.ctrl.maj();
+            for (int i = 0; i < 200; i++)
+            {
+                this.reseau.retour();
+                this.ctrl.maj();
+            }
+
+            
         }
 
         // reculer de 10 étapes
@@ -80,9 +85,10 @@ public class PanelAction extends JPanel implements ActionListener
         {
             for (int i = 0; i < 10; i++)
             {
-                //this.reseau.retour();
-                this.ctrl.maj();
+                this.reseau.retour();
             }
+
+            this.ctrl.maj();
         }
 
         // reculer d'une étape
