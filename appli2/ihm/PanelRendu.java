@@ -159,9 +159,11 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             {
                 System.out.println("Cuve ");
                 cuve.setPosition(new Position(this.newXCuve, this.newYCuve));
-                this.repaint();
+                
             }
         }
+
+        this.repaint();
     }
 
     // utilise pour capturer le clique de l'utilisateur
