@@ -11,15 +11,17 @@ import metier.Tube;
 
 import java.io.Serializable;
 
-public abstract class Reseau implements Serializable {
+public abstract class Reseau implements Serializable, Cloneable {
 
     private List<Cuve> ensCuves;
     private List<Tube> ensTubes;
+    private Reseau precedent;
     
     protected Reseau() {
 
         this.ensCuves = new ArrayList<Cuve>();
         this.ensTubes = new ArrayList<Tube>();
+        this.precedent = null;
     }
 
     public void ajouterTube(Tube tube) {
@@ -62,6 +64,7 @@ public abstract class Reseau implements Serializable {
     }
     public void update()
     {
+        
         double[] itteration = new double[this.ensCuves.size()];
 
         List<Tube> lstTubeVisite = new ArrayList<Tube>();
@@ -74,6 +77,7 @@ public abstract class Reseau implements Serializable {
         int indexCuveA;
         int indexCuveB;
 
+        this.creePrecedent();
 
         boolean  breakBoucle;
         for (Cuve cuve : lstCuveVisite)
@@ -134,17 +138,60 @@ public abstract class Reseau implements Serializable {
             }
         }
 
+
         for(int i = 0; i < this.ensCuves.size(); i++)
         {
             if(itteration[i] > 0)
                 this.ensCuves.get(i).ajouter(itteration[i]);
             else
                 this.ensCuves.get(i).retirer(-itteration[i]);
-        }   
+        }
+        System.out.println(this.serialize());
+        System.out.println(this);
+        System.out.println(precedent);
+        System.out.println(this.precedent.serialize());
+    }
+
+    
+    public List<Tube> getEnsTubes() { return this.ensTubes; }
+    public void retour()
+    {
+        if(this.precedent == null)
+            return;
+        this.ensCuves = this.precedent.getEnsCuves();
+        this.ensTubes = this.precedent.getEnsTubes();
+        this.precedent = this.precedent.getPrecedent();
     }
 
 
-    public List<Tube> getEnsTubes() { return this.ensTubes; }
+    
+    
+    private void creePrecedent()
+    {
+        try {
+            this.precedent = (Reseau) this.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < this.ensCuves.size(); i++)
+        {
+            Cuve cuve = this.ensCuves.get(i);
+            this.precedent.supprimerCuve(cuve);
+            this.precedent.ajouterCuve(cuve.cloneCuve());
+        }
+        
+        for (int i = 0; i < this.ensTubes.size(); i++)
+        {   Tube tube = this.ensTubes.get(i);
+            this.precedent.supprimerTube(tube);
+            this.precedent.ajouterTube(tube.cloneTube());
+        }
+        
+        System.out.println("AFFICHAGE DU PRESENT ET PRECEDENT");
+
+        System.out.println(this.serialize());
+        
+        
+    }
 
     public Map<Cuve, List<Tube>> getAdjacences() {
 
@@ -160,6 +207,10 @@ public abstract class Reseau implements Serializable {
         }
 
         return adjacences;
+    }
+
+    public Reseau getPrecedent() {
+        return this.precedent;
     }
 
     public abstract String serialize();
