@@ -115,9 +115,6 @@ public class FrameCreation extends JFrame {
         this.setJMenuBar(menuBar);
 
         this.setVisible(true);
-
-        this.repaint();
-        this.pack();
     }
 
     public void nouveau(ActionEvent event) {

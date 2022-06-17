@@ -2,17 +2,15 @@ Dans ./launchers vous trouverez Appli1.java et Appli2.java qui sont les controll
 
 ____________________________________________
 
-Compiler :
+Compiler Appli1 : 
+javac -sourcepath . launchers/Appli1.java -d class/
 
-# Linux / MacOS
-$ find -name "*.java" > compile.txt
-$ javac @sources.txt
-
-:: Windows
-> dir /s /B *.java > compile.txt
-> javac @sources.txt
+Compiler Appli2 :
+javac -sourcepath . launchers/Appli2.java -d class/
 
 ____________________________________________
+
+(cd class/ au préalable) 
 
 Lancer l'Appli1 :
 
