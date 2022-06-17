@@ -8,7 +8,7 @@ import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import appli2.Controleur.MethodeSauvegarde;
+import launchers.Controleur.MethodeSauvegarde;
 
 public class SharedContants {
     

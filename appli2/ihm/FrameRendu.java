@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.Scanner;
 
-import appli2.Controleur;
+import launchers.Appli2;
 import common.SharedContants;
 import metier.reseau.ListeAdjacence;
 import metier.reseau.Reseau;
@@ -30,11 +30,11 @@ public class FrameRendu extends JFrame implements ActionListener
     private JMenuItem  menuiFichierTest;
 
     private Reseau reseau;
-    private Controleur ctrl;
+    private Appli2 ctrl;
     private PanelAction panelAction;
 
 
-    public FrameRendu(Controleur ctrl, Reseau reseau) 
+    public FrameRendu(Appli2 ctrl, Reseau reseau) 
     {
         this.setTitle("Frame rendu");
         this.setLocation(0, 0);

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.*;
 
-import appli2.Controleur;
+import launchers.Controleur;
 import metier.reseau.Reseau;
 import metier.Cuve;
 import metier.Position;

@@ -2,7 +2,7 @@ package appli2.ihm;
 
 import javax.swing.*;
 
-import appli2.Controleur;
+import launchers.Appli2;
 import metier.reseau.Reseau;
 
 import java.awt.event.*;
@@ -11,7 +11,7 @@ import java.awt.Font;
 
 public class PanelAction extends JPanel implements ActionListener
 {
-    private Controleur ctrl;
+    private Appli2 ctrl;
     private Reseau reseau;
 
     private JButton[] ensBtn;
@@ -21,7 +21,7 @@ public class PanelAction extends JPanel implements ActionListener
     private boolean autoOn = false;
 
 
-    public PanelAction(Controleur ctrl, Reseau reseau)
+    public PanelAction(Appli2 ctrl, Reseau reseau)
     {
         this.ctrl = ctrl;
 
@@ -106,13 +106,12 @@ public class PanelAction extends JPanel implements ActionListener
             // à modifier pour optenir le nombre d'étapes que doit faire le réseau pour obtenir un équilibre
             
             new Thread(new Runnable() {
-                
                 public void run() {
 
                     while (autoOn)
                     {
                         PanelAction.this.reseau.update();
-                        ctrl.maj();
+                        PanelAction.this.ctrl.maj();
 
                         try{ Thread.sleep(100); }
                         catch (InterruptedException e) { System.out.println("La pause n'a pas fonctionné"); e.printStackTrace(); }

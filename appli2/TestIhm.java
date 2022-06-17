@@ -36,6 +36,6 @@ public class TestIhm
         listAdj.ajouterTube(t3);
         listAdj.ajouterTube(t4);
 
-        new Controleur(listAdj);
+        //new Controleur();
     }
 }
