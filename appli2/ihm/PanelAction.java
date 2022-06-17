@@ -97,15 +97,23 @@ public class PanelAction extends JPanel implements ActionListener
         {
             this.autoOn = !this.autoOn;
             // à modifier pour optenir le nombre d'étapes que doit faire le réseau pour obtenir un équilibre
-            int cpt = 0;
-            while (cpt < 100 && this.autoOn)
-            {
-                this.reseau.update();
-                this.ctrl.maj();
+            
+            new Thread(new Runnable() {
+                
+                public void run() {
 
-                try { Thread.sleep(500); } catch (Exception ex) { System.out.println("La pause n'a pas fonctionné"); ex.printStackTrace(); }
-                cpt ++;
-            }
+                    while (autoOn)
+                    {
+                        PanelAction.this.reseau.update();
+                        ctrl.maj();
+                        try
+                        {
+                            Thread.sleep(100);
+                        } 
+                        catch (InterruptedException e) { System.out.println("La pause n'a pas fonctionné"); e.printStackTrace(); }
+                    }
+                }
+            }).start();
         }
 
         // avancer de 1 étape

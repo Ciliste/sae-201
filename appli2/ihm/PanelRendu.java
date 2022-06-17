@@ -32,6 +32,8 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
     private int newXCuve;
     private int newYCuve;
 
+    private Cuve cuveActive;
+
     private int width ;
     private int height;
 
@@ -60,28 +62,45 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
         int xSection = 0,
             ySection = 0;
 
-        Tube tube = null;
+        //Tube tube = null;
 
         Color couleur = new Color(0, 0, 0);
 
         int WidthPanelAction  = this.ctrl.getWidthPanelAction();
         int HeightPanelAction = this.ctrl.getHeightPanelAction();
 
-        List<JPanel> lstPanel = new ArrayList<JPanel>();
 
+        int cpt = 0;
+        for (Tube tube : this.reseau.getEnsTubes())
+        {
+            // Détermination de la position et de la taille du tube
+            xOrig = (tube.getCuveA().getPosition().x());
+            yOrig = (tube.getCuveA().getPosition().y());
+            xDest = (tube.getCuveB().getPosition().x());
+            yDest = (tube.getCuveB().getPosition().y());
 
-        // Création d'un panel pour chaque cuve
-        for (Cuve cuve : this.reseau.getEnsCuves())
-            lstPanel.add(new JPanel());
+            //xSection = (xOrig + xDest) / 2;
+            //ySection = (yOrig + yDest) / 2;
+
+            // Dessin des tubes
+            g.setColor(Color.BLACK);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setStroke(new java.awt.BasicStroke(tube.getSection()));
+            g2.drawLine(xOrig, yOrig, xDest, yDest);
+
+            g2.setStroke(new java.awt.BasicStroke(1));
+
+            cpt ++;
+        }
 
 
         // Determination de la position des cuves + de la couleur + de la taille + Dessin des cuves
-        int cpt = 0;
+        cpt = 0;
         for (Cuve cuve : this.reseau.getEnsCuves())
         {
             // Determination de la taille
-            width  = cuve.getCapacite()/10;
-            height = cuve.getCapacite()/10;
+            this.width  = cuve.getCapacite()/10;
+            this.height = cuve.getCapacite()/10;
 
             // Determination de la position
             yCuve = cuve.getPosition().y() - width  / 2;
@@ -96,35 +115,6 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             else
                 // du noir vers le rouge
                 couleur = new Color(500-temp, 0, 0);
-
-
-            // Determination de la position des tubes + de la taille + Dessin des tubes
-            if (cpt < this.reseau.getEnsTubes().size())
-            {
-                tube = this.reseau.getEnsTubes().get(cpt);
-
-                // Détermination de la position du tube
-                xOrig = (tube.getCuveA().getPosition().x());
-                yOrig = (tube.getCuveA().getPosition().y());
-                xDest = (tube.getCuveB().getPosition().x());
-                yDest = (tube.getCuveB().getPosition().y());
-
-
-                //xSection = (xOrig + xDest) / 2;
-                //ySection = (yOrig + yDest) / 2;
-            }
-
-
-            // Dessin des tubes
-            if (tube != null)
-            {
-                g.setColor(Color.BLACK);
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setStroke(new java.awt.BasicStroke(tube.getSection()));
-                g2.drawLine(xOrig, yOrig, xDest, yDest);
-
-                g2.setStroke(new java.awt.BasicStroke(1));
-            }
 
 
             // Dessin des cuves
@@ -146,34 +136,36 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        System.out.println(e.getX() + " : " + e.getY());
-
-
         this.newXCuve = e.getX() - (abs(e.getX() - this.xOrigSourie));
         this.newYCuve = e.getY() - (abs(e.getY() - this.yOrigSourie));
 
-        for (Cuve cuve : this.reseau.getEnsCuves())
-        {
-            if (this.xOrigSourie > cuve.getPosition().x() && this.xOrigSourie < cuve.getPosition().x() + this.width &&
-                this.yOrigSourie > cuve.getPosition().y() && this.yOrigSourie < cuve.getPosition().y() + this.height)
-            {
-                System.out.println("Cuve ");
-                cuve.setPosition(new Position(this.newXCuve, this.newYCuve));
+        
+        this.cuveActive.setPosition(new Position(this.newXCuve, this.newYCuve));
                 
-            }
-        }
-
         this.repaint();
     }
+
 
     // utilise pour capturer le clique de l'utilisateur
     @Override
     public void mousePressed(MouseEvent e)
     {
-        System.out.println("appui sur le clic en " + e.getX() + " : " + e.getY());
+        System.out.println("pressed -> " + e.getX() + " : " + e.getY());
 
         this.xOrigSourie = e.getX();
         this.yOrigSourie = e.getY();
+
+        for (Cuve cuve : this.reseau.getEnsCuves())
+        {
+            if (this.xOrigSourie > cuve.getPosition().x()-cuve.getCapacite()/10 && this.xOrigSourie < cuve.getPosition().x() + cuve.getCapacite()/10 &&
+                this.yOrigSourie > cuve.getPosition().y()-cuve.getCapacite()/10 && this.yOrigSourie < cuve.getPosition().y() + cuve.getCapacite()/10)
+            {
+                System.out.println("Cuve " + cuve.getIdentifiant());
+                this.cuveActive = cuve;
+                break;
+                //cuve.setPosition(new Position(this.newXCuve, this.newYCuve));
+            }
+        }
     }
 
 
@@ -182,7 +174,25 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        System.out.println("relachement de la sourie");
+        /*
+        System.out.println("released -> " + e.getX() + " : " + e.getY());
+
+        //this.newXCuve = e.getX() - (abs(e.getX() - this.xOrigSourie));
+        //this.newYCuve = e.getY() - (abs(e.getY() - this.yOrigSourie));
+
+        for (Cuve cuve : this.reseau.getEnsCuves())
+        {
+            if (this.xOrigSourie > cuve.getPosition().x() && this.xOrigSourie < cuve.getPosition().x() + this.width &&
+                this.yOrigSourie > cuve.getPosition().y() && this.yOrigSourie < cuve.getPosition().y() + this.height)
+            {
+                System.out.println("Cuve ");
+                cuve.setPosition(new Position(e.getX(), e.getY()));
+                
+            }
+        }
+
+        this.repaint();
+        */
     }
 
 
