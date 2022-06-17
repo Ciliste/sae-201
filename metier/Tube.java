@@ -1,138 +1,217 @@
-package metier;
+package metier.reseau;
 
-import common.SharedContants;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class Tube {
+import metier.Cuve;
+import metier.Tube;
 
-    public static final int SECTION_MIN = SharedContants.DonneesCuveTube.TUBE_SECTION_MIN.VAL;
-    public static final int SECTION_MAX = SharedContants.DonneesCuveTube.TUBE_SECTION_MAX.VAL;
+import java.io.Serializable;
 
-    private Cuve cuveA;
-    private Cuve cuveB;
-    private int section;
+public abstract class Reseau implements Serializable, Cloneable {
 
-    public static Tube creerTube(Cuve cuveA, Cuve cuveB, int section) {
-        if (section < 2 || section > 10) {
-            return null;
-        }
+    private List<Cuve> ensCuves;
+    private List<Tube> ensTubes;
+    private Reseau precedent;
+    
+    protected Reseau() {
 
-        if (cuveA == null || cuveB == null) {
-            return null;
-        }
-
-        if(cuveA.equals(cuveB)){
-            return null;
-        }
-
-        return new Tube(cuveA, cuveB, section);
+        this.ensCuves = new ArrayList<Cuve>();
+        this.ensTubes = new ArrayList<Tube>();
+        this.precedent = null;
     }
 
-    private Tube(Cuve cuveA, Cuve cuveB, int section) {
-        this.cuveA = cuveA;
-        this.cuveB = cuveB;
-        this.section = section;
+    public void ajouterTube(Tube tube) {
+        
+        if (this.ensTubes.contains(tube))
+            return;
+        this.ensTubes.add(tube);
     }
 
-    public double maj() {
-
-        double transfert = 0;
-
-        transfert = this.cuveA.getContenu() - this.cuveB.getContenu();
-        Cuve source, destination;
-
-        // Verification de la source et de la destination
-        if (transfert > 0) {
-
-            source = this.cuveA;
-            destination = this.cuveB;
-        } else if (transfert < 0) {
-
-            source = this.cuveB;
-            destination = this.cuveA;
-        } else {
-            return 0;
-        }
-
-        if (transfert < 0) {
-            transfert = -transfert;
-        }
-
-        if (transfert > this.section) {
-            transfert = this.section;
-        }
-
-        // Vide la Cuve si le transfere est plus eleve que le contenu de celle-ci
-        if (source.getContenu() - transfert < 0) {
-
-            transfert = source.getContenu();
-        }
-
-        // Transfere la quantite maximum possible pour ne pas deborder
-        if (destination.getContenu() + transfert > destination.getCapacite()) {
-
-            transfert = destination.getCapacite() - destination.getContenu();
-        }
-
-        // Equilire les deux cuves
-        if (source.getContenu() - transfert < destination.getContenu() + transfert) {
-
-            transfert = (source.getContenu() - destination.getContenu()) / 2;
-        }
-
-        source.retirer(transfert);
-        destination.ajouter(transfert);
-
-        return transfert;
+    public void supprimerTube(Tube tube) {
+        
+        this.ensTubes.remove(tube);
     }
-    public boolean contient(Cuve c)
+
+    public void ajouterCuve(Cuve cuve) {
+        
+        if (this.ensCuves.contains(cuve))
+            return;
+        this.ensCuves.add(cuve);
+    }
+
+    public void supprimerCuve(Cuve cuve) {
+        
+        this.ensCuves.remove(cuve);
+    }
+
+    public List<Cuve> getEnsCuves() {
+        
+        return this.ensCuves;
+    }
+
+    public List<Cuve> getEnsCuvesTri() {
+
+        List<Cuve> lstCuve = new ArrayList<Cuve>();
+        lstCuve.addAll(this.ensCuves);
+        Collections.sort(lstCuve);
+        Collections.reverse(lstCuve);
+
+        return lstCuve;
+    }
+    public void update()
     {
-    	return this.cuveA == c || this.cuveB ==c;
-    }
+        
+        double[] itteration = new double[this.ensCuves.size()];
 
-    public Cuve getCuveA() {
-        return this.cuveA;
-    }
+        List<Tube> lstTubeVisite = new ArrayList<Tube>();
+        List<Cuve> lstCuveVisite = this.getEnsCuvesTri();
 
-    public Cuve getCuveB() {
-        return this.cuveB;
-    }
+        double modification;
+        double contenuCuveA;
+        double contenuCuveB;
 
-    public boolean contains(Cuve cuve) {
+        int indexCuveA;
+        int indexCuveB;
 
-        return this.cuveA.getIdentifiant() == cuve.getIdentifiant() || this.cuveB.getIdentifiant() == cuve.getIdentifiant();
-    }
+        this.creePrecedent();
 
-    public int getSection() {
-        return this.section;
-    }
+        boolean  breakBoucle;
+        for (Cuve cuve : lstCuveVisite)
+        {
+            for(Tube tube : this.ensTubes)
+            {
+                breakBoucle = false;
+                if (!tube.contains(cuve))
+                    continue;
 
-    // toString()
-    public String toString() {
-        return "Tube : {" + this.cuveA.toString() + " - " + this.cuveB.toString() + " - " + this.section + "}";
-    }
+                for (Tube testTube : lstTubeVisite )
+                    if (tube.equals(testTube))
+                        breakBoucle = true;
 
-    public String serialize(char id) {
+                if (breakBoucle)
+                    continue;
 
-        return String.format(
-            "(%c/%d)", 
-            (this.cuveA.getIdentifiant() == id) ? this.cuveB.getIdentifiant() : this.cuveA.getIdentifiant(),
-            this.section
-        );
-    }
+                lstTubeVisite.add(tube);
+                modification = 0;
+                contenuCuveA = tube.getCuveA().getContenu();
+                contenuCuveB = tube.getCuveB().getContenu();
 
-    // TEST
-    public static void main(String[] args) {
+                indexCuveA = this.ensCuves.indexOf(tube.getCuveA());
+                indexCuveB = this.ensCuves.indexOf(tube.getCuveB());
+                if(contenuCuveA > contenuCuveB)
+                {
+                    modification = contenuCuveA - contenuCuveB;
+                    if(modification > tube.getSection())
+                        modification = tube.getSection();
 
-        Cuve cuveA = Cuve.creerCuve(500);
-        Cuve cuveB = Cuve.creerCuve(400);
-        Tube tube = Tube.creerTube(cuveA, cuveB, 10);
+                    if (modification > contenuCuveA + itteration[indexCuveA])
+                        modification = contenuCuveA + itteration[indexCuveA];
 
-        cuveA.ajouter(100);
-        cuveB.ajouter(205);
+                    if( modification > tube.getCuveB().getCapacite() - contenuCuveB + itteration[indexCuveB])
+                        modification = tube.getCuveB().getCapacite() - contenuCuveB + itteration[indexCuveB];
 
-        for (int i = 0; i < 10; i++) {
 
-            System.out.println(tube.toString() + " | " + tube.maj());
+                    itteration[indexCuveA] -= modification;
+                    itteration[indexCuveB] += modification;
+                }
+                if(contenuCuveA < contenuCuveB)
+                {
+                    modification = contenuCuveB - contenuCuveA;
+        
+                    if(modification > tube.getSection())
+                        modification = tube.getSection();
+
+                    if (modification > contenuCuveB + itteration[indexCuveB])
+                        modification = contenuCuveB + itteration[indexCuveB];
+
+                    if( modification > tube.getCuveA().getCapacite() - contenuCuveA + itteration[indexCuveA])
+                        modification = tube.getCuveA().getCapacite() - contenuCuveA + itteration[indexCuveA];
+                    
+
+                    itteration[indexCuveA] += modification;
+                    itteration[indexCuveB] -= modification;
+                }
+            }
         }
+
+
+        for(int i = 0; i < this.ensCuves.size(); i++)
+        {
+            if(itteration[i] > 0)
+                this.ensCuves.get(i).ajouter(itteration[i]);
+            else
+                this.ensCuves.get(i).retirer(-itteration[i]);
+        }
+        System.out.println(this.serialize());
+        System.out.println(this);
+        System.out.println(precedent);
+        System.out.println(this.precedent.serialize());
     }
+
+    
+    public List<Tube> getEnsTubes() { return this.ensTubes; }
+    public void retour()
+    {
+        if(this.precedent == null)
+            return;
+        this.ensCuves = this.precedent.getEnsCuves();
+        this.ensTubes = this.precedent.getEnsTubes();
+        this.precedent = this.precedent.getPrecedent();
+    }
+
+
+    
+    
+    private void creePrecedent()
+    {
+        try {
+            this.precedent = (Reseau) this.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < this.ensCuves.size(); i++)
+        {
+            Cuve cuve = this.ensCuves.get(i);
+            this.precedent.supprimerCuve(cuve);
+            this.precedent.ajouterCuve(cuve.cloneCuve());
+        }
+        
+        for (int i = 0; i < this.ensTubes.size(); i++)
+        {   Tube tube = this.ensTubes.get(i);
+            this.precedent.supprimerTube(tube);
+            this.precedent.ajouterTube(tube.cloneTube());
+        }
+        
+        System.out.println("AFFICHAGE DU PRESENT ET PRECEDENT");
+
+        System.out.println(this.serialize());
+        
+        
+    }
+
+    public Map<Cuve, List<Tube>> getAdjacences() {
+
+        Map<Cuve, List<Tube>> adjacences = new HashMap<Cuve, List<Tube>>();
+
+        for (Cuve cuve : this.ensCuves) {
+            adjacences.put(cuve, new ArrayList<Tube>());
+        }
+
+        for (Tube tube : this.ensTubes) {
+            if (!adjacences.get(tube.getCuveA()).contains(tube)) adjacences.get(tube.getCuveA()).add(tube);
+            if (!adjacences.get(tube.getCuveB()).contains(tube)) adjacences.get(tube.getCuveB()).add(tube);
+        }
+
+        return adjacences;
+    }
+
+    public Reseau getPrecedent() {
+        return this.precedent;
+    }
+
+    public abstract String serialize();
 }
