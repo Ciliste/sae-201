@@ -107,7 +107,7 @@ public class PanelAction extends JPanel implements ActionListener
                         PanelAction.this.reseau.update();
                         ctrl.maj();
 
-                        try{ Thread.sleep(100); } 
+                        try{ Thread.sleep(100); }
                         catch (InterruptedException e) { System.out.println("La pause n'a pas fonctionné"); e.printStackTrace(); }
                     }
                 }

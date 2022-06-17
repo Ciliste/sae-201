@@ -76,13 +76,19 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             ySection = (yOrig + yDest) / 2;
 
             // Dessin des tubes
-            g.setColor(Color.BLACK);
+            g.setColor(Color.GRAY);
             Graphics2D g2 = (Graphics2D) g;
             g2.setStroke(new java.awt.BasicStroke(tube.getSection()));
             g2.drawLine(xOrig, yOrig, xDest, yDest);
 
+            // affichage de la section des tubes
+            g.setColor(Color.BLACK);
             g2.setStroke(new java.awt.BasicStroke(1));
-            g.drawString(""+tube.getSection(), xSection+5, ySection+5);
+            if (abs(xOrig-xDest) > abs(yOrig-yDest))
+                g.drawString(""+tube.getSection(), xSection, ySection+20);
+            else
+                g.drawString(""+tube.getSection(), xSection+20, ySection);
+
 
             cpt ++;
         }
