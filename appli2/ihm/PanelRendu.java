@@ -126,12 +126,17 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             // Determination de la position des informations
             switch (cuve.getPosInfo().getValeur())
             {
-                case 0  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
+                case 0  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y()+ cuve.getCapacite()/2; }
                 case 1  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
                 case 2  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
                 case 3  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
                 default : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
             }
+
+            // Affichage des informations
+            g.setColor(Color.BLACK);
+            g.drawString("Cuve : " + cuve.getIdentifiant(), xPosInfo, yPosInfo+20);
+            g.drawString(cuve.getContenu() + "/" + cuve.getCapacite(), xPosInfo, yPosInfo);
 
 
             cpt++;
