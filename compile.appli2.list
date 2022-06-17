@@ -1,5 +1,6 @@
 ./appli2/Controleur.java
 ./appli2/TestIhm.java
 
-./appli2/ihm/Panel.java
-./appli2/ihm/Frame.java
+./appli2/ihm/FrameRendu.java
+./appli2/ihm/PanelAction.java
+./appli2/ihm/PanelRendu.java

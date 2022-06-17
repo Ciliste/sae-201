@@ -29,6 +29,9 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
     private int xOrigSourie;
     private int yOrigSourie;
 
+    private int newXCuve;
+    private int newYCuve;
+
     private int width ;
     private int height;
 
@@ -36,7 +39,8 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
         this.ctrl = ctrl;
         this.reseau = reseau;
 
-        this.addMouseListener(this);
+        this.addMouseListener      (this);
+        this.addMouseMotionListener(this);
     }
 
     public void paint(Graphics g)
@@ -106,12 +110,6 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
                 yDest = (tube.getCuveB().getPosition().y());
 
 
-                System.out.println("xOrig : " + xOrig);
-                System.out.println("yOrig : " + yOrig);
-                System.out.println("xDest : " + xDest);
-                System.out.println("yDest : " + yDest);
-
-
                 //xSection = (xOrig + xDest) / 2;
                 //ySection = (yOrig + yDest) / 2;
             }
@@ -140,42 +138,40 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
         }
 
 
-
-        
-
-
-
         g.setColor(couleurInitiale);
     }
+
+
 
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        System.out.println(e.getX());
-        System.out.println(e.getY());
+        System.out.println(e.getX() + " : " + e.getY());
+
+
+        this.newXCuve = e.getX() - (abs(e.getX() - this.xOrigSourie));
+        this.newYCuve = e.getY() - (abs(e.getY() - this.yOrigSourie));
+
+        for (Cuve cuve : this.reseau.getEnsCuves())
+        {
+            if (this.xOrigSourie > cuve.getPosition().x() && this.xOrigSourie < cuve.getPosition().x() + this.width &&
+                this.yOrigSourie > cuve.getPosition().y() && this.yOrigSourie < cuve.getPosition().y() + this.height)
+            {
+                System.out.println("Cuve ");
+                cuve.setPosition(new Position(this.newXCuve, this.newYCuve));
+                this.repaint();
+            }
+        }
     }
 
     // utilise pour capturer le clique de l'utilisateur
     @Override
     public void mousePressed(MouseEvent e)
     {
-        System.out.println("appui sur le clic");
+        System.out.println("appui sur le clic en " + e.getX() + " : " + e.getY());
 
         this.xOrigSourie = e.getX();
         this.yOrigSourie = e.getY();
-
-        int newXCuve = 0,
-            newYCuve = 0;
-        
-        for (Cuve cuve : this.reseau.getEnsCuves())
-        {
-            if (this.xOrigSourie > cuve.getPosition().x() && this.xOrigSourie < cuve.getPosition().x() + this.width &&
-                this.yOrigSourie > cuve.getPosition().y() && this.yOrigSourie < cuve.getPosition().y() + this.height)
-            {
-                cuve.setPosition(new Position(newXCuve, newYCuve));
-                this.paint(this.getGraphics());
-            }
-        }
     }
 
 
@@ -189,7 +185,13 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
 
 
     // Inutile pour le moment
-    public void mouseMoved  (MouseEvent e) {}
+    public void mouseMoved  (MouseEvent e)
+    {
+        //System.out.println(e.getX() + " : " + e.getY());
+    }
+
+
+
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited (MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}

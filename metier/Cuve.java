@@ -230,7 +230,7 @@ public class Cuve implements Comparable<Cuve>, Serializable {
     // Setters
     public void setPosition(Position position) {
 
-        this.position = position;
+        this.position = Position.copier(position);
     }
 
     // toString()

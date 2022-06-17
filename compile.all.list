@@ -1,8 +1,6 @@
-./appli1/Controleur.java
 ./appli1/Console.java
 
 ./appli1/ihm/FrameCreation.java
-./appli1/ihm/PanelAction.java
 ./appli1/ihm/PanelCreation.java
 
 
