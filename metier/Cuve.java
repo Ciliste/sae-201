@@ -3,9 +3,7 @@ package metier;
 import java.io.Serializable;
 import java.util.Locale;
 
-import common.SharedContants;
-
-public class Cuve implements Comparable<Cuve>, Serializable {
+public class Cuve implements Comparable<Cuve>, Serializable{
 
     public enum PositionInfo {
 
@@ -55,8 +53,8 @@ public class Cuve implements Comparable<Cuve>, Serializable {
     }
 
     // Attributs de classe
-    public static final int CAPACITE_MIN = SharedContants.DonneesCuveTube.CUVE_CAPACITE_MIN.VAL;
-    public static final int CAPACITE_MAX = SharedContants.DonneesCuveTube.CUVE_CAPACITE_MAX.VAL;
+    public static final int CAPACITE_MIN = 200;
+    public static final int CAPACITE_MAX = 1000;
 
     private static int nbCuve = 0;
 
@@ -123,6 +121,8 @@ public class Cuve implements Comparable<Cuve>, Serializable {
 
         Cuve.nbCuve = 0;
     }
+
+    
 
     // Constructeur
     private Cuve(int capacite) {
@@ -248,10 +248,6 @@ public class Cuve implements Comparable<Cuve>, Serializable {
             "(%c/%" + ((int)(Math.log10(Cuve.CAPACITE_MAX))+1) + "d/%" + ((int)(Math.log10(Cuve.CAPACITE_MAX))+4) + ".2f/%d/%d/%s)", 
             this.identifiant, this.capacite, this.contenu, this.position.x(), this.position.y(), PositionInfo.values()[this.posInfo].name()
         );
-    }
-    public Cuve cloneCuve() {
-
-        return new Cuve(this.identifiant, this.capacite, this.contenu, this.position, this.posInfo);
     }
 
     // Comparable

@@ -50,7 +50,7 @@ public class PanelAction extends JPanel implements ActionListener
         /* Ajout des composants */
         /*----------------------*/
         /* Ajout des btns au panel btn*/
-        for (int i = 0; i < this.ensBtn.length; i++)
+        for (int i = 3; i < this.ensBtn.length; i++)
             panelBouton.add(this.ensBtn[i]);
 
         /* Ajout des panels au panel principal */
@@ -68,11 +68,17 @@ public class PanelAction extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+/*
         // reveir au début
         if (e.getSource() == this.ensBtn[0])
         {
-            //this.reseau.goToDebut();
-            this.ctrl.maj();
+            for (int i = 0; i < 200; i++)
+            {
+                //this.reseau.retour();
+                this.ctrl.maj();
+            }
+
+            
         }
 
         // reculer de 10 étapes
@@ -80,18 +86,19 @@ public class PanelAction extends JPanel implements ActionListener
         {
             for (int i = 0; i < 10; i++)
             {
-                //this.reseau.precedent();
-                this.ctrl.maj();
+                this.reseau.retour();
             }
+
+            this.ctrl.maj();
         }
 
         // reculer d'une étape
         if (e.getSource() == this.ensBtn[2])
         {
-            // this.reseau.retour();
+            //this.reseau.retour();
             this.ctrl.maj();
         }
-
+*/
         // mode automatique
         if (e.getSource() == this.ensBtn[3])
         {

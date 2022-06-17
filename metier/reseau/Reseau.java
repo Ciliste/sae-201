@@ -14,8 +14,7 @@ import java.io.Serializable;
 public abstract class Reseau implements Serializable {
 
     private List<Cuve> ensCuves;
-    private List<Tube> ensTubes;
-    
+    private List<Tube> ensTubes;    
     protected Reseau() {
 
         this.ensCuves = new ArrayList<Cuve>();
@@ -145,6 +144,7 @@ public abstract class Reseau implements Serializable {
 
 
     public List<Tube> getEnsTubes() { return this.ensTubes; }
+
 
     public Map<Cuve, List<Tube>> getAdjacences() {
 
