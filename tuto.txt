@@ -1,0 +1,23 @@
+Dans ./launchers vous trouverez Appli1.java et Appli2.java qui sont les controlleurs des deux applications respéctives.
+
+____________________________________________
+
+Compiler :
+
+# Linux / MacOS
+$ find -name "*.java" > compile.txt
+$ javac @sources.txt
+
+:: Windows
+> dir /s /B *.java > compile.txt
+> javac @sources.txt
+
+____________________________________________
+
+Lancer l'Appli1 :
+
+java launchers.Appli1
+
+Lancer l'Appli2 :
+
+java launchers.Appli2
