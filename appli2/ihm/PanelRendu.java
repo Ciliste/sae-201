@@ -106,16 +106,6 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             yCuve = cuve.getPosition().y() - widthCuve  / 2;
             xCuve = cuve.getPosition().x() - heightCuve / 2;
 
-            // Determination de la position des informations
-           /*switch (cuve.getPosInfo().getValeur())
-            {
-                case 0  -> posInfo = new Position(xCuve, yCuve);
-                case 1  -> ;
-                case 2  -> ;
-                case 3  -> ;
-                default -> ;
-            }*/
-
 
             // Determination de la couleur
             int temp = (int)(round(cuve.getContenu() / 2));
@@ -132,6 +122,16 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             g.fillOval(xCuve, yCuve, widthCuve, heightCuve);
             g.setColor(Color.BLACK);
             g.drawOval(xCuve, yCuve, widthCuve, heightCuve);
+
+            // Determination de la position des informations
+            switch (cuve.getPosInfo().getValeur())
+            {
+                case 0  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
+                case 1  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
+                case 2  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
+                case 3  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
+                default : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
+            }
 
 
             cpt++;

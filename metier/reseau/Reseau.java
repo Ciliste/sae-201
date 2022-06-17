@@ -185,12 +185,6 @@ public abstract class Reseau implements Serializable, Cloneable {
             this.precedent.supprimerTube(tube);
             this.precedent.ajouterTube(tube.cloneTube());
         }
-        
-        System.out.println("AFFICHAGE DU PRESENT ET PRECEDENT");
-
-        System.out.println(this.serialize());
-        
-        
     }
 
     public Map<Cuve, List<Tube>> getAdjacences() {

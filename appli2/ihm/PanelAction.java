@@ -68,6 +68,7 @@ public class PanelAction extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+/*
         // reveir au début
         if (e.getSource() == this.ensBtn[0])
         {
@@ -97,7 +98,7 @@ public class PanelAction extends JPanel implements ActionListener
             //this.reseau.retour();
             this.ctrl.maj();
         }
-
+*/
         // mode automatique
         if (e.getSource() == this.ensBtn[3])
         {
