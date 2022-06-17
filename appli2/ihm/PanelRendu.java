@@ -26,16 +26,8 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
     private Controleur ctrl;
     private Reseau reseau;
 
-    private int xOrigSourie;
-    private int yOrigSourie;
-
-    private int newXCuve;
-    private int newYCuve;
-
     private Cuve cuveActive;
 
-    private int width ;
-    private int height;
 
     public PanelRendu(Controleur ctrl, Reseau reseau) {
         this.ctrl = ctrl;
@@ -62,12 +54,13 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
         int xSection = 0,
             ySection = 0;
 
-        //Tube tube = null;
+        int xPosInfo = 0,
+            yPosInfo = 0;
+
+        int widthCuve  = 0,
+            heightCuve = 0;
 
         Color couleur = new Color(0, 0, 0);
-
-        int WidthPanelAction  = this.ctrl.getWidthPanelAction();
-        int HeightPanelAction = this.ctrl.getHeightPanelAction();
 
 
         int cpt = 0;
@@ -79,8 +72,8 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             xDest = (tube.getCuveB().getPosition().x());
             yDest = (tube.getCuveB().getPosition().y());
 
-            //xSection = (xOrig + xDest) / 2;
-            //ySection = (yOrig + yDest) / 2;
+            xSection = (xOrig + xDest) / 2;
+            ySection = (yOrig + yDest) / 2;
 
             // Dessin des tubes
             g.setColor(Color.BLACK);
@@ -89,6 +82,7 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             g2.drawLine(xOrig, yOrig, xDest, yDest);
 
             g2.setStroke(new java.awt.BasicStroke(1));
+            g.drawString(""+tube.getSection(), xSection+5, ySection+5);
 
             cpt ++;
         }
@@ -99,12 +93,22 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
         for (Cuve cuve : this.reseau.getEnsCuves())
         {
             // Determination de la taille
-            this.width  = cuve.getCapacite()/10;
-            this.height = cuve.getCapacite()/10;
+            widthCuve  = cuve.getCapacite()/10;
+            heightCuve = cuve.getCapacite()/10;
 
             // Determination de la position
-            yCuve = cuve.getPosition().y() - width  / 2;
-            xCuve = cuve.getPosition().x() - height / 2;
+            yCuve = cuve.getPosition().y() - widthCuve  / 2;
+            xCuve = cuve.getPosition().x() - heightCuve / 2;
+
+            // Determination de la position des informations
+           /*switch (cuve.getPosInfo().getValeur())
+            {
+                case 0  -> posInfo = new Position(xCuve, yCuve);
+                case 1  -> ;
+                case 2  -> ;
+                case 3  -> ;
+                default -> ;
+            }*/
 
 
             // Determination de la couleur
@@ -119,9 +123,9 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
 
             // Dessin des cuves
             g.setColor(couleur);
-            g.fillOval(xCuve, yCuve, width, height);
+            g.fillOval(xCuve, yCuve, widthCuve, heightCuve);
             g.setColor(Color.BLACK);
-            g.drawOval(xCuve, yCuve, width, height);
+            g.drawOval(xCuve, yCuve, widthCuve, heightCuve);
 
 
             cpt++;
@@ -136,13 +140,11 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        this.newXCuve = e.getX() - (abs(e.getX() - this.xOrigSourie));
-        this.newYCuve = e.getY() - (abs(e.getY() - this.yOrigSourie));
-
-        
-        this.cuveActive.setPosition(new Position(this.newXCuve, this.newYCuve));
-                
-        this.repaint();
+        if (this.cuveActive != null)
+        {
+            this.cuveActive.setPosition(new Position(e.getX(), e.getY()));
+            this.repaint();
+        }
     }
 
 
@@ -150,60 +152,29 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
     @Override
     public void mousePressed(MouseEvent e)
     {
-        System.out.println("pressed -> " + e.getX() + " : " + e.getY());
-
-        this.xOrigSourie = e.getX();
-        this.yOrigSourie = e.getY();
-
         for (Cuve cuve : this.reseau.getEnsCuves())
         {
-            if (this.xOrigSourie > cuve.getPosition().x()-cuve.getCapacite()/10 && this.xOrigSourie < cuve.getPosition().x() + cuve.getCapacite()/10 &&
-                this.yOrigSourie > cuve.getPosition().y()-cuve.getCapacite()/10 && this.yOrigSourie < cuve.getPosition().y() + cuve.getCapacite()/10)
+            if (e.getX() > cuve.getPosition().x() - cuve.getCapacite()/20 && e.getX() < cuve.getPosition().x() + cuve.getCapacite()/20 &&
+                e.getY() > cuve.getPosition().y() - cuve.getCapacite()/20 && e.getY() < cuve.getPosition().y() + cuve.getCapacite()/20 )
             {
-                System.out.println("Cuve " + cuve.getIdentifiant());
                 this.cuveActive = cuve;
                 break;
-                //cuve.setPosition(new Position(this.newXCuve, this.newYCuve));
             }
         }
     }
 
 
 
-    // normalement inutile mais pas sur
+    // permet d'enlever le focus de la dernière cuve active
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        /*
-        System.out.println("released -> " + e.getX() + " : " + e.getY());
-
-        //this.newXCuve = e.getX() - (abs(e.getX() - this.xOrigSourie));
-        //this.newYCuve = e.getY() - (abs(e.getY() - this.yOrigSourie));
-
-        for (Cuve cuve : this.reseau.getEnsCuves())
-        {
-            if (this.xOrigSourie > cuve.getPosition().x() && this.xOrigSourie < cuve.getPosition().x() + this.width &&
-                this.yOrigSourie > cuve.getPosition().y() && this.yOrigSourie < cuve.getPosition().y() + this.height)
-            {
-                System.out.println("Cuve ");
-                cuve.setPosition(new Position(e.getX(), e.getY()));
-                
-            }
-        }
-
-        this.repaint();
-        */
+        this.cuveActive = null;
     }
 
 
-    // Inutile pour le moment
-    public void mouseMoved  (MouseEvent e)
-    {
-        //System.out.println(e.getX() + " : " + e.getY());
-    }
-
-
-
+    // Inutile
+    public void mouseMoved  (MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited (MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
@@ -254,8 +225,8 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
             yCuve = cuve.getPosition().yCuve();
 
             // Détermination de la taille des cuves sur l'ihm
-            width  = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
-            height = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
+            widthCuve  = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
+            heightCuve = (cuve.getCapacite() / 10) * (this.ctrl.getWidthFrame() / 400);
 
             // Détermination de la couleur de la cuve
             Color couleur = new Color(255, 255, 255);
@@ -274,19 +245,19 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
 
             // Dessin des cuves
             g.setColor(couleur);
-            g.fillOval(xCuve, yCuve, width, height);
+            g.fillOval(xCuve, yCuve, widthCuve, heightCuve);
             g.setColor(Color.BLACK);
-            g.drawOval(xCuve, yCuve, width, height);
+            g.drawOval(xCuve, yCuve, widthCuve, heightCuve);
 
 
             // Dessin des noms des cuves
             switch (cuve.getPosInfo().getValeur())
             {
-                case 0 -> g.drawString(""+cuve.getIdentifiant(), xCuve + width + 5, yCuve + height / 2);
-                case 1 -> g.drawString(""+cuve.getIdentifiant(), xCuve + width / 2, yCuve + height + 5);
-                case 2 -> g.drawString(""+cuve.getIdentifiant(), xCuve - width - 5, yCuve + height / 2);
-                case 3 -> g.drawString(""+cuve.getIdentifiant(), xCuve + width / 2, yCuve - height - 5);
+                case 0 -> g.drawString(""+cuve.getIdentifiant(), xCuve + widthCuve + 5, yCuve + heightCuve / 2);
+                case 1 -> g.drawString(""+cuve.getIdentifiant(), xCuve + widthCuve / 2, yCuve + heightCuve + 5);
+                case 2 -> g.drawString(""+cuve.getIdentifiant(), xCuve - widthCuve - 5, yCuve + heightCuve / 2);
+                case 3 -> g.drawString(""+cuve.getIdentifiant(), xCuve + widthCuve / 2, yCuve - heightCuve - 5);
 
-                default -> g.drawString(""+cuve.getIdentifiant(), xCuve + width + 5, yCuve + height / 2);
+                default -> g.drawString(""+cuve.getIdentifiant(), xCuve + widthCuve + 5, yCuve + heightCuve / 2);
             }
 */

@@ -133,25 +133,9 @@ public class FrameRendu extends JFrame implements ActionListener
             {
                 try
                 {
-			        this.ctrl.ouvrir(fc.getSelectedFile());
+			        this.reseau = this.ctrl.ouvrir(fc.getSelectedFile());
                 }
                 catch (Exception ex){ JOptionPane.showMessageDialog(this, "Erreur lors de l'ouverture du fichier", "Erreur", JOptionPane.ERROR_MESSAGE); }
-            }
-
-
-            if ( !nomFichier.equals("") )
-            {
-                stringReseau = FrameRendu.lireFichier(nomFichier);
-
-                // récupération du mode d'enregistrement du réseau
-
-                // transformation de la chaine de caractères en objet Reseau
-                this.reseau = ListeAdjacence.deserialize(nomFichier);
-
-                /* Panel de rendu */
-                this.panelRendu = new PanelRendu(this.ctrl, this.reseau);
-                /* Panel de rendu */
-                this.add(this.panelRendu, BorderLayout.CENTER);
             }
 		}
 

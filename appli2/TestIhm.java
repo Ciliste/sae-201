@@ -22,11 +22,8 @@ public class TestIhm
         Tube t2 = Tube.creerTube(c2,c3,4);
         Tube t3 = Tube.creerTube(c1,c3,6);
         Tube t4 = Tube.creerTube(c4,c2,8);
-        // Ajout des cuves
         
-        //System.out.println("Cuve ajoutée");
-        
-        
+        // Ajout des cuves au réseau
         listAdj.ajouterCuve(c1);
         listAdj.ajouterCuve(c2);
         listAdj.ajouterCuve(c3);
