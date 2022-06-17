@@ -249,6 +249,10 @@ public class Cuve implements Comparable<Cuve>, Serializable {
             this.identifiant, this.capacite, this.contenu, this.position.x(), this.position.y(), PositionInfo.values()[this.posInfo].name()
         );
     }
+    public Cuve cloneCuve() {
+
+        return new Cuve(this.identifiant, this.capacite, this.contenu, this.position, this.posInfo);
+    }
 
     // Comparable
     public int compareTo(Cuve c) {
