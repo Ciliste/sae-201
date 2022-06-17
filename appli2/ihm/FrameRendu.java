@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.Scanner;
 
 import appli2.Controleur;
+import common.SharedContants;
 import metier.reseau.ListeAdjacence;
 import metier.reseau.Reseau;
 
@@ -135,7 +136,7 @@ public class FrameRendu extends JFrame implements ActionListener
                 {
 			        this.reseau = this.ctrl.ouvrir(fc.getSelectedFile());
                 }
-                catch (Exception ex){ JOptionPane.showMessageDialog(this, "Erreur lors de l'ouverture du fichier", "Erreur", JOptionPane.ERROR_MESSAGE); }
+                catch (Exception ex){ SharedContants.showError(this, ex); }
             }
 		}
 
