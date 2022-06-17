@@ -149,14 +149,16 @@ public class Controleur {
             }
 
             Files.setAttribute(Path.of(file.getAbsolutePath()), SharedContants.FORMAT_KEY_WORD, format.getBytes());
-            Files.move(file.toPath(), new File(file.getAbsolutePath() + ".data").toPath());
+            if (!file.getAbsolutePath().endsWith(".data")) {
+
+                file.renameTo(new File(file.getAbsolutePath() + ".data"));
+            }
         }
         catch (Exception err) {
 
-            // ¯\_(ツ)_/¯
+            err.printStackTrace();
         }
     }
-
 
     public enum MethodeSauvegarde {
 
@@ -189,12 +191,5 @@ public class Controleur {
             if (this.frame == null) return;
             this.frame.sauvegarderSous(this.classeSauvegarde);
         }
-    }
-
-
-
-    public static void main(String[] args) {
-
-        new Controleur();
     }
 }

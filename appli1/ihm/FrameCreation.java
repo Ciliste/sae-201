@@ -1,12 +1,18 @@
 package appli1.ihm;
 
+import javax.management.JMException;
 import javax.swing.*;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 
 import common.SharedContants;
 import launchers.Controleur;
 import launchers.Controleur.MethodeSauvegarde;
+import metier.Cuve;
+import metier.Position;
+import metier.Tube;
 import metier.reseau.Reseau;
 
 import java.awt.event.*;
@@ -40,6 +46,9 @@ public class FrameCreation extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.setLayout(new BorderLayout());
+
+        this.scrollPaneCrea = new JScrollPane(new JPanel());
+        this.add(this.scrollPaneCrea, BorderLayout.CENTER);
 
         JMenuBar menuBar = new JMenuBar();
 
@@ -90,12 +99,19 @@ public class FrameCreation extends JFrame {
 
         mnuFile.add(mnuSaveAs);
         
+        JMenu mnuTools = new JMenu("Outils");
+        mnuTools.setMnemonic('O');
+        
+        JMenuItem mnuRandom = new JMenuItem("Générer un réseau aléatoire");
+        mnuRandom.setMnemonic('R');
+        mnuRandom.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+        mnuRandom.addActionListener(this::random);
+        mnuTools.add(mnuRandom);
+
         menuBar.add(mnuFile);
+        menuBar.add(mnuTools);
 
         this.setJMenuBar(menuBar);
-
-        this.scrollPaneCrea = new JScrollPane(new JPanel());
-        this.add(this.scrollPaneCrea, BorderLayout.CENTER);
 
         this.setVisible(true);
 
@@ -174,7 +190,7 @@ public class FrameCreation extends JFrame {
 
                     this.setTitle(this.fichierCourant.getName());
                 }
-                catch (Exception err) {err.printStackTrace();}
+                catch (Exception err) {SharedContants.showError(this, err);}
             }
         }
         else {
@@ -203,13 +219,23 @@ public class FrameCreation extends JFrame {
 
         if (this.statutTravail == SharedContants.StatutTravail.AUCUN.VAL) {
 
+            System.out.println(":C");
             return;
         }
 
         if (this.statutTravail == SharedContants.StatutTravail.TRAVAIL.VAL) {
             
+            System.out.println("C:");
             this.statutTravail = SharedContants.StatutTravail.AUCUN.VAL;
-            this.ctrl.sauvegarder(this.fichierCourant, this.panelCrea.getCuves(), this.panelCrea.getTubes());
+            try {
+
+                this.ctrl.sauvegarder(this.fichierCourant, this.panelCrea.getCuves(), this.panelCrea.getTubes());
+            }
+            catch (Exception err) {
+
+                this.statutTravail = SharedContants.StatutTravail.TRAVAIL.VAL;
+                SharedContants.showError(this, err);
+            }
         }
     }
 
@@ -226,48 +252,9 @@ public class FrameCreation extends JFrame {
             .getHomeDirectory()
         );
 
-        choose.setFileFilter(new FileFilter() {
-               
-            public String getDescription() {
+        choose.setFileFilter(SharedContants.FiltresFichier.FILTRE_FICHIER_RESEAU.filtre());
 
-                return "Réseaux (*.data)";
-            }
-
-            public boolean accept(File f) {
-
-                if (f.isDirectory()) {
-
-                    return true;
-                } 
-                else {
-
-                    try {
-
-                        return Files.getAttribute(Path.of(""), "").equals("");
-                    }
-                    catch (Exception err) {return false;}
-                }
-            }
-        });
-
-        choose.addChoosableFileFilter(new FileFilter() {
-            
-            public String getDescription() {
-
-                return "Data Files (*.data)";
-            }
-
-            public boolean accept(File f) {
-
-                if (f.isDirectory()) {
-                    return true;
-                } 
-                else {
-                    String filename = f.getName().toLowerCase();
-                    return filename.endsWith(".data");
-                }
-            }
-        });
+        choose.addChoosableFileFilter(SharedContants.FiltresFichier.FILTRE_FICHIER_DATA.filtre());
 
         int res = choose.showSaveDialog(null);
 
@@ -280,6 +267,53 @@ public class FrameCreation extends JFrame {
             }
                 
             this.ctrl.sauvegarderSous(choose.getSelectedFile(), classe, this.panelCrea.getCuves(), this.panelCrea.getTubes());
+        }
+    }
+
+    public void fireCellEdited() {
+
+        this.statutTravail = SharedContants.StatutTravail.TRAVAIL.VAL;
+    }
+
+    public void random(ActionEvent event) {
+
+        this.nouveau(event);
+
+        Reseau reseau = new Reseau() {
+            
+            public String serialize() {
+                
+                return "";
+            }
+        };
+        
+        for (int cpt = 0; cpt < (int) (Math.random() * 27); cpt++) {
+
+            int capa = Cuve.CAPACITE_MIN + (int) (Math.random() * (Cuve.CAPACITE_MAX - Cuve.CAPACITE_MIN));
+            Cuve.resetCompteur();
+            reseau.ajouterCuve(Cuve.creerCuve(
+                capa,
+                (Double) (Math.random() * capa),
+                new Position(100 + (int) (Math.random() * (1000-100)), 100 + (int) (Math.random() * (600-100))),
+                (int) (Math.random() * 4)
+            ));
+        }
+
+        for (int cpt = 0; cpt < reseau.getEnsCuves().size() * (reseau.getEnsCuves().size() - 1) / 2; cpt++) {
+
+            Cuve c1, c2;
+            c1 = reseau.getEnsCuves().get((int) (Math.random() * reseau.getEnsCuves().size()));
+            c2 = reseau.getEnsCuves().get((int) (Math.random() * reseau.getEnsCuves().size()));
+            
+            boolean bOk = false;
+            for (Tube tube : reseau.getAdjacences().get(c1)) {
+
+                if (tube.contains(c2)) {
+
+                    cpt--;
+                    break;
+                }
+            }
         }
     }
 }

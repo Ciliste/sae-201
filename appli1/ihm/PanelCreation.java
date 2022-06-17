@@ -1,6 +1,9 @@
 package appli1.ihm;
 
 import javax.swing.*;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.table.TableCellEditor;
 
 import java.awt.BorderLayout;
 import java.awt.event.*;
@@ -11,6 +14,7 @@ import appli1.ihm.model.CuveModel;
 import appli1.ihm.model.TubeModel;
 import appli1.ihm.table.CuveTable;
 import appli1.ihm.table.TubeTable;
+import common.SharedContants;
 import launchers.Controleur;
 import metier.Cuve;
 import metier.Tube;
@@ -129,6 +133,17 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
 
             try {
                 
+                if (Integer.parseInt(this.txtNbCuves.getText()) < 0) {
+
+                    SharedContants.showError(this, new IllegalArgumentException("Veuillez saisir un nombre positif"));
+                    return;
+                } 
+                else if (Integer.parseInt(this.txtNbCuves.getText()) > 26) {
+
+                    SharedContants.showError(this, new IllegalArgumentException("Veuillez saisir un nombre inférieur ou égal à 26"));
+                    return;
+                }
+
                 Object[][] temp = new Object[Integer.parseInt(this.txtNbCuves.getText())][4];
                 for (int i = 0; i < temp.length; i++) {
 
@@ -162,10 +177,10 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
                 }
 
                 this.oldNbCuveValue = this.txtNbCuves.getText();
+                this.frame.fireCellEdited();
             } 
             catch (Exception err) {
 
-                err.printStackTrace();
                 if (this.oldNbCuveValue != null) {
 
                     this.txtNbCuves.setText(this.oldNbCuveValue);
@@ -174,7 +189,7 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
 
                     this.txtNbCuves.setText("");
                 }
-                //TODO: Fenêtre d'erreur
+                SharedContants.showError(this, new IllegalArgumentException("Veuillez saisir un nombre entier"));
             }
         }
         if (event.getSource() == this.txtNbTubes) {
@@ -183,12 +198,16 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
                 
                 int nbTube = Integer.parseInt(this.txtNbTubes.getText());
 
-                if (nbTube > (this.tblCuves.getRowCount() * (this.tblCuves.getRowCount() - 1)) / 2) {
+                if (nbTube < 0) {
 
-                    nbTube = this.tblCuves.getRowCount() * (this.tblCuves.getRowCount() - 1) / 2;
-                    this.txtNbTubes.setText(Integer.toString(nbTube));
-                    this.modelTube.setEditable(true);
-                    // TODO: Fenêtre d'erreur
+                    SharedContants.showError(this, new IllegalArgumentException("Veuillez saisir un nombre positif"));
+                    return;
+                }
+
+                if (nbTube > (this.tblCuves.getRowCount() * (this.tblCuves.getRowCount() - 1)) / 2) {
+                    
+                    SharedContants.showError(this, new IllegalArgumentException("Il ne peut pas y avoir plus de n(n-2)/2 tubes (" + ((this.tblCuves.getRowCount()*(this.tblCuves.getRowCount()-1))/2) + ")"));
+                    return;
                 }
 
                 Object[][] temp = new Object[nbTube][4];
@@ -213,6 +232,7 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
                 this.tblTubes.setModel(this.modelTube);
 
                 this.oldNbTubeValue = this.txtNbTubes.getText();
+                this.frame.fireCellEdited();
             } 
             catch (Exception err) {
 
@@ -224,7 +244,7 @@ public class PanelCreation extends JPanel implements ActionListener, FocusListen
 
                     this.txtNbCuves.setText("");
                 }
-                //TODO: Fenêtre d'erreur
+                SharedContants.showError(this, new IllegalArgumentException("Veuillez saisir un nombre entier"));
             }
         }
     }
