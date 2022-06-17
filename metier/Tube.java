@@ -119,6 +119,10 @@ public class Tube {
             this.section
         );
     }
+    public Tube cloneTube()
+    {
+        return new Tube(this.cuveA, this.cuveB, this.section);
+    } 
 
     // TEST
     public static void main(String[] args) {
