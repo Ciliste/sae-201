@@ -13,6 +13,7 @@ import launchers.Controleur.MethodeSauvegarde;
 import metier.Cuve;
 import metier.Position;
 import metier.Tube;
+import metier.reseau.ListeAdjacence;
 import metier.reseau.Reseau;
 
 import java.awt.event.*;
@@ -278,19 +279,13 @@ public class FrameCreation extends JFrame {
     public void random(ActionEvent event) {
 
         this.nouveau(event);
-
-        Reseau reseau = new Reseau() {
-            
-            public String serialize() {
-                
-                return "";
-            }
-        };
         
+        Reseau reseau = new ListeAdjacence();
+        
+        Cuve.resetCompteur();
         for (int cpt = 0; cpt < (int) (Math.random() * 27); cpt++) {
 
             int capa = Cuve.CAPACITE_MIN + (int) (Math.random() * (Cuve.CAPACITE_MAX - Cuve.CAPACITE_MIN));
-            Cuve.resetCompteur();
             reseau.ajouterCuve(Cuve.creerCuve(
                 capa,
                 (Double) (Math.random() * capa),
@@ -305,14 +300,25 @@ public class FrameCreation extends JFrame {
             c1 = reseau.getEnsCuves().get((int) (Math.random() * reseau.getEnsCuves().size()));
             c2 = reseau.getEnsCuves().get((int) (Math.random() * reseau.getEnsCuves().size()));
             
-            boolean bOk = false;
+            boolean bOk = true;
             for (Tube tube : reseau.getAdjacences().get(c1)) {
 
                 if (tube.contains(c2)) {
 
-                    cpt--;
+                    bOk = false;
                     break;
                 }
+            }
+
+            if (!bOk) {
+
+                cpt--;
+            }
+            else {
+
+                reseau.ajouterTube(Tube.creerTube(c1, c2, Tube.SECTION_MIN + (int) (Math.random() * (Tube.SECTION_MAX - Tube.SECTION_MIN))));
+                this.panelCrea = new PanelCreation(this.ctrl, this, reseau);
+                this.scrollPaneCrea.setViewportView(this.panelCrea);
             }
         }
     }
