@@ -8,6 +8,8 @@ import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import appli2.Controleur.MethodeSauvegarde;
+
 public class SharedContants {
     
     public static enum FiltresFichier {
@@ -27,11 +29,15 @@ public class SharedContants {
                 } 
                 else {
     
-                    try {
+                    for (MethodeSauvegarde methode : MethodeSauvegarde.values()) {
     
-                        return Files.getAttribute(f.toPath(), SharedContants.FORMAT_KEY_WORD) != null;
+                        if (f.getName().contains("." + methode.getNom().toLowerCase() + ".")) {
+
+                            return true;
+                        }
                     }
-                    catch (Exception err) {return false;}
+
+                    return false;
                 }
             }
         }),
