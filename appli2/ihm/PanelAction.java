@@ -74,7 +74,7 @@ public class PanelAction extends JPanel implements ActionListener
         {
             for (int i = 0; i < 200; i++)
             {
-                this.reseau.retour();
+                //this.reseau.retour();
                 this.ctrl.maj();
             }
 

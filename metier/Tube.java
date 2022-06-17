@@ -1,21 +1,9 @@
 package metier;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+public class Tube {
 
-import common.SharedContants;
-import metier.reseau.Reseau;
-
-import metier.Cuve;
-
-
-public class Tube{
-
-    public static final int SECTION_MIN = SharedContants.DonneesCuveTube.TUBE_SECTION_MIN.VAL;
-    public static final int SECTION_MAX = SharedContants.DonneesCuveTube.TUBE_SECTION_MAX.VAL;
+    public static final int SECTION_MIN = 2;
+    public static final int SECTION_MAX = 10;
 
     private Cuve cuveA;
     private Cuve cuveB;
