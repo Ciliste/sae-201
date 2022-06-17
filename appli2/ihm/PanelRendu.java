@@ -130,7 +130,7 @@ public class PanelRendu extends JPanel implements MouseListener, MouseMotionList
                 case 1  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
                 case 2  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
                 case 3  : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
-                default : { xPosInfo = cuve.getPosition().x(); yPosInfo = cuve.getPosition().y(); }
+                default : { xPosInfo = cuve.getPosition().x()+cuve.getCapacite()/2; yPosInfo = cuve.getPosition().y()+cuve.getCapacite()/2; }
             }
 
             // Affichage des informations
