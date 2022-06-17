@@ -50,7 +50,7 @@ public class PanelAction extends JPanel implements ActionListener
         /* Ajout des composants */
         /*----------------------*/
         /* Ajout des btns au panel btn*/
-        for (int i = 0; i < this.ensBtn.length; i++)
+        for (int i = 3; i < this.ensBtn.length; i++)
             panelBouton.add(this.ensBtn[i]);
 
         /* Ajout des panels au panel principal */
