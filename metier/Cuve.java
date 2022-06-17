@@ -143,7 +143,7 @@ public class Cuve implements Comparable<Cuve>, Serializable{
         this.posInfo = posInfo;
     }
 
-    // Utilisé uniquement pour la Déserialisation et le clonage
+    // Utilisé uniquement pour la Déserialisation
     private Cuve(char id, int capacite, double contenu, Position position, int posInfo) {
 
         if (id < 'A' || id > 'Z') {
