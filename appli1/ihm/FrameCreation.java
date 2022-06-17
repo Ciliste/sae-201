@@ -294,6 +294,8 @@ public class FrameCreation extends JFrame {
             ));
         }
 
+        if (reseau.getEnsCuves().size() < 1) {this.random(event);}
+
         for (int cpt = 0; cpt < reseau.getEnsCuves().size() * (reseau.getEnsCuves().size() - 1) / 2; cpt++) {
 
             Cuve c1, c2;

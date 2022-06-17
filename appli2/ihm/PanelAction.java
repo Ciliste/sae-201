@@ -88,7 +88,7 @@ public class PanelAction extends JPanel implements ActionListener
         // reculer d'une étape
         if (e.getSource() == this.ensBtn[2])
         {
-            this.reseau.retour();
+            // this.reseau.retour();
             this.ctrl.maj();
         }
 

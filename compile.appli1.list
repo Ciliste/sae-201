@@ -12,7 +12,6 @@
 ./appli1/ihm/editeur/tube/EditeurCuve.java
 ./appli1/ihm/editeur/tube/EditeurSection.java
 
-
 ./appli1/ihm/model/CuveModel.java
 ./appli1/ihm/model/TubeModel.java
 

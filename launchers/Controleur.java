@@ -129,7 +129,7 @@ public class Controleur {
 
                 if (!file.getAbsolutePath().endsWith(".data")) {
 
-                    file.renameTo(new File(file.getAbsolutePath() + format + ".data"));
+                    file.renameTo(new File(file.getAbsolutePath() + "." + format + ".data"));
                 }
             }
             else {
